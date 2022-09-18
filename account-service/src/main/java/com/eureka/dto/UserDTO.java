@@ -5,14 +5,16 @@ public class UserDTO {
     private String username;
     private String email;
     private String img;
+    private String introduction;
 
     public UserDTO() {}
 
-    public UserDTO(String id, String username, String password, String email, String img) {
+    public UserDTO(String id, String username, String email, String img, String introduction) {
         this.id = id;
         this.username = username;
         this.img = img;
         this.email = email;
+        this.introduction = introduction;
     }
 
     public String getUsername() {
@@ -27,11 +29,12 @@ public class UserDTO {
         return img;
     }
 
-    public void setImg(String imgPath){
-        this.img = imgPath;
-    }
 
     public String getEmail(){
         return email;
+    }
+
+    public String getIntroduction(){
+        return introduction;
     }
 }

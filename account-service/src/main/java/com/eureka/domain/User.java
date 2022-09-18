@@ -9,7 +9,6 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private String id;
 
@@ -30,6 +29,10 @@ public class User {
 
     @Column(name = "IMG")
     private String img;
+
+    @Column(name = "INTRODUCTION")
+    private String introduction;
+
 
     public User() {}
 
@@ -73,9 +76,10 @@ public class User {
         return authority;
     }
 
-    public void setAuthority(String authority){
-        this.authority = authority;
+    public String getIntroduction(){
+        return introduction;
     }
+
 
 
     @Override

@@ -169,7 +169,25 @@ public class UserController {
 
     }
 
+    @PostMapping("/updateIntroduction")
+    @ResponseBody
+    public String updateIntroduction(@CookieValue(name = "Auth") String cookie, String introduction) {
+        User user = authorityAndLoginJudge(cookie);
+        if(user == null){
+            return "unauthorized";
+        }else{
+            if(UserService.setIntroduction(cookie, introduction) == 1){
+                return "succeed";
+            }else{
+                return "failed";
+            }
+        }
+    }
+
     public User authorityAndLoginJudge(String cookie){
+        if(cookie.equals(null) || cookie.equals("")){
+            return null;
+        }
         return UserService.findUserByCookie(cookie);
     }
 }

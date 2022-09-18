@@ -60,4 +60,6 @@ public class UserService{
     public String getImg(String id){
         return userMapper.getImg(id);
     }
+
+    public int setIntroduction(String cookie, String introduction){return userMapper.setIntroduction(cookie, introduction);}
 }

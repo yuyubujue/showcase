@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    @Insert("insert into User(ID,USERNAME,PASSWORD,EMAIL,AUTHORITY,IMG) values(#{userid},#{username},#{passsword},#{email},#{authority},#{img})")
+    @Insert("insert into User(ID,USERNAME,PASSWORD,EMAIL,AUTHORITY,IMG,INTRODUCTION) values(#{userid},#{username},#{passsword},#{email},#{authority},#{img},\'Nothing yet~\')")
     int insertUser(String userid, String username, String passsword, String email, String authority, String img);
     @Select("select * from User where (USERNAME = #{username} OR EMAIL = #{username}) and PASSWORD = #{password}")
     User login(String username,String password);
@@ -28,10 +28,12 @@ public interface UserMapper {
     int setAuthority(String username, String authority);
     @Update("update User SET PASSWORD = #{password} WHERE COOKIE = #{cookie}")
     int setPassword(String cookie, String password);
-    @Select("select ID,USERNAME,PASSWORD,EMAIL,IMG from User where ID = #{ID}")
+    @Select("select ID,USERNAME,PASSWORD,EMAIL,IMG,INTRODUCTION from User where ID = #{ID}")
     UserDTO findUser(String ID);
     @Update("update User SET IMG = #{img} WHERE COOKIE = #{cookie}")
     int setImg(String cookie, String img);
     @Select("select IMG from User where ID = #{id}")
     String getImg(String id);
+    @Update("update User SET INTRODUCTION = #{introduction} WHERE COOKIE = #{cookie}")
+    int setIntroduction(String cookie, String introduction);
 }
