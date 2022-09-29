@@ -1,4 +1,5 @@
 package com.eureka.mapper;
+
 import com.eureka.domain.User;
 import com.eureka.dto.UserDTO;
 import org.apache.ibatis.annotations.Insert;
