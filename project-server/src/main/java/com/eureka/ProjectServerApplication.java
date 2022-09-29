@@ -8,6 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableEurekaServer
 @EnableSwagger2
 @SpringBootApplication
+
 public class ProjectServerApplication {
     public static void main(String[] args){
         SpringApplication.run(ProjectServerApplication.class);
