@@ -62,4 +62,11 @@ public class UserService{
     }
 
     public int setIntroduction(String cookie, String introduction){return userMapper.setIntroduction(cookie, introduction);}
+
+    public User authorityAndLoginJudge(String cookie){
+        if(cookie.equals("")){
+            return null;
+        }
+        return findUserByCookie(cookie);
+    }
 }

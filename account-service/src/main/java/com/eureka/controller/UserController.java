@@ -55,7 +55,7 @@ public class UserController {
             Cookie cookie = new Cookie("Auth", uuid);
             if(UserService.updateCookie(user.getUsername(), uuid) == 1) {
                 response.addCookie(cookie);
-                return "succeed";
+                return user.getAuthority();
             }else{
                 return "failed";
             }
@@ -65,7 +65,7 @@ public class UserController {
     @GetMapping("/getusers")
     @ResponseBody
     public String getUsers(@CookieValue(name = "Auth") String cookie){
-        User user = authorityAndLoginJudge(cookie);
+        User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
         }else{
@@ -91,10 +91,10 @@ public class UserController {
     @PostMapping("/setAuthority")
     @ResponseBody
     public String setAuthority(@CookieValue(name = "Auth") String cookie, @RequestParam("username") String username, @RequestParam("authority") String authority){
-        if(!authority.equals("teacher")  & !authority.equals("student") & !authority.equals("user")){
+        if(!authority.equals("teacher")  & !authority.equals("student") & !authority.equals("user") & !authority.equals("admin")){
             return "Illegal type";
         }
-        User user = authorityAndLoginJudge(cookie);
+        User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
         }else{
@@ -113,7 +113,7 @@ public class UserController {
     @PostMapping("/setPassword")
     @ResponseBody
     public String setPassword(@CookieValue(name = "Auth") String cookie, @RequestParam("password") String password){
-        User user = authorityAndLoginJudge(cookie);
+        User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
         }else{
@@ -128,7 +128,7 @@ public class UserController {
     @PostMapping("/uploadPic")
     @ResponseBody
     public String uploadImage(@RequestParam("image") MultipartFile image, @CookieValue(name = "Auth") String cookie) {
-        User user = authorityAndLoginJudge(cookie);
+        User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
         }
@@ -172,7 +172,7 @@ public class UserController {
     @PostMapping("/updateIntroduction")
     @ResponseBody
     public String updateIntroduction(@CookieValue(name = "Auth") String cookie, String introduction) {
-        User user = authorityAndLoginJudge(cookie);
+        User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
         }else{
@@ -182,12 +182,5 @@ public class UserController {
                 return "failed";
             }
         }
-    }
-
-    public User authorityAndLoginJudge(String cookie){
-        if(cookie.equals(null) || cookie.equals("")){
-            return null;
-        }
-        return UserService.findUserByCookie(cookie);
     }
 }
