@@ -3,10 +3,11 @@ package com.eureka.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
-public class User {
+public class User implements Serializable {
 
     @Id
     @Column(name = "ID")
