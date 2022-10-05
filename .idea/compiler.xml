@@ -13,10 +13,13 @@
     <bytecodeTargetLevel>
       <module name="account" target="11" />
       <module name="account-server" target="11" />
+      <module name="account-service" target="1.8" />
       <module name="eureka-server" target="1.8" />
       <module name="Eureka-server" target="1.8" />
       <module name="eureka-server1" target="1.8" />
       <module name="eureka-server2" target="1.8" />
+      <module name="project-server" target="1.8" />
+      <module name="showcase" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
