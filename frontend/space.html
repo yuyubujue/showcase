@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Space</title>
+    <script src="./js/jquery-3.6.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-circle" id="photo" src="" style="margin: 30px; height: 100px; width: 100px">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <div class="pull-right">
+                        <button class="btn btn-info" onclick="window.location.href='./setting.html';">Edit info & settings</button>
+                        <button id="manage" class="btn btn-info" onclick="window.location.href='./manage.html';" hidden>Manage Users</button>
+                    </div>
+                    <h4 class="media-heading" id="name" style="margin-top: 8px;">Name</h4>
+                    <p id="email">xxxxxxxxxxxxxxxx@gmail.com</p>
+                    <div>Skills: <div id="skills"></div></div>
+                    <div>Interest: <div id="interest"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div id="self-intro">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    我的作品
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    window.onload=function() {
+        let uid = getUrlParam("id");
+
+        if (uid != null) {
+            $.ajax({
+                url: './user/getuser/'+uid,
+                type: 'GET',
+                success: function (data, textStatus, xhr) {
+                    if (data != "Not found") {
+                        let obj = jQuery.parseJSON(data);
+                        $("#name").text(obj.username);
+                        $("#email").text(obj.email);
+                        $("#self-intro").html(obj.introduction);
+                        $("#photo").removeAttr("src").attr("src","./user/getimg/" + obj.id);
+                        let skills = obj.skill.split(",");
+                        let skillsHTML = "";
+                        for (let i = 0;i<skills.length;i++){
+                            skillsHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + skills[i] +"</span>"
+                        }
+                        document.getElementById("skills").innerHTML = skillsHTML;
+                    } else {
+                        $(location).attr("href", "./home.html");
+                    }
+                }
+            });
+        } else {
+            $.ajax({
+                url: './user/getown',
+                type: 'GET',
+                success: function (data, textStatus, xhr) {
+                    if (data != "Not found") {
+                        let obj = jQuery.parseJSON(data);
+                        $("#name").text(obj.username);
+                        $("#email").text(obj.email);
+                        $("#self-intro").html(obj.introduction);
+                        $("#photo").removeAttr("src").attr("src","./user/getimg/" + obj.id);
+                        if(obj.authority == 'admin'){
+                            manage.removeAttribute("hidden");
+                        }
+                        let skills = obj.skill.split(",");
+                        let skillsHTML = "";
+                        for (let i = 0;i<skills.length;i++){
+                            skillsHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + skills[i] +"</span>"
+                        }
+                        let inter = obj.interest.split(",");
+                        let interesHTML = "";
+                        for (let x = 0;x<inter.length;x++){
+                            interesHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + inter[x] +"</span>"
+                        }
+                        document.getElementById("skills").innerHTML = skillsHTML;
+                        document.getElementById("interest").innerHTML = interesHTML;
+                    } else {
+                        $(location).attr("href", "./home.html");
+                    }
+                }
+            });
+        }
+    }
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
+    if (getCookie("Auth")==""){
+        $(location).attr("href", "./login.html");
+    }
+</script>
+</html>

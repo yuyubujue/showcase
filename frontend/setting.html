@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Space</title>
+    <script src="./js/jquery-3.6.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="./js/wangEditor.js"></script>
+    <link href="./css/wangEditor.css" rel="stylesheet">
+    <link href="./css/normalize.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="panel panel-default" style="margin: 20px">
+        <div class="panel-body">
+            <h2>Profile info</h2>
+            <h4>This information will appear on your public profile.</h4>
+            <hr>
+            <h4>Photo</h4>
+            <img class="media-object img-circle" id="photo" src="" style="height: 100px; width: 100px;">
+            <a href="javascript:void(0)" onclick="uploadImg()">Upload Photo</a>
+            <input type="file" name="image" id="image" style="display: none" multiple="multiple"/>
+            <hr>
+            <h4>Set new password: </h4>
+            <div class="row">
+                <div class="col-md-6"><input type="password" id="password" class="form-control" placeholder="New password" aria-describedby="basic"></div>
+                <div class="col-md-1"><button class="btn btn-info" href="javascript:void(0)" onclick="setpassword()">Submit</button></div>
+            </div>
+            <hr>
+            <h4>Set my skill</h4>
+            <div class="row">
+                <div class="col-md-6"><input type="text" id="skill" class="form-control" placeholder="" aria-describedby="basic"></div>
+                <div class="col-md-1"><button class="btn btn-info" href="javascript:void(0)" onclick="setskill()">Submit</button></div>
+            </div>
+            <hr>
+            <h4>Set my interest</h4>
+            <div class="row">
+                <div class="col-md-6"><input type="text" id="interest" class="form-control" placeholder="" aria-describedby="basic"></div>
+                <div class="col-md-1"><button class="btn btn-info" href="javascript:void(0)" onclick="setinterest()">Submit</button></div>
+            </div>
+            <hr>
+            <h4>Set my introduction</h4>
+            <div style="border: 1px solid #ccc;">
+                <div id="editor-toolbar" style="border-bottom: 1px solid #ccc;"></div>
+                <div id="editor-text-area" id="introduction" style="height: 500px"></div>
+            </div>
+            <br>
+            <button class="btn btn-info" href="javascript:void(0)" onclick="updateIntroduction()">Submit</button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    const E = window.wangEditor;
+
+    E.i18nChangeLanguage('en');
+
+    window.editor = E.createEditor({
+        selector: '#editor-text-area',
+        html: '<p><br></p>',
+        config: {
+            placeholder: 'Type here...',
+            MENU_CONF: {
+            }
+        }
+    });
+
+    window.toolbar = E.createToolbar({
+        editor,
+        selector: '#editor-toolbar',
+        config: {
+            excludeKeys : [
+                'uploadImage',
+                'uploadVideo'
+            ]
+        }
+    });
+
+
+    function uploadImg() {
+        $("#image").click();
+        $("#image").on('change', function () {
+            var file = $("#image")[0].files[0];
+            var formData = new FormData();
+            formData.append('file', file);
+            $.ajax({
+                url: "./user/uploadPic",
+                type: "POST",
+                data: formData,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType:false,
+                success: function (data) {
+                    if(data == "succeed"){
+                        alert("success");
+                    }else{
+                        alert("error");
+                    }
+                }
+            })
+        });
+    }
+
+    function setpassword() {
+        let pass = $("#password").val().trim();
+        if(pass){
+            $.ajax({
+                url: "./user/setPassword",
+                type: 'POST',
+                data:{password:pass},
+                success: function (data) {
+                    if(data == "succeed"){
+                        alert("success");
+                        document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString()
+                        window.location = 'login.html';
+                    }else{
+                        alert(data);
+                    }
+                },
+                error: function (data) {
+                    console.log(error);
+                }
+            });
+        }
+    }
+
+    function setskill() {
+        let skill = $("#skill").val();
+        if(skill){
+            $.ajax({
+                url: "./user/updateSkill",
+                type: 'POST',
+                data:{skill:skill},
+                success: function (data) {
+                    if(data == "succeed"){
+                        alert("success");
+                    }else{
+                        alert(data);
+                    }
+                },
+                error: function (data) {
+                    console.log(error);
+                }
+            });
+        }
+    }
+
+    function setinterest() {
+        let interest = $("#interest").val();
+        if(interest){
+            $.ajax({
+                url: "./user/updateInterest",
+                type: 'POST',
+                data:{interest:interest},
+                success: function (data) {
+                    if(data == "succeed"){
+                        alert("success");
+                    }else{
+                        alert(data);
+                    }
+                },
+                error: function (data) {
+                    console.log(error);
+                }
+            });
+        }
+    }
+
+    function updateIntroduction() {
+        let intro = editor.getHtml();
+        if(intro){
+            console.log(1);
+            $.ajax({
+                url: "./user/updateIntroduction",
+                type: 'POST',
+                data:{introduction:intro},
+                success: function (data) {
+                    if(data == "succeed"){
+                        alert("success");
+                        window.location = 'setting.html';
+                    }else{
+                        alert("error");
+                    }
+                }
+            });
+        }
+    }
+
+    $.ajax({
+        url: './user/getown',
+        type: 'GET',
+        success: function (data, textStatus, xhr) {
+            if (data != "Not found") {
+                let obj = jQuery.parseJSON(data);
+                $("#photo").removeAttr("src").attr("src","./user/getimg/" + obj.id);
+                editor.setHtml(obj.introduction)
+                $("#skill").val(obj.skill);
+                $("#interest").val(obj.interest);
+            } else {
+                window.location = 'home.html';
+            }
+        }
+    });
+
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
+    if (getCookie("Auth")==""){
+        $(location).attr("href", "./login.html");
+    }
+</script>
+</html>

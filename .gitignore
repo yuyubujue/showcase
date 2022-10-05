@@ -1,10 +1,8 @@
 # Project exclude paths
-/account-service/target/
-/project-server/target/
-
 .idea/
 *.iml
 *.iws
 log/
 target/
 /.idea/
+.mvn/
