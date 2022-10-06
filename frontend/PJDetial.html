@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="./css/PJDetial.css">
     <!-- <script src="/vue/vue.js"></script> -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="/vue/projects.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Project Detial Showcase</title>
     <link rel="icon" href="./images/uoa-logo.jpg" id="icon">  </link>
     <script src="./js/loginstate.js"></script>
@@ -46,13 +46,13 @@
     <main>
         <section class="pjinfo">
             <div class="pjname-container">
-                <h1 id="pjname">Project Name</h1>
+                <h1 id="pjname">{{pj_name}}</h1>
                 <div class="pjdetial-container">
-                    <span id="pjlangu">Java</span>
-                    <span id="pjupdate">09/09/2022</span>
-                    <span id="pjviewnum">150 Views</span>
-                    <span id="pjlikenum">50 Likes</span>
-                    <span id="pjcommentnum">10 Comments</span>
+                    <span id="pjlangu">{{pj_Tech}}</span>
+                    <span id="pjupdate">{{pj_date}}</span>
+                    <span id="pjviewnum">{{pj_views}} Views</span>
+                    <span id="pjlikenum">{{pj_likes}} Likes</span>
+                    <span id="pjcommentnum">{{pj_comnums}} Comments</span>
                 </div>
             </div>
             <div class="pjteam-container">
@@ -61,7 +61,8 @@
                         <a href="#">
                             <img src="./images/uoa-logo.jpg" alt="">
                         </a>
-                        <a href="#" id="teamname"> TeamName
+                        <a href="#" id="teamname"> 
+                            {{pj_tName}}
                         </a>
                     </div>
                     <!-- <div class="teamname-container">
@@ -72,18 +73,60 @@
             </div>
             <hr>
             <div class="pjtext">
-                2022 University Surveys (with $100 Prezzy cards to be won!)   
-Check your University email!  You may be one of 20,000 randomly selected students asked to complete either the University’s 2022 Learning and Teaching Survey or the 2022 Research on Academic Integrity in New Zealand (RAINZ) Survey.  Have your say and go into the draw for 1 of 60 $100 Prezzy vouchers. 
-
-Each survey takes 10-15 minutes to complete. Both surveys will help the University make important decisions. They are voluntary and confidential, and are your chance to have your say, give feedback and suggest ways to improve the student experience.  
-
-For past years’ Learning & Teaching survey results and further information please see www.auckland.ac.nz/surveyLinks to an external site. 
-To read more about the Research on Academic Integrity survey view the RAINZ SurveyLinks to an external site. webpage
-
-This is a message from The University of Auckland
+                {{pj_Tagline}}  
+            </div>
+            <hr>
+            <div class="pjtext" id="pjintro">
+                
             </div>
             
         </section>
+
+        <script>
+            let vm = Vue.createApp({
+                data(){
+                    return{
+                        pj_name:"Project Nmae",
+                        pj_Tagline:"2022 University Surveys - it’s not too late to have your say (and be entered in the prize draw)! ",
+                        pj_Tech:"java",
+                        pj_date:"2022/10/06",
+                        pj_views:"150",
+                        pj_likes:"50",
+                        pj_comnums:"10",
+                        pj_tName:"Team Name",
+                        pj_intro:"The 2022 Learning and Teaching Survey and the 2022 Research on Academic Integrity in New Zealand (RAINZ) Survey will be closing in the next few days, so check your student email for an invitation message and survey link. Your feedback is very important – the survey results are used to make changes and improvements that benefit you, such as adding captions to lecture recordings. For further information view the Learning & Teaching SurveyLinks to an external site. or RAINZ SurveyLinks to an external site. webpages Participation in these surveys is completely voluntary and does not affect any of your grades – but if you complete your survey by 10 October, you will be in the prize draw to win 1 of 60 $100 Prezzy cards. "
+                    }
+                },
+                methods:{
+                    getName(uuid){
+                        axios.get('user/getuser/'+uuid)
+                        .then(function (response) {
+                            vm.pj_tName = response.data.username;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    }
+                },
+                mounted(){
+                    let pjId = 15;
+                    axios.get('project/getProject/'+pjId)
+                    .then(function (response) {
+                        let pjinfo = response.data;
+                        vm.pj_name= pjinfo.pname;
+                        vm.pj_Tagline= pjinfo.tagline;
+                        vm.pj_Tech= pjinfo.technologies;
+                        vm.pj_date= pjinfo.date;
+                        document.getElementById('pjintro').innerHTML = pjinfo.introduction;
+                        vm.getName(pjinfo.owner);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            }).mount('.pjinfo')
+        </script>
+
         <section class="pjcomments" >
             <div class="commentnum" id="pjcommentnum">10 Comments</div>
             <hr>
