@@ -3,12 +3,22 @@ package com.showcase.project.controller;
 import com.alibaba.fastjson2.JSON;
 import com.showcase.project.domain.User;
 import com.showcase.project.service.UserService;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.showcase.project.service.ProjectService;
 import com.showcase.project.domain.Project;
+import com.showcase.project.dto.ProjectDTO;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +42,22 @@ public class ProjectController {
         if(user == null){
             return "unauthorized";
         }
-        if (projectService.uploadProject(pname,shortTagline,planguage,introduction,user.getId()) == 1){
+        byte[] data= new byte[2];
+        try{
+            ClassPathResource classPathResource = new ClassPathResource("static/null.png");
+            InputStream ins = classPathResource.getInputStream();
+            byte[] buffer=new byte[2];
+            int len=0;
+            org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream bos=new ByteArrayOutputStream();
+            while((len=ins.read(buffer))!=-1){
+                bos.write(buffer,0,len);
+            }
+            bos.flush();
+            data = bos.toByteArray();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        if (projectService.uploadProject(pname,shortTagline,planguage,introduction,user.getId(),data) == 1){
             return "succeed";
         }else{
             return "failed";
@@ -117,10 +142,43 @@ public class ProjectController {
         return "success";
     }
 
-    @PostMapping(value = "/uploadProjectImg")
+    @PostMapping(value = "/uploadProjectImg/{id}")
     @ResponseBody
-    public String uploadProjectImg(@RequestParam("pid") String pid, @RequestParam MultipartFile img){
-        return "./File/projectimg/null.png";
+    public String uploadProjectImg(@PathVariable("id") String id, @RequestParam MultipartFile file, @CookieValue(name = "Auth") String cookie){
+        User user = userService.authorityAndLoginJudge(cookie);
+        if(user == null){
+            return "unauthorized";
+        }
+        byte[] data= new byte[1024];
+        try {
+            InputStream ins = file.getInputStream();
+            byte[] buffer=new byte[1024];
+            int len=0;
+            ByteArrayOutputStream bos=new ByteArrayOutputStream();
+            while((len=ins.read(buffer))!=-1){
+                bos.write(buffer,0,len);
+            }
+            bos.flush();
+            data = bos.toByteArray();
+            projectService.uploadProjectImg(cookie, data);
+            return "succeed";
+        } catch (IOException e) {
+            return "failed";
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getimg/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getImg(@PathVariable String id, HttpServletResponse response){
+        HttpHeaders headers = new HttpHeaders();
+        try{
+            byte[] imageContent = projectService.getCoverImage(id).getCoverImage();
+            headers.setContentType(MediaType.IMAGE_PNG);
+            return new ResponseEntity<>(imageContent, headers, HttpStatus.OK);
+        } catch (Exception e) {
+        }
+        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/removeProjectImg")

@@ -4,7 +4,6 @@ public class UserDTO {
     private String id;
     private String username;
     private String email;
-    private byte[] img;
     private String introduction;
     private String skill;
     private String interest;
@@ -12,10 +11,9 @@ public class UserDTO {
 
     public UserDTO() {}
 
-    public UserDTO(String id, String username, String email, byte[] img, String introduction, String skill, String interest, String authority) {
+    public UserDTO(String id, String username, String email, String introduction, String skill, String interest, String authority) {
         this.id = id;
         this.username = username;
-        this.img = img;
         this.email = email;
         this.introduction = introduction;
         this.skill = skill;
@@ -29,10 +27,6 @@ public class UserDTO {
 
     public String getId() {
         return id;
-    }
-
-    public byte[] getImg(){
-        return img;
     }
 
     public String getEmail(){

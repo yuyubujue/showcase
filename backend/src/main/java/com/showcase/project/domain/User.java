@@ -49,17 +49,6 @@ public class User implements Serializable {
         this.authority = "user";
         this.skill = skill;
         this.interest = interest;
-        try{
-            DataInputStream is = new DataInputStream(
-                    new BufferedInputStream(new FileInputStream("File/image/null.png"))
-            );
-            byte[] b = new byte[2];
-            is.read(b);
-            is.close();
-            this.img = b;
-        }catch (IOException e){
-            e.printStackTrace();
-        }
     }
 
     public String getUsername() {

@@ -20,8 +20,8 @@
                 </div>
                 <div class="media-body">
                     <div class="pull-right">
-                        <button class="btn btn-info" onclick="window.location.href='./setting.html';">Edit info & settings</button>
-                        <button id="manage" class="btn btn-info" onclick="window.location.href='./manage.html';" hidden>Manage Users</button>
+                        <div id="setting"></div>
+                        <div id="man"></div>
                     </div>
                     <h4 class="media-heading" id="name" style="margin-top: 8px;">Name</h4>
                     <p id="email">xxxxxxxxxxxxxxxx@gmail.com</p>
@@ -43,8 +43,9 @@
         </div>
         <div class="col-md-4">
             <div class="panel panel-default">
-                <div class="panel-body">
-                    我的作品
+                <h4 style="margin: 10px">My Projects</h4>
+                <div id="projects_list">
+
                 </div>
             </div>
         </div>
@@ -66,12 +67,49 @@
                         $("#email").text(obj.email);
                         $("#self-intro").html(obj.introduction);
                         $("#photo").removeAttr("src").attr("src","./user/getimg/" + obj.id);
-                        let skills = obj.skill.split(",");
+                        let interesHTML = "";
                         let skillsHTML = "";
-                        for (let i = 0;i<skills.length;i++){
-                            skillsHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + skills[i] +"</span>"
+                        try{
+                            let skills = obj.skill.split(",");
+                            for (let i = 0;i<skills.length;i++){
+                                skillsHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + skills[i] +"</span>";
+                            }
+                        }catch (e){
+                            let skills = obj.skill;
+                            skillsHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + skills +"</span>";
+                        }
+                        try{
+                            let inter = obj.interest.split(",");
+                            for (let x = 0;x<inter.length;x++){
+                                interesHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + inter[x] +"</span>";
+                            }
+                        }catch (e){
+                            let inter = obj.interest;
+                            interesHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + inter +"</span>"
                         }
                         document.getElementById("skills").innerHTML = skillsHTML;
+                        document.getElementById("interest").innerHTML = interesHTML;
+                        $.ajax({
+                            url: './project/getProjectsByUser?id='+obj.id,
+                            type: 'GET',
+                            success: function (data, textStatus, xhr) {
+                                if (data != "[]") {
+                                    let projects = "";
+                                    let objs = jQuery.parseJSON(data);
+                                    for (let z = 0;z<objs.length;z++){
+                                        projects+= "            <div class=\"panel panel-default\">\n" +
+                                            "                        <div class=\"panel-body\">\n" +
+                                            "                            <img class=\"media-object\" src=\"./project/getimg/" + objs[z].ID+ "\" style=\" height: auto; width: 95%; margin: 2.5%\">\n" +
+                                            "                            <a href='./project/getProject/" + objs[z].ID + "'>" + objs[z].pname + "</a>\n" +
+                                            "                        </div>\n" +
+                                            "                    </div>";
+                                    }
+                                    document.getElementById("projects_list").innerHTML = projects;
+                                } else {
+                                    document.getElementById("projects_list").innerHTML = "<p>The user doesn't have a project yet</p>";
+                                }
+                            }
+                        });
                     } else {
                         $(location).attr("href", "./home.html");
                     }
@@ -89,20 +127,52 @@
                         $("#self-intro").html(obj.introduction);
                         $("#photo").removeAttr("src").attr("src","./user/getimg/" + obj.id);
                         if(obj.authority == 'admin'){
-                            manage.removeAttribute("hidden");
+                            document.getElementById('man').innerHTML = "<button id=\"manage\" class=\"btn btn-info\" style=\"margin-top:5px;\" onclick=\"window.location.href='./manage.html';\">Manage Users</button>";
                         }
-                        let skills = obj.skill.split(",");
-                        let skillsHTML = "";
-                        for (let i = 0;i<skills.length;i++){
-                            skillsHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + skills[i] +"</span>"
-                        }
-                        let inter = obj.interest.split(",");
+                        document.getElementById('setting').innerHTML = "<button class=\"btn btn-info\" onclick=\"window.location.href='./setting.html';\">Edit info & settings</button>";
                         let interesHTML = "";
-                        for (let x = 0;x<inter.length;x++){
-                            interesHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + inter[x] +"</span>"
+                        let skillsHTML = "";
+                        try{
+                            let skills = obj.skill.split(",");
+                            for (let i = 0;i<skills.length;i++){
+                                skillsHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + skills[i] +"</span>";
+                            }
+                        }catch (e){
+                            let skills = obj.skill;
+                            skillsHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + skills +"</span>";
+                        }
+                        try{
+                            let inter = obj.interest.split(",");
+                            for (let x = 0;x<inter.length;x++){
+                                interesHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + inter[x] +"</span>";
+                            }
+                        }catch (e){
+                            let inter = obj.interest;
+                            interesHTML += "<span class=\"label label-info\" style='display: inline-block; margin: 5px'>" + inter +"</span>"
                         }
                         document.getElementById("skills").innerHTML = skillsHTML;
                         document.getElementById("interest").innerHTML = interesHTML;
+                        $.ajax({
+                            url: './project/getProjectsByUser?id='+obj.id,
+                            type: 'GET',
+                            success: function (data, textStatus, xhr) {
+                                if (data != "[]") {
+                                    let projects = "";
+                                    let objs = jQuery.parseJSON(data);
+                                    for (let z = 0;z<objs.length;z++){
+                                        projects+= "            <div class=\"panel panel-default\">\n" +
+                                            "                        <div class=\"panel-body\">\n" +
+                                            "                            <img class=\"media-object\" src=\"./project/getimg/" + objs[z].ID+ "\" style=\" height: auto; width: 95%; margin: 2.5%\">\n" +
+                                            "                            <a href='./project/getProject/" + objs[z].ID + "'>" + objs[z].pname + "</a>\n" +
+                                            "                        </div>\n" +
+                                            "                    </div>";
+                                    }
+                                    document.getElementById("projects_list").innerHTML = projects;
+                                } else {
+                                    document.getElementById("projects_list").innerHTML = "<p>The user doesn't have a project yet</p>";
+                                }
+                            }
+                        });
                     } else {
                         $(location).attr("href", "./home.html");
                     }
@@ -123,9 +193,6 @@
             if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
         }
         return "";
-    }
-    if (getCookie("Auth")==""){
-        $(location).attr("href", "./login.html");
     }
 </script>
 </html>

@@ -1,5 +1,8 @@
 package com.showcase.project.domain;
 
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.springframework.core.io.ClassPathResource;
+
 import javax.persistence.*;
 import java.io.*;
 import java.util.Date;
@@ -71,5 +74,7 @@ public class Project implements Serializable {
     public Date getDate() {
         return date;
     }
+
+    public byte[] getCoverImage(){return coverImage;}
 
 }
