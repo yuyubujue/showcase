@@ -238,18 +238,17 @@ header{
 }
 
 #pjimgupload{
-    height: 200px;
+    min-height: 200px;
     border: 2px dashed black;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 #pjimgupload input[type=file]{
     width: 20%;
     margin: 0 auto; 
+    margin-top: 20px;
 }
 
 #pjimgupload p{
@@ -257,10 +256,15 @@ header{
 }
 
 #images{
-    border: 1px solid #FFF;
-    margin-top: 15px;
-    padding: 10px;
-  }
+    margin: 20px 10px;
+}
+
+#images img{
+    margin: 0 5px;
+    max-height: 100px;
+    max-width: 100px;
+    
+}
 
 .pjAction input[type=submit]{
     width: 100px;
