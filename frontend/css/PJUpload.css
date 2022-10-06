@@ -266,6 +266,13 @@ header{
     
 }
 
+#upimg{
+    display: none; 
+    margin: 0 auto;
+    margin-top: 10px;
+    width: 40%;
+}
+
 .pjAction input[type=submit]{
     width: 100px;
     background-color: green;
