@@ -1,25 +1,49 @@
 
 //choose
 
-const fileUploader = document.getElementById('pj_images');
-const content = document.getElementById('images');
-const reader = new FileReader();
+function showImages() {
+  const content = document.getElementById('images');
+  content.innerHTML = '';
+  document.getElementById('feedback').innerText = null;
+  const images = document.querySelector('#images');
+  const files = document.querySelector('#pj_images').files;
+  function readAndPreview(file) {
+    if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        const image = new Image();
+        image.height = 100;
+        image.title = file.name;
+        image.src = reader.result;
+        images.appendChild(image);
+      }, false);
 
-fileUploader.addEventListener('change', (event) => {
-    const files = event.target.files;
-    console.log('files', files);
-    content.innerHTML = '';
-    const img = document.createElement('img');
-    img.style.height = '100px';
-    img.style.width = '100px';
-    content.appendChild(img);
-    img.src = files;
-  
-  // show the upload feedback
-    const feedback = document.getElementById('feedback');
-    const msg = `${files.length} file(s) uploaded successfully!`;
-    feedback.innerHTML = msg;
-});
+      reader.readAsDataURL(file);
+    }
+  }
+
+  if (files) {
+    Array.prototype.forEach.call(files, readAndPreview);
+    if(files.length != 0){
+      showbutton();
+    }
+    
+  }
+}
+
+const showbutton = () => {
+  document.getElementById("upimg").style.display = "block";
+}
+const hidebutton = () => {
+  document.getElementById("upimg").style.display = "none";
+}
+
+function Uploadimg(){
+    var files = document.querySelector('#pj_images').files;
+    document.getElementById('feedback').innerText = `${files.length} file(s) uploaded successfully!`;
+    hidebutton();
+}
+
 
 
 
