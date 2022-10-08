@@ -8,6 +8,7 @@ const rest = () => {
     document.getElementById("space").style.display = "none";
     document.getElementById("signout").style.display = "none";
     document.getElementById("login").style.display = "block";
+    window.location.href = "./index.html"
 }
 
 function setCookie(cname, cvalue, exdays) {
@@ -48,10 +49,27 @@ function getCookie() {
     return value;
 }
 
-
-window.onload = function(){
+function checkState(){
     var cookie = getCookie();
     if(cookie != null && cookie!=""){
         logsuc();
+        return true;
+    }else{
+        return false;
+    }
+    
+}
+
+const loginList = ["https://api.crya.me/PJUpload.html"];
+
+window.onload = function(){
+    var check = checkState();
+    if(!check){
+        var locahtml = window.location.href;
+        var index = loginList.indexOf(locahtml);
+        if(index != -1)
+            window.location.href = "./login.html"
+    }else{
+        checkState();
     }
 };
