@@ -38,4 +38,6 @@ public class ProjectService{
     public Project getCoverImage(String id) {
         return projectMapper.getCoverImage(id);
     }
+
+    public Project getNewOne(){return projectMapper.getNewOne();}
 }

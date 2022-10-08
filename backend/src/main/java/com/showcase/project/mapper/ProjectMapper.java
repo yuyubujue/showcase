@@ -24,4 +24,6 @@ public interface ProjectMapper {
     int uploadProjectImg(String id, byte[] file);
     @Select("select COVERIMAGE from `Project` where ID = #{ID}")
     Project getCoverImage(String ID);
+    @Select("select * from Project order by ID desc limit 1")
+    Project getNewOne();
 }

@@ -58,7 +58,7 @@ public class ProjectController {
             e.printStackTrace();
         }
         if (projectService.uploadProject(pname,shortTagline,planguage,introduction,user.getId(),data) == 1){
-            return "succeed";
+            return String.valueOf(projectService.getNewOne().getID());
         }else{
             return "failed";
         }
