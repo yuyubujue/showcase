@@ -58,10 +58,10 @@
             <div class="pjteam-container">
                 <div class="pjteaminfo">
                     <div class="teamicon">
-                        <a href="#">
+                        <a v-bind:href="pj_ownerSpace">
                             <img src="./images/uoa-logo.jpg" alt="">
                         </a>
-                        <a href="#" id="teamname"> 
+                        <a v-bind:href="pj_ownerSpace" id="teamname"> 
                             {{pj_tName}}
                         </a>
                     </div>
@@ -94,7 +94,8 @@
                         pj_likes:"50",
                         pj_comnums:"10",
                         pj_tName:"Team Name",
-                        pj_intro:"The 2022 Learning and Teaching Survey and the 2022 Research on Academic Integrity in New Zealand (RAINZ) Survey will be closing in the next few days, so check your student email for an invitation message and survey link. Your feedback is very important – the survey results are used to make changes and improvements that benefit you, such as adding captions to lecture recordings. For further information view the Learning & Teaching SurveyLinks to an external site. or RAINZ SurveyLinks to an external site. webpages Participation in these surveys is completely voluntary and does not affect any of your grades – but if you complete your survey by 10 October, you will be in the prize draw to win 1 of 60 $100 Prezzy cards. "
+                        pj_intro:"The 2022 Learning and Teaching Survey and the 2022 Research on Academic Integrity in New Zealand (RAINZ) Survey will be closing in the next few days, so check your student email for an invitation message and survey link. Your feedback is very important – the survey results are used to make changes and improvements that benefit you, such as adding captions to lecture recordings. For further information view the Learning & Teaching SurveyLinks to an external site. or RAINZ SurveyLinks to an external site. webpages Participation in these surveys is completely voluntary and does not affect any of your grades – but if you complete your survey by 10 October, you will be in the prize draw to win 1 of 60 $100 Prezzy cards. ",
+                        pj_ownerSpace:"https://api.crya.me/space.html"
                     }
                 },
                 methods:{
@@ -107,11 +108,23 @@
                             console.log(error);
                         });
                     }
+                    // getOwn(){
+                    //     axios.get('user/getown')
+                    //     .then(function (response) {
+                    //         vm.pj_tName = response.data.id;
+                    //     })
+                    //     .catch(function (error) {
+                    //         console.log(error);
+                    //     });
+                    // }
                 },
                 mounted(){
-                    let pjId = 15;
-                    axios.get('project/getProject/'+pjId)
-                    .then(function (response) {
+                    let pjId = getUrlParam("id");
+                    if(pjId==null){
+
+                    }else{
+                        axios.get('project/getProject/'+pjId)
+                        .then(function (response) {
                         let pjinfo = response.data;
                         vm.pj_name= pjinfo.pname;
                         vm.pj_Tagline= pjinfo.tagline;
@@ -119,13 +132,27 @@
                         vm.pj_date= pjinfo.date;
                         document.getElementById('pjintro').innerHTML = pjinfo.introduction;
                         vm.getName(pjinfo.owner);
+                        vm.pj_ownerSpace= "https://api.crya.me/space.html?id="+ pjinfo.owner;
+                        console.log(vm.pj_ownerSpace);
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
+                    }
+                    
                 }
             }).mount('.pjinfo')
+            function getUrlParam(name) {
+
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+
+            var r = window.location.search.substr(1).match(reg);
+
+            if (r != null) return unescape(r[2]); return null;
+
+            }
         </script>
+
 
         <section class="pjcomments" >
             <div class="commentnum" id="pjcommentnum">10 Comments</div>
