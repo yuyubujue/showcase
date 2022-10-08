@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.showcase.project.service.ProjectService;
 import com.showcase.project.domain.Project;
-import com.showcase.project.dto.ProjectDTO;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
