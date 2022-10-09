@@ -199,6 +199,54 @@ header{
     border-color: #00a1d6;
 }
 
+input[type=text]:focus{
+    border-color: #00a1d6;
+    background-color: #fff;
+}
+
+.pjTech span{
+    display: flex;
+    align-items: center;
+}
+
+.pjTech span input[type=checkbox]{
+    height: 0;
+    width: 0;
+}
+
+.pjTech span span{
+    background-color: #f4f5f7;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #212121;
+    cursor: pointer;
+    height: 30px;
+}
+.pjTech input[type=checkbox]:checked + span{
+    background-color: #00a1d6;
+    color: #fff;
+}
+
+#other{
+    display: none;
+    height: 30px;
+    border: none;
+    background-color: #fff;
+    border-radius: 0;
+    border-bottom-style: dashed;
+    margin-left: 5px;
+}
+
+.pjTech input[type=checkbox]:checked + span #other{
+    display: block;
+    
+}
+
+.pjTech span label{
+    display: flex;
+    margin: 10px 15px;
+}
+
 
 
 
