@@ -237,7 +237,7 @@ input[type=text]:focus{
     margin-left: 5px;
 }
 
-.pjTech input[type=checkbox]:checked + span #other{
+.pjTech input[type=checkbox]:checked + span + #other{
     display: block;
     
 }
