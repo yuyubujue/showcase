@@ -139,8 +139,12 @@
                 methods:{
                     postPj(){ 
                         let intro = editor.getHtml();
+                        let separate = '';
+                        if(this.pj_TechO.length != 0){
+                            separate = ','
+                        }
                         axios.post('project/uploadProject',
-                            "pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline +"&planguage=" + this.pj_Tech + this.pj_TechO + "&introduction=" + intro
+                            "pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline +"&planguage=" + this.pj_Tech+ separate + this.pj_TechO + "&introduction=" + intro
 	                        ).then(function (response) {
                             console.log(response);
                         })
