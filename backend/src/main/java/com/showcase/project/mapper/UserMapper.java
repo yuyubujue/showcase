@@ -42,4 +42,5 @@ public interface UserMapper {
     int setInterest(String cookie, String interest);
     @Delete("Delete from User where ID = #{id}")
     int removeUser(String id);
+
 }

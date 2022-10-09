@@ -5,11 +5,13 @@ import org.springframework.core.io.ClassPathResource;
 
 import javax.persistence.*;
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
 @Table
 public class Project implements Serializable {
+
 
     @Id
     @Column(name = "ID")
@@ -30,8 +32,8 @@ public class Project implements Serializable {
     @Column(name = "OWNER")
     private String owner;
 
-    @Column(name = "DATE")
-    private Date date;
+    @Column(name = "TIMESTAP")
+    private long timestamp;
 
     @Column(name = "COVERIMAGE")
     private byte[] coverImage;
@@ -44,7 +46,7 @@ public class Project implements Serializable {
         this.technologies = technologies;
         this.owner = owner;
         this.introduction = introduction;
-        this.date = new Date();
+        this.timestamp = System.currentTimeMillis();
     }
 
     public int getID() {
@@ -71,8 +73,8 @@ public class Project implements Serializable {
         return introduction;
     }
 
-    public Date getDate() {
-        return date;
+    public long getDate() {
+        return timestamp;
     }
 
     public byte[] getCoverImage(){return coverImage;}
