@@ -72,7 +72,20 @@
                     <abbr title="required">*</abbr>
                     Built Technologies
                 </label>
-                <input type="text" id="pj_Tech" v-model="pj_Tech"> </input>
+                <input type="text" id="pj_Tech" v-model="pj_Tech" readonly> </input>
+                <span>
+                    <label><input type="checkbox" v-model="pj_Tech" value="C#"><span>C#</span></label>
+                    <label><input type="checkbox" v-model="pj_Tech" value="C++"><span>C++</span></label>
+                    <label><input type="checkbox" v-model="pj_Tech" value="Javascript"><span>Javascript</span></label>
+                    <label><input type="checkbox" v-model="pj_Tech" value="Java"><span>Java</span></label>
+                    <label><input type="checkbox" v-model="pj_Tech" value="Python"><span>Python</span></label>
+                    <label>
+                        <input type="checkbox" value="Other">
+                        <span>Other</span>
+                        <input type="text" v-model="pj_TechO" placeholder="Use ',' to separate" id="other">  
+                    </label>
+                    
+                </span>
             </div>
 
             <div class="pjDesc">
@@ -119,14 +132,15 @@
                     return{
                         pj_name:"",
                         pj_Tagline:"",
-                        pj_Tech:"",       
+                        pj_Tech:[],
+                        pj_TechO:[]       
                     }
                 },
                 methods:{
                     postPj(){ 
                         let intro = editor.getHtml();
                         axios.post('project/uploadProject',
-                            "pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline +"&planguage=" + this.pj_Tech + "&introduction=" + intro
+                            "pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline +"&planguage=" + this.pj_Tech + this.pj_TechO + "&introduction=" + intro
 	                        ).then(function (response) {
                             console.log(response);
                         })
