@@ -49,7 +49,7 @@ function getCookie() {
     return value;
 }
 
-function checkState(){
+export function checkState(){
     var cookie = getCookie();
     if(cookie != null && cookie!=""){
         logsuc();
@@ -60,7 +60,7 @@ function checkState(){
     
 }
 
-const loginList = ["https://api.crya.me/PJUpload.html"];
+const loginList = ["https://api.crya.me/PJUpload.html","https://api.crya.me/space.html"];
 
 window.onload = function(){
     var check = checkState();
