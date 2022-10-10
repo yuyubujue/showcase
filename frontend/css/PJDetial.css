@@ -22,6 +22,7 @@ a:focus{
 }
 
 
+
 /* top-nav */
 .top-nav{
     width: 100%;
@@ -185,7 +186,6 @@ a:focus{
     height: 500px;
     margin: 10px auto;
     padding: 20px 40px;
-    border: 1px solid red;
 }
 
 .commentnum{
@@ -231,6 +231,11 @@ a:focus{
     border-color: #00a1d6;
 }
 
+#pj-comment-text:focus{
+    background-color: #fff;
+    border-color: #00a1d6;
+}
+
 #pj-comment-submit{
     height: 70px;
     width: 70px;
@@ -246,7 +251,10 @@ a:focus{
 
 .commentget{
     height: 250px;
-    border: 1px solid green;
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -289,6 +297,34 @@ a:focus{
     text-align: center;
     margin: 0;
 }
+
+.commentdiv{
+    display: flex;
+    align-items: center;
+}
+.commentarea{
+    display: flex;
+    flex-direction: column;
+}
+.commentTime{
+    font-size: 12px;
+    color: #99A2AA;
+}
+.commentarea span{
+    display: flex;
+}
+#del{
+    font-size: 12px;
+    margin-left: 5px;
+}
+.name{
+    color: #6D757A;
+    font-size: 12px;
+}
+.name:hover{
+    color: #00a1d6;
+}
+
 
 
 footer{
