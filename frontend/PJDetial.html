@@ -45,6 +45,12 @@
     </header>
     <main>
         <section class="pjinfo">
+            <div class="like" v-if="like">
+                <a href="javascript:;" @click="likePJ"><img src="./images/heart_remove.svg" alt="unlike_icon"><span><p>{{pj_likes}}</p></span></a>
+            </div>
+            <div class="like" v-if="unlike">
+                <a href="javascript:;" @click="unlikePJ"><img src="./images/red-heart-icon.svg" alt="like_icon"><span><p>{{pj_likes}}</p></span></a>
+            </div>
             <div class="pjname-container">
                 <h1 id="pjname">{{pj_name}}</h1>
                 <div class="pjdetial-container">
@@ -91,11 +97,13 @@
                         pj_Tech:"java",
                         pj_date:"2022/10/06",
                         pj_views:"150",
-                        pj_likes:"50",
+                        pj_likes:50,
                         pj_comnums:"10",
                         pj_tName:"Team Name",
                         pj_intro:"The 2022 Learning and Teaching Survey and the 2022 Research on Academic Integrity in New Zealand (RAINZ) Survey will be closing in the next few days, so check your student email for an invitation message and survey link. Your feedback is very important – the survey results are used to make changes and improvements that benefit you, such as adding captions to lecture recordings. For further information view the Learning & Teaching SurveyLinks to an external site. or RAINZ SurveyLinks to an external site. webpages Participation in these surveys is completely voluntary and does not affect any of your grades – but if you complete your survey by 10 October, you will be in the prize draw to win 1 of 60 $100 Prezzy cards. ",
-                        pj_ownerSpace:"https://api.crya.me/space.html"
+                        pj_ownerSpace:"https://api.crya.me/space.html",
+                        like: true,
+                        unlike: false
                     }
                 },
                 methods:{
@@ -107,6 +115,16 @@
                         .catch(function (error) {
                             console.log(error);
                         });
+                    },
+                    likePJ(){
+                        vm.like = !this.like;
+                        vm.unlike = !this.unlike;
+                        vm.pj_likes++;
+                    },
+                    unlikePJ(){
+                        vm.unlike = !this.unlike;
+                        vm.like = !this.like;
+                        vm.pj_likes--;
                     }
                     // getOwn(){
                     //     axios.get('user/getown')
