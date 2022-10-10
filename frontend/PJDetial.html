@@ -15,7 +15,10 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Project Detial Showcase</title>
     <link rel="icon" href="./images/uoa-logo.jpg" id="icon">  </link>
-    <script src="./js/loginstate.js"></script>
+    <script type="module" src="./js/loginstate.js">
+        import{checkState} from './js/loginstate.js';
+        Vue.prototype.$checkState=checkState;
+    </script>
 </head>
 <body>
     <div id="backtop">
@@ -177,15 +180,85 @@
             <hr>
             <div class="commentsend">
                 <div class="usericon"><img src="./images/uoa-logo.jpg" alt=""></div>
-                <textarea type="text" placeholder="Say Hi to the World!" id="pj-comment-text"> </textarea>
-                <button type="submit" id="pj-comment-submit">Post Comment</button>
+                <textarea type="text" placeholder="Say Hi to the World!" id="pj-comment-text" v-model="pj_comment"> </textarea>
+                <button type="submit" id="pj-comment-submit" @click="postComment">Post Comment</button>
             </div>
             <hr>
             <div class="commentget">
-
+                <!--  -->
+                <div class="commentdiv">
+                    <div class="usericon"><a href="#"><img src="./images/uoa-logo.jpg" alt=""></a></div>
+                    <div class="commentarea">
+                        <a href="#" class="name"><h4>username</h4></a>
+                        <p>Chicken you are too beautiful</p>
+                        <span>
+                            <p class="commentTime">2022/02/20</p>
+                            <a href="#" id="del">Delete</a>
+                        </span>
+                        
+                    </div>
+                </div>
+                <hr>
+                <!--  -->
+                
             </div>
 
         </section>
+        <script>
+            var state = this.checkState;
+            let cm = Vue.createApp({
+                data(){
+                    return{
+                        pj_comment:"",
+                        pj_Id:getUrlParam("id")
+                    }
+                },
+                methods:{
+                    
+                    postComment(){
+                        if(state){
+                            axios.post('project/writeComment',
+                            "pid="+cm.pjId+"&comment="+cm.pj_comment)
+                            .then(function (response) {
+                                console.log(response);
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+                        }else{
+                            alert("You need to be logged in to post a comment");
+                            // window.location.href = "./login.html";
+                        }
+                    },
+                    delComment(){
+                        axios.post('project/removeComment',
+                            "pid="+cm.pjId+"&comment_id="+cid)
+                            .then(function (response) {
+                                console.log(response);
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });    
+                    },
+                    getcommentId(){
+
+                    }
+                },
+                mounted(){
+                    let page = 1;
+                    let pjId = getUrlParam("id");
+                    axios.get('project/getComment/', "pid="+pjId+"&page="+page)
+                        .then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            }).mount('.pjcomments')
+
+        </script>
         
     </main>
     <footer>
