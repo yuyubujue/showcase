@@ -121,6 +121,7 @@
         </script>
 
         <script>
+            var state = cookie("Auth");
             let vm = Vue.createApp({
                 data(){
                     return{
@@ -149,14 +150,47 @@
                         });
                     },
                     likePJ(){
-                        vm.like = !this.like;
-                        vm.unlike = !this.unlike;
-                        vm.pj_likes++;
+                        if(state != "" && state != null){
+                            let pjId = getUrlParam("id");
+                            vm.like = !this.like;
+                            vm.unlike = !this.unlike;
+                            axios.post('project/like?pid='+pjId)
+                            .then(function (response) {
+                                console.log(response);
+                                if(response.data != "repeated like"){
+                                    vm.pj_likes++;
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                        }else{
+                            alert("You need to be logged to like");
+                        }
+
                     },
                     unlikePJ(){
                         vm.unlike = !this.unlike;
                         vm.like = !this.like;
-                        vm.pj_likes--;
+                        let pjId = getUrlParam("id");
+                        axios.post('project/unlike?pid='+pjId)
+                        .then(function (response) {
+                            console.log(response);
+                            vm.pj_likes--;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    getLike(){
+                        let pjId = getUrlParam("id");
+                        axios.get('project/getProjectLikeByID?pid='+pjId)
+                        .then(function (response) {
+                            vm.pj_likes= response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
                     }
                     // getOwn(){
                     //     axios.get('user/getown')
@@ -176,6 +210,7 @@
                         axios.get('project/getProject/'+pjId)
                         .then(function (response) {
                         let pjinfo = response.data;
+                        console.log(pjinfo);
                         vm.pj_name= pjinfo.pname;
                         vm.pj_Tagline= pjinfo.tagline;
                         vm.pj_Tech= pjinfo.technologies;
@@ -190,6 +225,7 @@
 
                         
                     }
+                    this.getLike();
                     
                 }
             }).mount('.pjinfo')
@@ -201,7 +237,7 @@
             <div class="commentnum" id="pjcommentnum">{{pj_comnums}} Comments</div>
             <hr>
             <div class="commentsend">
-                <div class="usericon"><img src="./images/uoa-logo.jpg" alt=""></div>
+                <div class="usericon"><img v-bind:src="uimg" alt=""></div>
                 <textarea type="text" placeholder="Say Hi to the World!" id="pj-comment-text" v-model="pj_comment"> </textarea>
                 <button type="submit" id="pj-comment-submit" @click="postComment">Post Comment</button>
             </div>
@@ -233,10 +269,113 @@
                     return{
                         pj_comment:"",
                         pj_Id:"",
-                        pj_comnums:0
+                        pj_comnums:0,
+                        uimg:"./images/uoa-logo.jpg"
                     }
                 },
                 methods:{
+                    delComment(){
+                        var cid = event.target.id;
+                        let pjId = getUrlParam("id");
+                        axios.post('project/removeComment',
+                            "pid="+pjId+"&cid="+cid)
+                            .then(function (response) {
+                                cm.getComments();
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });    
+                    },
+                    getComments(){
+                        let page = 1;
+                        let pjId = getUrlParam("id");
+                        let user_auth = "";
+                        let user_id = "";
+                        axios.get('user/getown')
+                            .then(function (response) {
+                                user_auth=response.data.authority;
+                                user_id = response.data.id;
+                                cm.uimg = "./user/getimg/"+user_id;
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                            
+                        axios.get('project/getComment/'+page+"?&pid="+pjId)
+                            .then(function (response) {
+                                vm.pj_comnums= response.data.length;
+                                cm.pj_comnums= response.data.length;
+                                var data = response.data;
+                                document.getElementById("commentget").innerHTML="";
+                                for(let i=0; i<response.data.length; i++){
+                                    var comment = data[i].comment;
+                                    var cTime = data[i].time;
+                                    var cId = data[i].cid;
+                                    var uuid = data[i].uid;
+                                    var uname = data[i].uname;
+                                    //
+                                    var div_comment = document.createElement("div");
+                                    div_comment.className="commentdiv";
+                                    var div_usericon = document.createElement("div");
+                                    div_usericon.className = "usericon";
+                                    var a_user = document.createElement("a");
+                                    a_user.href = "https://api.crya.me/space.html?id="+ uuid;
+                                    //userIcon
+                                    var img_icon = document.createElement("img");
+                                    var imgsrc = "./images/uoa-logo.jpg";
+                                    if(uuid != null && uuid != ""){
+                                        var imgsrc = "./user/getimg/"+uuid;
+                                    }
+                                    img_icon.src = imgsrc;
+                                    a_user.appendChild(img_icon);
+                                    //userIcon
+                                    div_usericon.appendChild(a_user);
+                                    var div_carea = document.createElement("div");
+                                    div_carea.className = "commentarea";
+                                    var a_username = document.createElement("a");
+                                    a_username.href = "https://api.crya.me/space.html?id="+ uuid;
+                                    a_username.className = "name";
+                                    var hfour = document.createElement("h4");
+                                    hfour.innerText = uname;
+                                    a_username.appendChild(hfour);
+                                    div_carea.appendChild(a_username);
+                                    var p_comment = document.createElement("p");
+                                    p_comment.innerText = comment;
+                                    div_carea.appendChild(p_comment);
+                                    var span = document.createElement("span");
+                                    var p_time = document.createElement("p");
+                                    p_time.innerText = cTime;
+                                    p_time.className = "commentTime";
+                                    span.appendChild(p_time);
+                                    //Delete
+                                    if(user_auth == "admin" || user_id == uuid){
+                                        var a_del = document.createElement("a");
+                                        a_del.href = "javascript:;";
+                                        a_del.className = "del";
+                                        a_del.innerText = "Delete";
+                                        a_del.id=cId;
+                                        a_del.onclick= cm.delComment;
+                                        
+                                        // var del = '<a href="javascript:;" @click="delComment('+cId+')" id="del">Delete</a>';
+                                        // a_del.innerHTML =del;
+                                        span.appendChild(a_del);
+                                        
+                                    }
+                                    //Delete
+                                    div_carea.append(span);
+                                    div_comment.append(div_usericon);
+                                    div_comment.append(div_carea);
+                                    document.getElementById("commentget").appendChild(div_comment);
+                                    var hr = document.createElement("hr");
+                                    document.getElementById("commentget").appendChild(hr);  
+                            }
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    },
                     postComment(){
                         let Id = getUrlParam("id");
                         cm.pj_Id = Id;
@@ -244,7 +383,8 @@
                             axios.post('project/writeComment',
                             "pid="+cm.pj_Id+"&comment="+cm.pj_comment)
                             .then(function (response) {
-                                console.log(response);
+                                cm.pj_comment="";
+                                cm.getComments();
                                 
                             })
                             .catch(function (error) {
@@ -256,96 +396,26 @@
                             // window.location.href = "./login.html";
                         }
                     },
-                    delComment(){
-                        axios.post('project/removeComment',
-                            "pid="+cm.pjId+"&comment_id="+cid)
-                            .then(function (response) {
-                                console.log(response);
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });    
-                    },
-                    getcommentId(){
-
-                    }
+                    // getUserimg(uid){
+                    //     // var uid = event.target.id;
+                    //     var imgsrc = "./images/uoa-logo.jpg";
+                    //     axios.get('user/getimg/'+uid)
+                    //         .then(function (response) {
+                    //             if(response.data != null && response.data != ""){
+                    //                 imgsrc=response.data;
+                    //             }
+                                    
+                    //         })
+                    //         .catch(function (error) {
+                    //             console.log(error);
+                    //         });
+                    //     console.log(imgsrc);
+                    //     return imgsrc;
+                    // }
                 },
                 mounted(){
-                    let page = 1;
-                    let pjId = getUrlParam("id");
-                    let user_auth = "";
-                    let user_id = "";
-                    axios.get('user/getown')
-                        .then(function (response) {
-                            user_auth=response.data.authority;
-                            user_id = response.data.id;
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                    axios.get('project/getComment/'+page+"?&pid="+pjId)
-                        .then(function (response) {
-                            vm.pj_comnums= response.data.length;
-                            cm.pj_comnums= response.data.length;
-                            var data = response.data;
-                            document.getElementById("commentget").innerHTML="";
-                            for(let i=0; i<response.data.length; i++){
-                                var comment = data[i].comment;
-                                var cTime = data[i].time;
-                                var cId = data[i].cid;
-                                var uuid = data[i].uid;
-                                var uname = data[i].uname;
-                                //
-                                var div_comment = document.createElement("div");
-                                div_comment.className="commentdiv";
-                                var div_usericon = document.createElement("div");
-                                div_usericon.className = "usericon";
-                                var a_user = document.createElement("a");
-                                a_user.href = "https://api.crya.me/space.html?id="+ uuid;
-                                //userIcon
-                                var img_icon = document.createElement("img");
-                                img_icon.src = "./images/uoa-logo.jpg";
-                                a_user.appendChild(img_icon);
-                                //userIcon
-                                div_usericon.appendChild(a_user);
-                                var div_carea = document.createElement("div");
-                                div_carea.className = "commentarea";
-                                var a_username = document.createElement("a");
-                                a_username.href = "https://api.crya.me/space.html?id="+ uuid;
-                                a_username.className = "name";
-                                var hfour = document.createElement("h4");
-                                hfour.innerText = uname;
-                                a_username.appendChild(hfour);
-                                div_carea.appendChild(a_username);
-                                var p_comment = document.createElement("p");
-                                p_comment.innerText = comment;
-                                div_carea.appendChild(p_comment);
-                                var span = document.createElement("span");
-                                var p_time = document.createElement("p");
-                                p_time.innerText = cTime;
-                                p_time.className = "commentTime";
-                                span.appendChild(p_time);
-                                //Delete
-                                if(user_auth == "admin" || user_id == uuid){
-                                    var a_del = document.createElement("a");
-                                    a_del.href = "javascript:;";
-                                    a_del.id = "del";
-                                    a_del.innerText = "Delete";
-                                    span.appendChild(a_del);
-                                }
-                                //Delete
-                                div_carea.append(span);
-                                div_comment.append(div_usericon);
-                                div_comment.append(div_carea);
-                                document.getElementById("commentget").appendChild(div_comment);
-                                var hr = document.createElement("hr");
-                                document.getElementById("commentget").appendChild(hr);  
-                            }
-
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                    this.getComments();
+                    
                 }
             }).mount('.pjcomments')
 

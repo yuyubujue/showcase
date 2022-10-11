@@ -311,7 +311,7 @@ a:focus{
 .commentarea span{
     display: flex;
 }
-#del{
+.del{
     font-size: 12px;
     margin-left: 5px;
 }
