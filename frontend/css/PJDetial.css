@@ -183,7 +183,6 @@ a:focus{
 
 .pjcomments{
     width: 80%;
-    height: 500px;
     margin: 10px auto;
     padding: 20px 40px;
 }
@@ -249,8 +248,7 @@ a:focus{
     border: 1px solid #00a1d6;
 }
 
-.commentget{
-    height: 250px;
+#commentget{
     width: 80%;
     margin: 0 auto;
     display: flex;
