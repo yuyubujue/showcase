@@ -71,6 +71,8 @@ public class UserService{
         return userMapper.removeUser(id);
     }
 
+    public User checkTeacher(String authority,String cookie){return userMapper.checkTeacher(authority,cookie);}
+
 
 
     public User authorityAndLoginJudge(String cookie){

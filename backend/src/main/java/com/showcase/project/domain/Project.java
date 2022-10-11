@@ -33,20 +33,23 @@ public class Project implements Serializable {
     private String owner;
 
     @Column(name = "TIMESTAP")
-    private long timestamp;
+    private String timestamp;
 
     @Column(name = "COVERIMAGE")
     private byte[] coverImage;
+    @Column(name = "UPDATETIME")
+    private String updatetime;
 
     public Project() {}
 
-    public Project(String pname, String tagline, String technologies, String introduction,String owner) {
+    public Project(String pname, String tagline, String technologies, String introduction,String owner,String timestamp,String updatetime) {
         this.pname = pname;
         this.tagline = tagline;
         this.technologies = technologies;
         this.owner = owner;
         this.introduction = introduction;
-        this.timestamp = System.currentTimeMillis();
+        this.timestamp = timestamp;
+        this.updatetime = updatetime;
     }
 
     public int getID() {
@@ -73,10 +76,13 @@ public class Project implements Serializable {
         return introduction;
     }
 
-    public long getDate() {
-        return timestamp;
+    public String getUpdatetime() {
+        return updatetime;
     }
 
     public byte[] getCoverImage(){return coverImage;}
 
+    public String getTimestamp() {
+        return timestamp;
+    }
 }

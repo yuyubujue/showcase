@@ -2,22 +2,22 @@ package com.showcase.project.dto;
 
 public class TeacherCommentDTO {
     private int pid;
-    private String teacher_comment;
-    private String teacher_name;
+    private String teachercomment;
+    private String teachername;
 
     public TeacherCommentDTO(){}
-    public TeacherCommentDTO(int pid,String teacher_comment,String teacher_name){
+    public TeacherCommentDTO(int pid,String teachercomment,String teachername){
         this.pid = pid;
-        this.teacher_comment = teacher_comment;
-        this.teacher_name = teacher_name;
+        this.teachercomment = teachercomment;
+        this.teachername = teachername;
     }
 
-    public String getTeacher_comment() {
-        return teacher_comment;
+    public String getTeachercomment() {
+        return teachercomment;
     }
 
-    public String getTeacher_name() {
-        return teacher_name;
+    public String getTeachername() {
+        return teachername;
     }
 
     public int getPid() {

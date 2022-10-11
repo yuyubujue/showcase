@@ -42,5 +42,7 @@ public interface UserMapper {
     int setInterest(String cookie, String interest);
     @Delete("Delete from User where ID = #{id}")
     int removeUser(String id);
+    @Select("Select * from User where AUTHORITY=#{authority} and COOKIE = #{cookie}")
+    User checkTeacher(String authority,String cookie);
 
 }

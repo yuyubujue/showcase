@@ -10,13 +10,13 @@ import java.io.Serializable;
 @Table
 public class Project_like implements Serializable {
     @Id
-    @Column(name = "pid")
+    @Column(name = "PID")
     private int pid;
 
-    @Column(name = "uid")
+    @Column(name = "UID")
     private String uid;
 
-    @Column(name="like_amount")
+    @Column(name="LIKEAMOUNT")
     private int like_amount;
 
     public Project_like(){}

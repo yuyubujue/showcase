@@ -5,14 +5,16 @@ public class ProjectDTO {
     private String pname;
     private String technologies;
     private String owner;
-    private String timestap;
+    private String timestamp;
+    private String updatetime;
     public ProjectDTO(){}
-    public ProjectDTO(int id,String pname,String technologies,String owner,String timestap){
+    public ProjectDTO(int id,String pname,String technologies,String owner,String timestamp,String updatetime){
         this.id = id;
         this.pname = pname;
         this.technologies = technologies;
         this.owner = owner;
-        this.timestap = timestap;
+        this.timestamp = timestamp;
+        this.updatetime = updatetime;
     }
 
     public int getId() {
@@ -31,7 +33,11 @@ public class ProjectDTO {
         return technologies;
     }
 
-    public String getTimestap() {
-        return timestap;
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public String getUpdatetime() {
+        return updatetime;
     }
 }

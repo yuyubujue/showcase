@@ -10,13 +10,13 @@ import java.io.Serializable;
 @Table
 public class project_photo implements Serializable {
     @Id
-    @Column(name = "photo_id")
+    @Column(name = "PHOTOID")
     private int photo_id;
-    @Column(name ="pid")
+    @Column(name ="PID")
     private int pid;
-    @Column(name = "photo")
+    @Column(name = "PHOTO")
     private byte[] photo;
-    @Column(name = "upload_time")
+    @Column(name = "UPLOADTIME")
     private long upload_time;
 
     public project_photo(){}

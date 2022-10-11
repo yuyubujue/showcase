@@ -10,33 +10,33 @@ import java.io.Serializable;
 @Table
 public class teacher_award implements Serializable {
     @Id
-    @Column(name = "pid")
+    @Column(name = "PID")
     private int pid;
-    @Column(name = "teacher_id")
-    private String teacher_id;
-    @Column(name = "teacher_commet")
-    private String teacher_comment;
-    @Column(name = "award")
+    @Column(name = "TEACHERID")
+    private String teacherid;
+    @Column(name = "TEACHERCOMMENT")
+    private String teachercomment;
+    @Column(name = "AWARD")
     private int award;
-    @Column(name = "teacher_name")
-    private String teacher_name;
+    @Column(name = "TEACHERNAME")
+    private String teachername;
     public teacher_award(){
 
     }
-    public teacher_award(int pid,String teacher_id,String teacher_comment,int award,String teacher_name){
+    public teacher_award(int pid,String teacherid,String teachercomment,int award,String teachername){
         this.pid= pid;
-        this.teacher_comment = teacher_comment;
-        this.teacher_id = teacher_id;
+        this.teachercomment = teachercomment;
+        this.teacherid = teacherid;
         this.award = award;
-        this.teacher_name = teacher_name;
+        this.teachername = teachername;
     }
 
     public int getAward() {
         return award;
     }
 
-    public String getTeacher_id() {
-        return teacher_id;
+    public String getTeacherid() {
+        return teacherid;
     }
 
     public int getPid() {
@@ -44,10 +44,10 @@ public class teacher_award implements Serializable {
     }
 
     public String getTeacher_comment() {
-        return teacher_comment;
+        return teachercomment;
     }
 
     public String getTeacher_name() {
-        return teacher_name;
+        return teachername;
     }
 }

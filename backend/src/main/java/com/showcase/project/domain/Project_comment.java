@@ -10,44 +10,53 @@ import java.io.Serializable;
 @Table
 public class Project_comment implements Serializable {
     @Id
-    @Column(name = "ID")
-    private int id;
+    @Column(name = "CID")
+    private int cid;
+    @Column(name = "PID")
+    private int pid;
     @Column(name = "COMMENT")
     private String comment;
-    @Column(name = "COMMENT_UID")
-    private String comment_uid;
-    @Column(name = "COMMENT_TIME")
-    private long comment_time;
-    @Column(name = "COMMENT_ID")
-    private int comment_id;
+    @Column(name = "TIME")
+    private String time;
+    @Column(name = "UID")
+    private String uid;
+    @Column(name = "UNAME")
+    private String uname;
+
+
     public Project_comment(){
 
     }
-    public Project_comment(int id,String comment,String comment_uid,long comment_time,int comment_id){
-        this.id = id;
+    public Project_comment(int pid,String comment,String uid,String time,int cid,String uname){
+        this.pid = pid;
         this.comment = comment;
-        this.comment_uid = comment_uid;
-        this.comment_time = comment_time;
-        this.comment_id = comment_id;
+        this.uid = uid;
+        this.time = time;
+        this.cid = cid;
+        this.uname = uname;
     }
 
-    public int getId() {
-        return id;
+    public int getPid() {
+        return pid;
     }
 
     public String getComment() {
         return comment;
     }
 
-    public long getComment_time() {
-        return comment_time;
+    public String getTime() {
+        return time;
     }
 
-    public String getComment_uid() {
-        return comment_uid;
+    public String getUid() {
+        return uid;
     }
 
-    public int getComment_id() {
-        return comment_id;
+    public int getCid() {
+        return cid;
+    }
+
+    public String getUname() {
+        return uname;
     }
 }

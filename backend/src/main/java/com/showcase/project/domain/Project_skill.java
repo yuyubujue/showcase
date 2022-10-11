@@ -10,10 +10,10 @@ import java.io.Serializable;
 @Table
 public class Project_skill implements Serializable {
     @Id
-    @Column(name = "pid")
+    @Column(name = "PID")
     private int pid;
 
-    @Column(name="skills")
+    @Column(name="SKILLS")
     private String skills;
 
     public Project_skill(){
