@@ -121,6 +121,7 @@
         </script>
 
         <script>
+            var state = cookie("Auth");
             let vm = Vue.createApp({
                 data(){
                     return{
@@ -149,15 +150,47 @@
                         });
                     },
                     likePJ(){
-                        vm.like = !this.like;
-                        vm.unlike = !this.unlike;
-                        vm.pj_likes++;
+                        if(state != "" && state != null){
+                            let pjId = getUrlParam("id");
+                            vm.like = !this.like;
+                            vm.unlike = !this.unlike;
+                            axios.post('project/like?pid='+pjId)
+                            .then(function (response) {
+                                console.log(response);
+                                if(response.data != "repeated like"){
+                                    vm.pj_likes++;
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                        }else{
+                            alert("You need to be logged to like");
+                        }
 
                     },
                     unlikePJ(){
                         vm.unlike = !this.unlike;
                         vm.like = !this.like;
-                        vm.pj_likes--;
+                        let pjId = getUrlParam("id");
+                        axios.post('project/unlike?pid='+pjId)
+                        .then(function (response) {
+                            console.log(response);
+                            vm.pj_likes--;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    getLike(){
+                        let pjId = getUrlParam("id");
+                        axios.get('project/getProjectLikeByID?pid='+pjId)
+                        .then(function (response) {
+                            vm.pj_likes= response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
                     }
                     // getOwn(){
                     //     axios.get('user/getown')
@@ -192,6 +225,7 @@
 
                         
                     }
+                    this.getLike();
                     
                 }
             }).mount('.pjinfo')
