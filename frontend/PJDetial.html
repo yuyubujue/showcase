@@ -237,7 +237,7 @@
             <div class="commentnum" id="pjcommentnum">{{pj_comnums}} Comments</div>
             <hr>
             <div class="commentsend">
-                <div class="usericon"><img src="./images/uoa-logo.jpg" alt=""></div>
+                <div class="usericon"><img v-bind:src="uimg" alt=""></div>
                 <textarea type="text" placeholder="Say Hi to the World!" id="pj-comment-text" v-model="pj_comment"> </textarea>
                 <button type="submit" id="pj-comment-submit" @click="postComment">Post Comment</button>
             </div>
@@ -269,7 +269,8 @@
                     return{
                         pj_comment:"",
                         pj_Id:"",
-                        pj_comnums:0
+                        pj_comnums:0,
+                        uimg:"./images/uoa-logo.jpg"
                     }
                 },
                 methods:{
@@ -294,10 +295,12 @@
                             .then(function (response) {
                                 user_auth=response.data.authority;
                                 user_id = response.data.id;
+                                cm.uimg = "./user/getimg/"+user_id;
                             })
                             .catch(function (error) {
                                 console.log(error);
                             });
+                            
                         axios.get('project/getComment/'+page+"?&pid="+pjId)
                             .then(function (response) {
                                 vm.pj_comnums= response.data.length;
@@ -319,7 +322,11 @@
                                     a_user.href = "https://api.crya.me/space.html?id="+ uuid;
                                     //userIcon
                                     var img_icon = document.createElement("img");
-                                    img_icon.src = "./images/uoa-logo.jpg";
+                                    var imgsrc = "./images/uoa-logo.jpg";
+                                    if(uuid != null && uuid != ""){
+                                        var imgsrc = "./user/getimg/"+uuid;
+                                    }
+                                    img_icon.src = imgsrc;
                                     a_user.appendChild(img_icon);
                                     //userIcon
                                     div_usericon.appendChild(a_user);
@@ -388,7 +395,23 @@
                             alert("You need to be logged in to post a comment");
                             // window.location.href = "./login.html";
                         }
-                    }
+                    },
+                    // getUserimg(uid){
+                    //     // var uid = event.target.id;
+                    //     var imgsrc = "./images/uoa-logo.jpg";
+                    //     axios.get('user/getimg/'+uid)
+                    //         .then(function (response) {
+                    //             if(response.data != null && response.data != ""){
+                    //                 imgsrc=response.data;
+                    //             }
+                                    
+                    //         })
+                    //         .catch(function (error) {
+                    //             console.log(error);
+                    //         });
+                    //     console.log(imgsrc);
+                    //     return imgsrc;
+                    // }
                 },
                 mounted(){
                     this.getComments();
