@@ -51,6 +51,17 @@
     </header>
     <main>
         <section class="content">
+            <div class="pjCover">
+                <label for="pj_cover">
+                    <abbr title="required">*</abbr>
+                    Project Cover Photo
+                </label>
+                <div class="col-md-4" id="uploadcover">
+                    <input type="file"  onchange="previewFile()" id="pj_cover" accept="image/jpeg,image/jpg,image/pjpeg,image/png,image/x-png,image/gif">
+                    <img src="./images/uoa-logo.jpg" id="pjCoverimg"  alt="Image preview">
+                </div>
+    
+            </div>
             <div class="pjName">
                 <label for="pj_name">
                     <abbr title="required">*</abbr>
@@ -144,7 +155,7 @@
                             separate = ','
                         }
                         axios.post('project/uploadProject',
-                            "pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline +"&planguage=" + this.pj_Tech+ separate + this.pj_TechO + "&introduction=" + intro
+                            "pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline +"&skills=" + this.pj_Tech+ separate + this.pj_TechO + "&introduction=" + intro
 	                        ).then(function (response) {
                             console.log(response);
                         })
