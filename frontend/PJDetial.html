@@ -15,10 +15,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Project Detial Showcase</title>
     <link rel="icon" href="./images/uoa-logo.jpg" id="icon">  </link>
-    <script type="module" src="./js/loginstate.js">
-        import{checkState} from './js/loginstate.js';
-        Vue.prototype.$checkState=checkState;
-    </script>
+    <script src="./js/loginstate.js"></script>
 </head>
 <body>
     <div id="backtop">
@@ -92,6 +89,38 @@
         </section>
 
         <script>
+            function getUrlParam(name) {
+
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+
+            var r = window.location.search.substr(1).match(reg);
+
+            if (r != null) return unescape(r[2]); return null;
+
+            }
+
+            function cookie(cname){
+
+            var name = cname + "=";
+
+            var ca = document.cookie.split(';');
+
+            for(var i=0; i<ca.length; i++) {
+
+                var c = ca[i].trim();
+
+                if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+
+            }
+
+            return "";
+
+            }
+
+
+        </script>
+
+        <script>
             let vm = Vue.createApp({
                 data(){
                     return{
@@ -101,7 +130,7 @@
                         pj_date:"2022/10/06",
                         pj_views:"150",
                         pj_likes:50,
-                        pj_comnums:"10",
+                        pj_comnums:10,
                         pj_tName:"Team Name",
                         pj_intro:"The 2022 Learning and Teaching Survey and the 2022 Research on Academic Integrity in New Zealand (RAINZ) Survey will be closing in the next few days, so check your student email for an invitation message and survey link. Your feedback is very important – the survey results are used to make changes and improvements that benefit you, such as adding captions to lecture recordings. For further information view the Learning & Teaching SurveyLinks to an external site. or RAINZ SurveyLinks to an external site. webpages Participation in these surveys is completely voluntary and does not affect any of your grades – but if you complete your survey by 10 October, you will be in the prize draw to win 1 of 60 $100 Prezzy cards. ",
                         pj_ownerSpace:"https://api.crya.me/space.html",
@@ -154,29 +183,22 @@
                         document.getElementById('pjintro').innerHTML = pjinfo.introduction;
                         vm.getName(pjinfo.owner);
                         vm.pj_ownerSpace= "https://api.crya.me/space.html?id="+ pjinfo.owner;
-                        console.log(vm.pj_ownerSpace);
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
+
+                        
                     }
                     
                 }
             }).mount('.pjinfo')
-            function getUrlParam(name) {
-
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-
-            var r = window.location.search.substr(1).match(reg);
-
-            if (r != null) return unescape(r[2]); return null;
-
-            }
+            
         </script>
 
 
         <section class="pjcomments" >
-            <div class="commentnum" id="pjcommentnum">10 Comments</div>
+            <div class="commentnum" id="pjcommentnum">{{pj_comnums}} Comments</div>
             <hr>
             <div class="commentsend">
                 <div class="usericon"><img src="./images/uoa-logo.jpg" alt=""></div>
@@ -184,7 +206,7 @@
                 <button type="submit" id="pj-comment-submit" @click="postComment">Post Comment</button>
             </div>
             <hr>
-            <div class="commentget">
+            <div id="commentget">
                 <!--  -->
                 <div class="commentdiv">
                     <div class="usericon"><a href="#"><img src="./images/uoa-logo.jpg" alt=""></a></div>
@@ -205,22 +227,25 @@
 
         </section>
         <script>
-            var state = this.checkState;
+            var state = cookie("Auth");
             let cm = Vue.createApp({
                 data(){
                     return{
                         pj_comment:"",
-                        pj_Id:getUrlParam("id")
+                        pj_Id:"",
+                        pj_comnums:0
                     }
                 },
                 methods:{
-                    
                     postComment(){
-                        if(state){
+                        let Id = getUrlParam("id");
+                        cm.pj_Id = Id;
+                        if(state != "" && state != null){
                             axios.post('project/writeComment',
-                            "pid="+cm.pjId+"&comment="+cm.pj_comment)
+                            "pid="+cm.pj_Id+"&comment="+cm.pj_comment)
                             .then(function (response) {
                                 console.log(response);
+                                
                             })
                             .catch(function (error) {
                                 console.log(error);
@@ -248,9 +273,75 @@
                 mounted(){
                     let page = 1;
                     let pjId = getUrlParam("id");
-                    axios.get('project/getComment/', "pid="+pjId+"&page="+page)
+                    let user_auth = "";
+                    let user_id = "";
+                    axios.get('user/getown')
                         .then(function (response) {
-                            console.log(response);
+                            user_auth=response.data.authority;
+                            user_id = response.data.id;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    axios.get('project/getComment/'+page+"?&pid="+pjId)
+                        .then(function (response) {
+                            vm.pj_comnums= response.data.length;
+                            cm.pj_comnums= response.data.length;
+                            var data = response.data;
+                            document.getElementById("commentget").innerHTML="";
+                            for(let i=0; i<response.data.length; i++){
+                                var comment = data[i].comment;
+                                var cTime = data[i].time;
+                                var cId = data[i].cid;
+                                var uuid = data[i].uid;
+                                var uname = data[i].uname;
+                                //
+                                var div_comment = document.createElement("div");
+                                div_comment.className="commentdiv";
+                                var div_usericon = document.createElement("div");
+                                div_usericon.className = "usericon";
+                                var a_user = document.createElement("a");
+                                a_user.href = "https://api.crya.me/space.html?id="+ uuid;
+                                //userIcon
+                                var img_icon = document.createElement("img");
+                                img_icon.src = "./images/uoa-logo.jpg";
+                                a_user.appendChild(img_icon);
+                                //userIcon
+                                div_usericon.appendChild(a_user);
+                                var div_carea = document.createElement("div");
+                                div_carea.className = "commentarea";
+                                var a_username = document.createElement("a");
+                                a_username.href = "https://api.crya.me/space.html?id="+ uuid;
+                                a_username.className = "name";
+                                var hfour = document.createElement("h4");
+                                hfour.innerText = uname;
+                                a_username.appendChild(hfour);
+                                div_carea.appendChild(a_username);
+                                var p_comment = document.createElement("p");
+                                p_comment.innerText = comment;
+                                div_carea.appendChild(p_comment);
+                                var span = document.createElement("span");
+                                var p_time = document.createElement("p");
+                                p_time.innerText = cTime;
+                                p_time.className = "commentTime";
+                                span.appendChild(p_time);
+                                //Delete
+                                if(user_auth == "admin" || user_id == uuid){
+                                    var a_del = document.createElement("a");
+                                    a_del.href = "javascript:;";
+                                    a_del.id = "del";
+                                    a_del.innerText = "Delete";
+                                    span.appendChild(a_del);
+                                }
+                                //Delete
+                                div_carea.append(span);
+                                div_comment.append(div_usericon);
+                                div_comment.append(div_carea);
+                                document.getElementById("commentget").appendChild(div_comment);
+                                var hr = document.createElement("hr");
+                                document.getElementById("commentget").appendChild(hr);  
+                            }
+
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -259,6 +350,7 @@
             }).mount('.pjcomments')
 
         </script>
+        
         
     </main>
     <footer>
