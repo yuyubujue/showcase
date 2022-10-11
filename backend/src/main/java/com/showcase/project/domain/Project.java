@@ -1,12 +1,10 @@
 package com.showcase.project.domain;
 
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
-import org.springframework.core.io.ClassPathResource;
-
-import javax.persistence.*;
-import java.io.*;
-import java.sql.Timestamp;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table
@@ -23,8 +21,6 @@ public class Project implements Serializable {
     @Column(name = "TAGLINE")
     private String tagline;
 
-    @Column(name = "TECHNOLOGIES")
-    private String technologies;
 
     @Column(name = "INTRODUCTION")
     private String introduction;
@@ -42,13 +38,13 @@ public class Project implements Serializable {
 
     public Project() {}
 
-    public Project(String pname, String tagline, String technologies, String introduction,String owner,String timestamp,String updatetime) {
+    public Project(String pname, String tagline, String introduction,String owner,String timestamp,byte[] coverImage,String updatetime) {
         this.pname = pname;
         this.tagline = tagline;
-        this.technologies = technologies;
         this.owner = owner;
         this.introduction = introduction;
         this.timestamp = timestamp;
+        this.coverImage = coverImage;
         this.updatetime = updatetime;
     }
 
@@ -64,9 +60,6 @@ public class Project implements Serializable {
         return tagline;
     }
 
-    public String getTechnologies() {
-        return technologies;
-    }
 
     public String getOwner() {
         return owner;

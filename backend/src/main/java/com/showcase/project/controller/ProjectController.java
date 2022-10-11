@@ -1,26 +1,23 @@
 package com.showcase.project.controller;
 
 import com.alibaba.fastjson2.JSON;
+import com.showcase.project.alogrithm.TIDgenerator;
+import com.showcase.project.alogrithm.VerificationCodeGenerator;
 import com.showcase.project.domain.*;
 import com.showcase.project.dto.ProjectDTO;
-import com.showcase.project.dto.TeacherCommentDTO;
+import com.showcase.project.service.ProjectService;
+import com.showcase.project.service.SendMailService;
 import com.showcase.project.service.UserService;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.showcase.project.service.ProjectService;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Blob;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 @RestController
 @RequestMapping("/project")
@@ -32,32 +29,47 @@ public class ProjectController {
     @Autowired(required = false)
     private UserService userService;
 
+    @Autowired(required = false)
+    private SendMailService sendMailService;
+
     //  Project
     @PostMapping(value = "/uploadProject")
     @ResponseBody
-    public String upload(@RequestParam String pname, @RequestParam String shortTagline, @RequestParam String introduction, @RequestParam String skills, @CookieValue(name = "Auth") String cookie) {
+    public String upload(@RequestParam String pname, @RequestParam String shortTagline,@RequestParam MultipartFile file, @RequestParam String introduction, @RequestParam String skills, @CookieValue(name = "Auth") String cookie) {
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
             return "unauthorized";
         }
 
-        byte[] data = new byte[2];
+//        byte[] data = new byte[2];
+//        try {
+//            ClassPathResource classPathResource = new ClassPathResource("static/null.png");
+//            InputStream ins = classPathResource.getInputStream();
+//            byte[] buffer = new byte[2];
+//            int len = 0;
+//            org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//            while ((len = ins.read(buffer)) != -1) {
+//                bos.write(buffer, 0, len);
+//            }
+//            bos.flush();
+//            data = bos.toByteArray();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        byte[] data;
         try {
-            ClassPathResource classPathResource = new ClassPathResource("static/null.png");
-            InputStream ins = classPathResource.getInputStream();
-            byte[] buffer = new byte[2];
+            InputStream ins = file.getInputStream();
+            byte[] buffer = new byte[1024];
             int len = 0;
-            org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
             while ((len = ins.read(buffer)) != -1) {
                 bos.write(buffer, 0, len);
             }
             bos.flush();
             data = bos.toByteArray();
         } catch (IOException e) {
-            e.printStackTrace();
+            return "io fail";
         }
-
-
         if (projectService.uploadProject(pname, shortTagline, introduction, user.getId(), data) == 1) {
             int pid = projectService.getNewOne().getID();
             skills = skills.trim();
@@ -72,6 +84,36 @@ public class ProjectController {
         }
     }
 
+
+    @PostMapping(value = "/updateProjectCover")
+    @ResponseBody
+    public String uploadProjectCover(@RequestParam int pid, @RequestParam MultipartFile file, @CookieValue(name = "Auth") String cookie) {
+        User user = userService.authorityAndLoginJudge(cookie);
+        if (user == null) {
+            return "unauthorized";
+        }
+        String uid = user.getId();
+        Project checker = projectService.projectChecker(pid, uid);
+        if (checker == null) {
+            return "not your project!";
+        }
+        byte[] data;
+        try {
+            InputStream ins = file.getInputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            while ((len = ins.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+            }
+            bos.flush();
+            data = bos.toByteArray();
+            projectService.updateProjectCover(pid, data);
+            return "succeed";
+        } catch (IOException e) {
+            return "failed";
+        }
+    }
     @PostMapping(value = "/updateProjectIntro")
     @ResponseBody
     public String updateProjectIntro(@RequestParam String NewPIntro, @RequestParam int Pid, @CookieValue(name = "Auth") String cookie) {
@@ -172,11 +214,18 @@ public class ProjectController {
     }
 
 
-    @GetMapping(value = "/getProject/{pid}")
+//    @GetMapping(value = "/getProject")
+//    @ResponseBody
+//    public String getProject(@PathVariable("pid") int pid) {
+//        return JSON.toJSONString(projectService.getProject(pid));
+//    }
+
+    @GetMapping(value = "/getProjectPageByPid")
     @ResponseBody
-    public String getProject(@PathVariable("pid") int pid) {
-        return JSON.toJSONString(projectService.getProject(pid));
+    public String getProjectPageByPid(@RequestParam("pid") int pid) {
+        return JSON.toJSONString(projectService.getProjectPageByPid(pid));
     }
+
 
     @PostMapping(value = "/removeProject")
     @ResponseBody
@@ -186,6 +235,15 @@ public class ProjectController {
             return "unauthorized";
         }
         String uid = user.getId();
+        String auth = String.valueOf(user.getAuthority());
+        if(auth.equals("admin")){
+            int resp = projectService.RemoveProject(pid);
+            if (resp == 1) {
+                return "delete success by admin";
+            } else {
+                return "delete fail by admin";
+            }
+        }
         Project checker = projectService.projectChecker(pid, uid);
         if (checker == null) {
             return "not you projects!";
@@ -196,103 +254,259 @@ public class ProjectController {
         return "remove fail";
     }
 
-    @GetMapping(value = "/getInviteLink")
-    @ResponseBody
-    public String getInviteLink(@RequestParam("pid") String pid) {
-        return "http://xxxxx.com/project/invite/?id=88c348f2-c0af-3b77-d956-acc85591f6ca";
-    }
+//    @GetMapping(value = "/getInviteLink")
+//    @ResponseBody
+//    public String getInviteLink(@RequestParam("pid") String pid) {
+//        return "http://xxxxx.com/project/invite/?id=88c348f2-c0af-3b77-d956-acc85591f6ca";
+//    }
 
-    @GetMapping(value = "/invite/{id}")
-    @ResponseBody
-    public String invite(@PathVariable("id") String id) {
-        return "success";
-    }
+//    @GetMapping(value = "/invite/{id}")
+//    @ResponseBody
+//    public String invite(@PathVariable("id") String id) {
+//        return "success";
+//    }
 
-    @PostMapping(value = "/uploadProjectCover/{id}")
-    @ResponseBody
-    public String uploadProjectCover(@PathVariable("id") int id, @RequestParam MultipartFile file, @CookieValue(name = "Auth") String cookie) {
-        User user = userService.authorityAndLoginJudge(cookie);
-        if (user == null) {
-            return "unauthorized";
-        }
-        byte[] data = new byte[1024];
-        try {
-            InputStream ins = file.getInputStream();
-            byte[] buffer = new byte[1024];
-            int len = 0;
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            while ((len = ins.read(buffer)) != -1) {
-                bos.write(buffer, 0, len);
-            }
-            bos.flush();
-            data = bos.toByteArray();
-            projectService.uploadProjectCover(id, data);
-            return "succeed";
-        } catch (IOException e) {
-            return "failed";
-        }
-    }
 
-    @PostMapping(value = "/uploadProjectImg/{id}")
-    @ResponseBody
-    public String uploadProjectImg(@PathVariable("id") int pid, @RequestParam MultipartFile file, @CookieValue(name = "Auth") String cookie) {
-        User user = userService.authorityAndLoginJudge(cookie);
-        if (user == null) {
-            return "unauthorized";
-        }
-        byte[] data = new byte[1024];
-        try {
-            InputStream ins = file.getInputStream();
-            byte[] buffer = new byte[1024];
-            int len = 0;
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            while ((len = ins.read(buffer)) != -1) {
-                bos.write(buffer, 0, len);
-            }
-            bos.flush();
-            data = bos.toByteArray();
-            projectService.uploadProjectImg(pid, data);
-            return "succeed";
-        } catch (IOException e) {
-            return "failed";
-        }
-    }
 
-    @CrossOrigin(origins = "*")
-    @GetMapping("/getCover/{id}")
-    @ResponseBody
-    public ResponseEntity<byte[]> getCover(@PathVariable int id, HttpServletResponse response) {
-        HttpHeaders headers = new HttpHeaders();
-        try {
-            byte[] imageContent = projectService.getCoverImage(id).getCoverImage();
-            headers.setContentType(MediaType.IMAGE_PNG);
-            return new ResponseEntity<>(imageContent, headers, HttpStatus.OK);
-        } catch (Exception e) {
-        }
-        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
-    }
+//    @PostMapping(value = "/uploadProjectImg")
+//    @ResponseBody
+//    public String uploadProjectImg(@RequestParam int pid, @RequestParam MultipartFile file, @CookieValue(name = "Auth") String cookie) {
+//        User user = userService.authorityAndLoginJudge(cookie);
+//        if (user == null) {
+//            return "unauthorized";
+//        }
+//        byte[] data = new byte[1024];
+//        try {
+//            InputStream ins = file.getInputStream();
+//            byte[] buffer = new byte[1024];
+//            int len = 0;
+//            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//            while ((len = ins.read(buffer)) != -1) {
+//                bos.write(buffer, 0, len);
+//            }
+//            bos.flush();
+//            data = bos.toByteArray();
+//            projectService.uploadProjectImg(pid, data);
+//            return "succeed";
+//        } catch (IOException e) {
+//            return "failed";
+//        }
+//    }
 
-    @PostMapping(value = "/removeProjectImg")
-    @ResponseBody
-    public String removeProjectImg(@RequestBody String project) {
-        return "./File/projectimg/null.png";
-    }
+//    @CrossOrigin(origins = "*")
+//    @GetMapping("/getCover/{id}")
+//    @ResponseBody
+//    public ResponseEntity<byte[]> getCover(@PathVariable int id, HttpServletResponse response) {
+//        HttpHeaders headers = new HttpHeaders();
+//        try {
+//            byte[] imageContent = projectService.getCoverImage(id).getCoverImage();
+//            headers.setContentType(MediaType.IMAGE_PNG);
+//            return new ResponseEntity<>(imageContent, headers, HttpStatus.OK);
+//        } catch (Exception e) {
+//        }
+//        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+//    }
+
+//    @PostMapping(value = "/removeProjectImg")
+//    @ResponseBody
+//    public String removeProjectImg(@RequestBody String project) {
+//        return "./File/projectimg/null.png";
+//    }
+//
+//    @GetMapping(value="/getAllPhotoBypid")
+//    @ResponseBody
+//    public String getAllPhotoBypid(@RequestParam("pid") int pid){
+//        return JSON.toJSONString(projectService.getAllPhotoBypid(pid));
+//
+//    }
+//    @PostMapping(value="/removeProjectPhotoByPhotoid")
+//    @ResponseBody
+//    public String removeProjectPhotoByPhotoid(@RequestParam int photoid,@RequestParam int pid,@CookieValue(name = "Auth") String cookie){
+//
+//        User user = userService.authorityAndLoginJudge(cookie);
+//        if (user == null) {
+//            return "unauthorized";
+//        }
+//        String uid = user.getId();
+//        Project checker = projectService.projectChecker(pid, uid);
+//        if (checker == null) {
+//            return "not your project!";
+//        }else{
+//            int resp = projectService.removeProjectPhotoByPhotoid(photoid);
+//            if (resp==1){
+//                return "remove success";
+//            }else {
+//                return "remove fail";
+//            }
+//        }
+//    }
 
 
     //  team
-    @GetMapping(value = "/getTeammate/{pid}")
+
+    @PostMapping(value = "/GenerateTeam")
     @ResponseBody
-    public String getTeammate(@PathVariable("pid") String pid) {
-        return "[{\"id\":\"a37f46fc-5ebe-4fdc-b92c-911ac12c7df6\",\"username\":\"testacc\",\"img\":\"./File/image/null.png\"},{\"id\":\"a37f46fc-5ebe-4fdc-b92c-911ac12c7df6\",\"username\":\"testacc\",\"img\":\"./File/image/null.png\"},{\"id\":\"a37f46fc-5ebe-4fdc-b92c-911ac12c7df6\",\"username\":\"https://icp.sojson.com\",\"img\":\"./File/image/null.png\"}]";
+    public String GenerateTeam(@RequestParam int pid,@RequestParam String tname,@CookieValue(name = "Auth") String cookie){
+        User user = userService.authorityAndLoginJudge(cookie);
+        if (user == null) {
+            return "unauthorized";
+        }
+        String uid = user.getId();
+        String uname = user.getUsername();
+        Project project_checker = projectService.getProjectPageByPid(pid);
+        if (project_checker==null){
+            return "no such project!";
+        }
+        Project ownership_checker = projectService.projectChecker(pid,uid);
+        if (ownership_checker == null){
+            return "you have no ownership to this project!";
+        }
+        String tid = TIDgenerator.getRandomTID();
+        boolean ownership = true;
+        int resp;
+        resp = projectService.GenerateTeam(tid,ownership,uid,pid,tname,uname);
+        if(resp==1){
+            return "create team " + tid;
+        }else{
+            return "create fail";
+        }
+
     }
 
-    @PostMapping(value = "/removeTeammate/")
+    @GetMapping(value = "getAllTeammateByTid")
     @ResponseBody
-    public String removeTeammate(@RequestParam String project) {
-        return "success";
+    public String getAllTeammateByTID(@RequestParam String tid){
+        return JSON.toJSONString(projectService.getTeamByTID(tid));
     }
 
-    //  award
+    @GetMapping(value = "/getTeamOwnerBytid")
+    @ResponseBody
+    public String getTeamOwnerBytid(@RequestParam String tid){
+        return JSON.toJSONString(projectService.getTeamOwnerByTID(tid));
+    }
+
+    @GetMapping(value = "/getAllTeam")
+    @ResponseBody
+    public String getAllTeam(){
+        return JSON.toJSONString(projectService.getAllTeam());
+    }
+
+    @GetMapping(value = "/getTeamByUID")
+    @ResponseBody
+    public String getTeamByUID(@RequestParam String uid){
+        return JSON.toJSONString(projectService.getTeamByUID(uid));
+    }
+
+    @GetMapping(value="/inviteTeammate")
+    @ResponseBody
+    public String inviteTeammate(@RequestParam String uname,@RequestParam int pid,@CookieValue(name = "Auth") String cookie){
+        User user = userService.authorityAndLoginJudge(cookie);
+        if (user == null) {
+            return "unauthorized";
+        }
+        String uid = user.getId();
+        Project project_checker = projectService.getProjectPageByPid(pid);
+        if (project_checker==null){
+            return "no such project!";
+        }
+        Project ownership_checker = projectService.projectChecker(pid,uid);
+        if (ownership_checker == null){
+            return "you have no ownership to this project!";
+        }
+
+        String VerCode = VerificationCodeGenerator.getRandomVCode();
+        User invited = userService.findUserByName(uname);
+        String iemail = invited.getEmail();
+        String tid = projectService.getTidbyPid(pid);
+        String tname = projectService.getTnamebyPid(pid);
+        Team checker = projectService.checkTeam(tid,uname);
+        if(checker!=null){
+            return "user is already in team!";
+        }
+        int resp;
+        resp = projectService.AddInviteCode(uname,VerCode,pid,tid,tname);
+        if(resp==1){
+            String subject = "Invitation from team"+pid;
+            sendMailService.sendSimpleMail(iemail,subject,VerCode);
+            return "add code to db success";
+        }else {
+            return "add code to db fail";
+        }
+    }
+
+    @GetMapping(value="/acceptInvitation")
+    @ResponseBody
+    public String acceptInvitation(@RequestParam String vercode,@CookieValue(name = "Auth") String cookie){
+        User user = userService.authorityAndLoginJudge(cookie);
+
+        if (user == null) {
+            return "unauthorized";
+        }
+        String uid = user.getId();
+        String uname = user.getUsername();
+        Verification verification = projectService.VerifyInvite(uname,vercode);
+        if(verification!=null){
+            int pid = verification.getPid();
+            String tid = verification.getTid();
+            String tname = verification.getTname();
+            boolean ownership = false;
+            int resp;
+            resp = projectService.GenerateTeam(tid,ownership,uid,pid,tname,uname);
+            if(resp==1){
+                projectService.DeleteCode(vercode);
+                return "add team " + tid;
+            }else{
+                return "add fail";
+            }
+        }else{
+            return "no such invitation!";
+        }
+    }
+
+    @PostMapping(value = "/deleteTeam")
+    @ResponseBody
+    public String deleteTeam(@RequestParam String tid,@CookieValue(name = "Auth") String cookie) {
+        User user = userService.authorityAndLoginJudge(cookie);
+        if (user == null) {
+            return "unauthorized";
+        }
+        String uid = user.getId();
+        String uname = user.getUsername();
+        Team team = projectService.getTeamOwnerByTID(tid);
+        int pid = team.getPid();
+        Project project_checker = projectService.getProjectPageByPid(pid);
+        if (project_checker == null) {
+            return "no such project!";
+        }
+        Project ownership_checker = projectService.projectChecker(pid, uid);
+        if (ownership_checker != null || user.getAuthority().equals("admin")) {
+            int resp;
+            resp = projectService.deleteTeam(tid);
+            if (resp == 1) {
+                return "delete success!";
+            } else {
+                return "delete fail";
+            }
+        }else{
+            return "not you team!";
+        }
+    }
+
+
+
+//    @GetMapping(value = "/getTeammate/{pid}")
+//    @ResponseBody
+//    public String getTeammate(@PathVariable("pid") String pid) {
+//        return "[{\"id\":\"a37f46fc-5ebe-4fdc-b92c-911ac12c7df6\",\"username\":\"testacc\",\"img\":\"./File/image/null.png\"},{\"id\":\"a37f46fc-5ebe-4fdc-b92c-911ac12c7df6\",\"username\":\"testacc\",\"img\":\"./File/image/null.png\"},{\"id\":\"a37f46fc-5ebe-4fdc-b92c-911ac12c7df6\",\"username\":\"https://icp.sojson.com\",\"img\":\"./File/image/null.png\"}]";
+//    }
+//
+//    @PostMapping(value = "/removeTeammate/")
+//    @ResponseBody
+//    public String removeTeammate(@RequestParam String project) {
+//        return "success";
+//    }
+        //  award
+
     @PostMapping(value = "/addAward")
     @ResponseBody
     public String addAward(@RequestParam int pid, @RequestParam String comment, @CookieValue(name = "Auth") String cookie) {
@@ -340,16 +554,27 @@ public class ProjectController {
         }
 
         String uid = user.getId();
-        teacher_award checker = projectService.checkAward(pid, uid);
-        if (checker == null) {
-            return "not your award";
+        String auth = String.valueOf(user.getAuthority());
+        if(auth.equals("admin")){
+            int resp = projectService.DeleteAwardAdmin(pid);
+            if (resp == 1) {
+                return "all award removed by admin of "+ pid;
+            } else {
+                return "delete fail by admin";
+            }
+        }else{
+            teacher_award checker = projectService.checkAward(pid, uid);
+            if (checker == null) {
+                return "not your award";
+            }
+            int resp = projectService.DeleteAward(pid, uid);
+            if (resp == 1) {
+                return "delete success";
+            } else {
+                return "delete fail";
+            }
         }
-        int resp = projectService.DeleteAward(pid, uid);
-        if (resp == 1) {
-            return "delete success";
-        } else {
-            return "delete fail";
-        }
+
 
     }
 
@@ -411,15 +636,26 @@ public class ProjectController {
             return "unauthorized";
         }
         String uid = user.getId();
-        List<Project_comment> checker = projectService.CheckComment(pid, uid, cid);
-        if (checker == null) {
-            return "no such comment";
-        } else {
+        String auth = String.valueOf(user.getAuthority());
+
+        if (auth.equals("admin")){
             int resp = projectService.DeleteComment(cid);
             if (resp == 1) {
-                return "delete success";
+                return "delete success by admin";
             } else {
-                return "delete fail";
+                return "delete fail by admin";
+            }
+        }else {
+            List<Project_comment> checker = projectService.CheckComment(pid, uid, cid);
+            if (checker == null) {
+                return "no such comment";
+            } else {
+                int resp = projectService.DeleteComment(cid);
+                if (resp == 1) {
+                    return "delete success";
+                } else {
+                    return "delete fail";
+                }
             }
         }
     }
@@ -497,6 +733,22 @@ public class ProjectController {
         return JSON.toJSONString(projectService.ShowMyLike(uid));
     }
 
+    @GetMapping(value ="/getlikestatus")
+    @ResponseBody
+    public String getLikeStatus(@RequestParam int pid, @CookieValue(name = "Auth") String cookie){
+        User user = userService.authorityAndLoginJudge(cookie);
+        String uid = user.getId();
+        if (user == null) {
+            return "unauthorized";
+        }else{
+            Project_like checker = projectService.getlikestatus(pid,uid);
+            if (checker==null){
+                return "can like!";
+            }else{
+                return "cannot like!";
+            }
+        }
+    }
     //skill
     @GetMapping(value = "/GetProjectBySkills/{page}")
     @ResponseBody

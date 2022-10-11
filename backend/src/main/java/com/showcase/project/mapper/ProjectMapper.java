@@ -1,18 +1,12 @@
 package com.showcase.project.mapper;
 
-import com.showcase.project.controller.ProjectController;
-import com.showcase.project.domain.Project;
-import com.showcase.project.domain.Project_comment;
-import com.showcase.project.domain.Project_like;
-import com.showcase.project.domain.teacher_award;
+import com.showcase.project.domain.*;
 import com.showcase.project.dto.ProjectDTO;
 import com.showcase.project.dto.TeacherCommentDTO;
 import com.showcase.project.dto.awardDTO;
 import com.showcase.project.dto.likeDTO;
 import org.apache.ibatis.annotations.*;
 
-import javax.persistence.Id;
-import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -42,11 +36,30 @@ public interface ProjectMapper {
     ProjectDTO getProject(int ID);
     @Select("select * from `project` where OWNER = #{UID}")
     List<ProjectDTO> getProjectByUser(String UID);
-    @Update("update user SET COVERIMAGE = #{file} WHERE ID = #{id}")
-    int uploadProjectCover(int id, byte[] file);
+    @Select("select * from team where TID = #{tid}")
+    List<Team> getTeamByTID(String tid);
+    @Select("select * from team where TID = #{tid} and OWNER = true")
+    Team getTeamOwnerByTID(String tid);
+    @Select("select * from team WHERE TID = #{tid} and UNAME = #{uname}")
+    Team CheckTeam(String tid,String uname);
+    @Select("select * from team where UID = #{uid}")
+    List<Team> getTeamByUID(String uid);
+    @Select("select * from team where OWNER = true")
+    List<Team> getAllTeam();
+    @Insert("insert into `verification` (`UNAME`,`VERCODE`,`PID`,`TID`,`TNAME`) values (#{uname},#{VerCode},#{pid},#{tid},#{tname})")
+    int AddInviteCode(String uname,String VerCode,int pid,String tid,String tname);
+    @Select("Select * from verification where UNAME = #{uname} and VERCODE = #{vercode}")
+    Verification VerifyInvite(String uname,String vercode);
+    @Delete("delete from verification where VERCODE = #{vercode}")
+    int DeleteCode(String vercode);
+    @Update("update project SET COVERIMAGE = #{file} WHERE ID = #{id}")
+    int updateProjectCover(int id, byte[] file);
     @Insert("Insert into `project_photo` (`PID`,`PHOTO`) values (#{pid},#{file})")
     int uploadProjectImg(int pid,byte[] file);
-
+    @Select("Select * from `project_photo` where PID = #{pid}")
+    List<project_photo> getAllPhotoBypid(int pid);
+    @Delete("Delete from `project_photo` where PHOTOID = #{photoid}")
+    int removeProjectPhotoByPhotoid(int photoid);
     @Select("select COVERIMAGE from `project` where ID = #{ID}")
     Project getCoverImage(int ID);
     @Select("select * from project order by ID desc limit 1")
@@ -63,7 +76,12 @@ public interface ProjectMapper {
     int GetProjectLikeByID(int id);
     @Select("select project.ID,project.PNAME,project.OWNER,project.TIMESTAMP,sum(project_like.LIKEAMOUNT) as likeamount from project left join project_like on project_like.PID = project.ID group by project.ID order by sum(LIKEAMOUNT) desc limit #{start},#{end}")
     List<likeDTO> GetProjectByLike(int start,int end);
+    @Insert("Insert into `team` (TID,OWNER,UID,PID,TNAME,UNAME) values (#{tid},#{ownership},#{uid},#{pid},#{tname},#{uname})")
+    int GenerateTeam(String tid,boolean ownership,String uid,int pid,String tname,String uname);
 
+
+    @Select("select * from `project_like` where PID = #{pid} and UID = #{uid} limit 1")
+    Project_like getlikestatus(int pid,String uid);
     @Select("select project.ID,project.PNAME,project.OWNER,project.TIMESTAMP,sum(teacher_award.AWARD) as award_times from project right join teacher_award on teacher_award.PID = project.ID  group by teacher_award.PID  order by sum(AWARD) desc limit #{start}, #{end}")
     List<awardDTO> GetAwardedProject(int start, int end);
 
@@ -93,6 +111,9 @@ public interface ProjectMapper {
     @Delete("Delete from `teacher_award` where PID=#{pid} and UID=#{uid}")
     int DeleteAward(int pid,String uid);
 
+    @Delete("Delete from `teacher_award` where PID=#{pid}")
+    int DeleteAwardAdmin(int pid);
+
     @Select("Select * from `teacher_award` where PID=#{pid}")
     List<TeacherCommentDTO> GetAwardCommentByID(int pid);
     @Select("Select * from `teacher_award` where PID=#{pid} and UID=#{uid} limit 1")
@@ -116,4 +137,15 @@ public interface ProjectMapper {
 
     @Select("Select SKILLS from project_skill where PID =#{pid}")
     List<String> getProjectSkills(int pid);
+
+    @Select("Select * from project where ID = #{pid}")
+    Project getProjectPageByPid(int pid);
+    @Select("select TID from team where PID = #{pid} and OWNER = true")
+    String getTidbyPid(int pid);
+
+    @Select("select TNAME from team where PID = #{pid} and OWNER = true")
+    String getTnamebyPid(int pid);
+
+    @Delete("Delete from team where TID = #{tid}")
+    int deleteTeam(String tid);
 }

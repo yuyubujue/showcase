@@ -1,9 +1,6 @@
 package com.showcase.project.service;
 
-import com.showcase.project.domain.Project;
-import com.showcase.project.domain.Project_comment;
-import com.showcase.project.domain.Project_like;
-import com.showcase.project.domain.teacher_award;
+import com.showcase.project.domain.*;
 import com.showcase.project.dto.ProjectDTO;
 import com.showcase.project.dto.TeacherCommentDTO;
 import com.showcase.project.dto.awardDTO;
@@ -12,7 +9,6 @@ import com.showcase.project.mapper.ProjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service("ProjectService")
@@ -70,16 +66,32 @@ public class ProjectService{
 
     public List<ProjectDTO> getProjectByUser(String UID){return projectMapper.getProjectByUser(UID);}
 
-    public int uploadProjectCover(int id, byte[] file){return projectMapper.uploadProjectCover(id, file);}
+    public int updateProjectCover(int id, byte[] file){return projectMapper.updateProjectCover(id, file);}
     public int uploadProjectImg(int id, byte[] file){return projectMapper.uploadProjectImg(id, file);}
 
+    public List<project_photo> getAllPhotoBypid(int pid){return projectMapper.getAllPhotoBypid(pid);}
+
+    public int removeProjectPhotoByPhotoid(int photoid){return projectMapper.removeProjectPhotoByPhotoid(photoid);}
+
+    public Project_like getlikestatus(int pid,String uid){return projectMapper.getlikestatus(pid,uid);}
     public Project getCoverImage(int id) {
         return projectMapper.getCoverImage(id);
     }
 
     public Project getNewOne(){return projectMapper.getNewOne();}
 
+    public int GenerateTeam(String tid,boolean ownership,String uid,int pid,String tname,String uname) {return projectMapper.GenerateTeam(tid,ownership,uid,pid,tname,uname);}
+
     public int setNewPname(int pid,String newName){return projectMapper.setNewPname(pid,newName);}
+    public List<Team> getTeamByTID(String tid){return projectMapper.getTeamByTID(tid);}
+    public Team getTeamOwnerByTID(String tid){return projectMapper.getTeamOwnerByTID(tid);}
+
+    public List<Team> getTeamByUID(String uid){return projectMapper.getTeamByUID(uid);}
+
+    public Team checkTeam(String tid,String uname){return projectMapper.CheckTeam(tid,uname);}
+    public List<Team> getAllTeam(){return projectMapper.getAllTeam();}
+
+    public int deleteTeam(String tid){return projectMapper.deleteTeam(tid);}
 
     public int setNewTagLine(int pid,String newTag){return projectMapper.setNewTagLine(pid,newTag);}
     public int LikeProject(int pid,String uid,String uname){return projectMapper.LikeProject(pid,uid,uname);}
@@ -97,6 +109,17 @@ public class ProjectService{
         }
     }
 
+    public int AddInviteCode(String uname,String VerCode,int pid,String tid,String tname){
+        return projectMapper.AddInviteCode(uname,VerCode,pid,tid,tname);
+    }
+
+    public Verification VerifyInvite(String uname,String vercode){
+        return projectMapper.VerifyInvite(uname,vercode);
+    }
+
+    public int DeleteCode(String vercode){
+        return projectMapper.DeleteCode(vercode);
+    }
     public List<likeDTO> GetProjectByLike(String page){
         if(page.equals("1")) {
             return projectMapper.GetProjectByLike(0,10);
@@ -117,6 +140,10 @@ public class ProjectService{
     public List<TeacherCommentDTO> GetAwardCommentByID(int pid){return projectMapper.GetAwardCommentByID(pid);}
     public int DeleteAward(int pid,String uid){return projectMapper.DeleteAward(pid,uid);}
 
+    public Project getProjectPageByPid(int pid){return projectMapper.getProjectPageByPid(pid);}
+
+    public int DeleteAwardAdmin(int pid){return projectMapper.DeleteAwardAdmin(pid);}
+
     public teacher_award checkAward(int pid, String uid){return projectMapper.checkAward(pid,uid);}
 
     public Project projectChecker(int pid,String uid){return projectMapper.projectChecker(pid,uid);}
@@ -136,4 +163,11 @@ public class ProjectService{
     public List<String> getProjectSkills(int pid){return projectMapper.getProjectSkills(pid);}
 
     public List<Project_like> ShowMyLike(String uid){return projectMapper.ShowMyLike(uid);}
+
+    public String getTidbyPid(int pid) {
+        return projectMapper.getTidbyPid(pid);
+    }
+    public String getTnamebyPid(int pid) {
+        return projectMapper.getTnamebyPid(pid);
+    }
 }

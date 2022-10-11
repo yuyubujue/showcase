@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     @Insert("insert into User(ID,USERNAME,PASSWORD,EMAIL,AUTHORITY,IMG,INTRODUCTION) values(#{userid},#{username},#{passsword},#{email},#{authority},#{img},\'Nothing yet~\')")
-    int insertUser(String userid, String username, String passsword, String email, String authority, byte[] img);
+    int insertUser(String userid, String username, String password, String email, String authority, byte[] img);
     @Select("select * from User where (USERNAME = #{username} OR EMAIL = #{username}) and PASSWORD = #{password}")
     User login(String username,String password);
     @Select("select * from User where email = #{email}")
