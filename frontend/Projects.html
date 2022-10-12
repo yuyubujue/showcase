@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./css/Projects.css">
     <!-- <script src="/vue/vue.js"></script> -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./css/Projects.css"></script>
     <title>Project Showcase</title>
     <link rel="icon" href="./images/uoa-logo.jpg" id="icon">  </link>
@@ -63,15 +64,15 @@
             </div>
         </section>
     </header>
-    <main>
+    <main class="main">
         <nav id="selectbar">
             <ul>
-                <li><a href="#">ALL</a></li>
-                <li><a href="#Java">Java</a></li>
-                <li><a href="#Python">Python</a></li>
-                <li><a href="#PHP">PHP</a></li>
-                <li><a href="#Go">Go</a></li>
-                <li><a href="#HTML">HTML</a></li>
+                <li><a href="javascript:;" @click="getAllpj">ALL</a></li>
+                <li><a href="javascript:;">Java</a></li>
+                <li><a href="javascript:;">Python</a></li>
+                <li><a href="javascript:;">PHP</a></li>
+                <li><a href="javascript:;">Go</a></li>
+                <li><a href="javascript:;">HTML</a></li>
                 <!-- <li><a href="#">Linux</a></li>
                 <li><a href="#">sadasd</a></li>
                 <li><a href="#">asdasd</a></li>
@@ -83,210 +84,108 @@
             <div class=".container">
                 <section class="mainleft col-md-10">
                     <a href="#"><h3 id="Java"><img src="./images/Java_logo.svg" alt="Java_logo">&nbsp; Java</h3> </a>
-                    <ul>
-                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>    
+                    <ul id="javapj">
+                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
+                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
+                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
+                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
+                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
+                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
+                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
+                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
+                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
+                        <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
                     </ul>
                 </section>
                 <section class="mainright col-md-2 hidden-sm hidden-xs">
                     <h3>Ranking</h3>
-                    <ul>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
+                    <ul id="javarank">
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">6</a></li>
+                        <li><a href="#">7</a></li>
+                        <li><a href="#">8</a></li>
+                        <li><a href="#">9</a></li>
+                        <li><a href="#">10</a></li>
                     </ul>
-                </section>  
-            </div>
-            <div class=".container">
-                <section class="mainleft col-md-10">
-                    <a href="#"><h3 id="Python"><img src="./images/Python_logo.svg" alt="">&nbsp; Python</h3> </a>
-                    <ul>
-                        <li><a href="#"><img src="./images/Python_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Python_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Python_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Python_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Python_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Python_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Python_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Python_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Python_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Python_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>    
-                    </ul>
-                </section>
-                <section class="mainright col-md-2 hidden-sm hidden-xs">
-                    <h3>Ranking</h3>
-                    <ul>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                    </ul>
-                </section>  
-            </div>
-            <div class=".container">
-                <section class="mainleft col-md-10">
-                    <a href="#"><h3 id="PHP"><img src="./images/PHP-logo.svg" alt=""></h3> </a>
-                    <ul>
-                        <li><a href="#"><img src="./images/PHP-logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/PHP-logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/PHP-logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/PHP-logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/PHP-logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/PHP-logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/PHP-logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/PHP-logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/PHP-logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/PHP-logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>    
-                    </ul>
-                </section>
-                <section class="mainright col-md-2 hidden-sm hidden-xs">
-                    <h3>Ranking</h3>
-                    <ul>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                    </ul>
-                </section>  
-            </div>
-            <div class=".container">
-                <section class="mainleft col-md-10">
-                    <a href="#"><h3 id="Go"><img src="./images/Go_Logo_Blue.svg" alt=""></h3> </a>
-                    <ul>
-                        <li><a href="#"><img src="./images/Go_Logo_Blue.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Go_Logo_Blue.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Go_Logo_Blue.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Go_Logo_Blue.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Go_Logo_Blue.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Go_Logo_Blue.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Go_Logo_Blue.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Go_Logo_Blue.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Go_Logo_Blue.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/Go_Logo_Blue.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>    
-                    </ul>
-                </section>
-                <section class="mainright col-md-2 hidden-sm hidden-xs">
-                    <h3>Ranking</h3>
-                    <ul>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                    </ul>
-                </section>  
-            </div>
-            <div class=".container">
-                <section class="mainleft col-md-10">
-                    <a href="#"><h3 id="HTML"><img src="./images/HTML5_logo.svg" alt="">HTML</h3> </a>
-                    <ul>
-                        <li><a href="#"><img src="./images/HTML5_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/HTML5_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/HTML5_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/HTML5_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/HTML5_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/HTML5_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/HTML5_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/HTML5_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/HTML5_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>
-                        <li><a href="#"><img src="./images/HTML5_logo.svg" alt=""><p><span class="glyphicon glyphicon-eye-open"></span>500 <span class="glyphicon glyphicon-heart">500 </span>  <span class="
-                            glyphicon glyphicon-thumbs-up">500</span></p><p>Project Name</p></a></li>    
-                    </ul>
-                </section>
-                <section class="mainright col-md-2 hidden-sm hidden-xs">
-                    <h3>Ranking</h3>
-                    <ul>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                        <li><a href="#">112334</a></li>
-                    </ul>
-                </section>  
+                </section> 
             </div>  
         </div>
     </main>
+    <script>
+        let pj = Vue.createApp({
+                data(){
+                    return{
+                        
+                    }
+                },
+                methods:{
+                    getLike(pjId){
+                        var like = 0;
+                        axios.get('project/getProjectLikeByID?pid='+pjId)
+                        .then(function (response) {
+                            like = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                        return(like);
+                    },
+                    getpjBylike(){
+                        axios.get('project/GetProjectByLike/1')
+                        .then(function (response) {
+                            document.getElementById("javarank").innerHTML="";
+                            var data = response.data;
+                            for(let i=0; i<response.data.length; i++){
+                                var pjId = data[i].id;
+                                var pname = data[i].pname;
+                                var like = data[i].likeamount;
+                                if(like == null){
+                                    like = 0;
+                                }
+                                var li = document.createElement("li");
+                                li.innerHTML = "<a href='./PJDetial.html?id=" + pjId +"'><span class='number'>"+(i+1)+"</span><p> &nbsp "+pname+"</p></a>";
+                                document.getElementById("javarank").appendChild(li);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    getAllpj(){
+                        axios.get('project/getAllprojects')
+                        .then(function (response) {
+                            document.getElementById("javapj").innerHTML="";
+                            var data = response.data;
+                            for(let i=0; i<response.data.length; i++){
+                                var pjId = data[i].id;
+                                var pname = data[i].pname;
+                                var cover = data[i].coverImage;
+                                if(cover == null){
+                                    cover = "./images/uoa-logo.jpg";
+                                }
+                                var like = pj.getLike(pjId);
+                                var li = document.createElement("li");
+                                li.innerHTML = "<a href='./PJDetial.html?id=" + pjId +"'><img src="+cover+"><p><span>&#10084; "+like+" </span></p><p>"+pname+"</p></a>";
+                                document.getElementById("javapj").appendChild(li);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    }
+                    
+                },
+                mounted(){
+                    this.getAllpj();
+                    this.getpjBylike();
+                    
+                }
+            }).mount('.main')
+    </script>
     <footer>
         <section id="bottomBody" class=".container">
             <nav class="col-md-6">

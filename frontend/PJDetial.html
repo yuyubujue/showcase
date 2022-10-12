@@ -54,12 +54,13 @@
             <div class="pjname-container">
                 <h1 id="pjname">{{pj_name}}</h1>
                 <div class="pjdetial-container">
-                    <span id="pjlangu">{{pj_Tech}}</span>
+                    <!-- <span id="pjlangu">{{pj_Tech}}</span> -->
                     <span id="pjupdate">{{pj_date}}</span>
-                    <span id="pjviewnum">{{pj_views}} Views</span>
+                    <!-- <span id="pjviewnum">{{pj_views}} Views</span> -->
                     <span id="pjlikenum">{{pj_likes}} Likes</span>
                     <span id="pjcommentnum">{{pj_comnums}} Comments</span>
                 </div>
+                <span id="pjlangu">{{pj_Tech}}</span>
             </div>
             <div class="pjteam-container">
                 <div class="pjteaminfo">
@@ -129,7 +130,6 @@
                         pj_Tagline:"2022 University Surveys - it’s not too late to have your say (and be entered in the prize draw)! ",
                         pj_Tech:"java",
                         pj_date:"2022/10/06",
-                        pj_views:"150",
                         pj_likes:50,
                         pj_comnums:10,
                         pj_tName:"Team Name",
@@ -156,7 +156,7 @@
                             vm.unlike = !this.unlike;
                             axios.post('project/like?pid='+pjId)
                             .then(function (response) {
-                                console.log(response);
+                                // console.log(response);
                                 if(response.data != "repeated like"){
                                     vm.pj_likes++;
                                 }
@@ -175,7 +175,7 @@
                         let pjId = getUrlParam("id");
                         axios.post('project/unlike?pid='+pjId)
                         .then(function (response) {
-                            console.log(response);
+                            // console.log(response);
                             vm.pj_likes--;
                         })
                         .catch(function (error) {
@@ -187,6 +187,30 @@
                         axios.get('project/getProjectLikeByID?pid='+pjId)
                         .then(function (response) {
                             vm.pj_likes= response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    likeState(){
+                        let pjId = getUrlParam("id");
+                        axios.get('project/getlikestatus?pid='+pjId)
+                        .then(function (response) {
+                            var state= response.data;
+                            if(state == "cannot like!"){
+                                vm.like = false;
+                                vm.unlike = true;
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    getSkills(){
+                        let pjId = getUrlParam("id");
+                        axios.get('project/GetProjectSkills?pid='+pjId)
+                        .then(function (response) {
+                            vm.pj_Tech= response.data.substr(1,response.data.length-2);                            
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -207,14 +231,13 @@
                     if(pjId==null){
 
                     }else{
-                        axios.get('project/getProject/'+pjId)
+                        axios.get('project/getProjectPageByPid?pid='+pjId)
                         .then(function (response) {
                         let pjinfo = response.data;
-                        console.log(pjinfo);
                         vm.pj_name= pjinfo.pname;
                         vm.pj_Tagline= pjinfo.tagline;
-                        vm.pj_Tech= pjinfo.technologies;
-                        vm.pj_date= pjinfo.date;
+                        // vm.pj_Tech= pjinfo.technologies;
+                        vm.pj_date= pjinfo.updatetime;
                         document.getElementById('pjintro').innerHTML = pjinfo.introduction;
                         vm.getName(pjinfo.owner);
                         vm.pj_ownerSpace= "https://api.crya.me/space.html?id="+ pjinfo.owner;
@@ -226,6 +249,8 @@
                         
                     }
                     this.getLike();
+                    this.likeState();
+                    this.getSkills();
                     
                 }
             }).mount('.pjinfo')

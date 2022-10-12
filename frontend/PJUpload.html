@@ -112,14 +112,14 @@
             </div>
             
 
-            <div class="pjGallery">
+            <!-- <div class="pjGallery">
                 <label for="pj_images">
                     <abbr title="required"> &nbsp;&nbsp;</abbr>
                     Project Gallery
                 </label>
                 <span id="pjimgupload">
                     <input type="file" onchange="showImages()" id="pj_images" accept="image/jpeg,image/jpg,image/pjpeg,image/png,image/x-png,image/gif" multiple>
-                    <!-- <p>Or drag or drop images here</p> -->
+                    
                     <p id="feedback" style="color: red;"></p>
                     <input id="upimg" type="button" value="Upload images" class="btn btn-success" onclick="Uploadimg()">
                     <hr>
@@ -128,7 +128,7 @@
                     </div>
                 </span>
                 
-            </div>
+            </div> -->
             
 
             <div class="pjAction">
@@ -138,6 +138,21 @@
  
         </section>
         <script>
+            const dataURLtoFile=(dataurl, filename)=> {
+                let arr = dataurl.split(",");
+                let  mime = arr[0].match(/:(.*?);/)[1];
+                let  bstr = window.atob(arr[1]);
+                let  n = bstr.length;
+                let  u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new File([u8arr], filename, { type: mime });
+            }
+        </script>
+        <script>
+            
+
             Vue.createApp({
                 data(){
                     return{
@@ -151,11 +166,21 @@
                     postPj(){ 
                         let intro = editor.getHtml();
                         let separate = '';
+                        var coverbase = document.getElementById("pjCoverimg").src;
+                        var covername = this.pj_name+"-cover";
+                        let file = dataURLtoFile(coverbase, covername);
+                        let param = new FormData();
+                        param.append("pname",this.pj_name);
+                        param.append("shortTagline",this.pj_Tagline);
+                        param.append("file",file);
+                        param.append("introduction",intro);
                         if(this.pj_TechO.length != 0){
                             separate = ','
                         }
-                        axios.post('project/uploadProject',
-                            "pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline +"&skills=" + this.pj_Tech+ separate + this.pj_TechO + "&introduction=" + intro
+                        var skill =  this.pj_Tech+ separate + this.pj_TechO;
+                        param.append("skills",skill);           
+                        let config = {headers:{'Content-Type':'multipart/form-data'}};
+                        axios.post('project/uploadProject',param,config//+"?pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline + "&file=" + file + "&introduction=" + intro + "&skills=" + this.pj_Tech+ separate + this.pj_TechO
 	                        ).then(function (response) {
                             console.log(response);
                         })
