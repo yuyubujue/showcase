@@ -1,18 +1,15 @@
 package com.showcase.project.mapper;
 
 import com.showcase.project.domain.*;
-import com.showcase.project.dto.ProjectDTO;
-import com.showcase.project.dto.TeacherCommentDTO;
-import com.showcase.project.dto.awardDTO;
-import com.showcase.project.dto.likeDTO;
+import com.showcase.project.dto.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface ProjectMapper {
-    @Insert("INSERT INTO `project` (`PNAME`, `TAGLINE`,  `INTRODUCTION`, `OWNER`, `COVERIMAGE`) VALUES (#{pname}, #{tagline}, #{introduction}, #{owner}, #{img})")
-    int insertProject(String pname, String tagline, String introduction, String owner, byte[] img);
+    @Insert("INSERT INTO `project` (`PNAME`, `TAGLINE`, `INTRODUCTION`, `OWNER`, `COVERIMAGE`, `INVITECODE`) VALUES (#{pname}, #{tagline}, #{introduction}, #{owner}, #{img}, #{code})")
+    int insertProject(String pname, String tagline, String introduction, String owner, byte[] img, String code);
     @Select("select * from `project` order by TIMESTAMP desc limit ${start}, ${end}")
     List<ProjectDTO> getProjectsByCreateTime(int start, int end);
     @Select("select * from `project` order by TIMESTAMP limit ${start}, ${end}")
@@ -36,6 +33,7 @@ public interface ProjectMapper {
     ProjectDTO getProject(int ID);
     @Select("select * from `project` where OWNER = #{UID}")
     List<ProjectDTO> getProjectByUser(String UID);
+    /*
     @Select("select * from team where TID = #{tid}")
     List<Team> getTeamByTID(String tid);
     @Select("select * from team where TID = #{tid} and OWNER = true")
@@ -47,6 +45,7 @@ public interface ProjectMapper {
     @Select("select * from team where OWNER = true")
     List<Team> getAllTeam();
     @Insert("insert into `verification` (`UNAME`,`VERCODE`,`PID`,`TID`,`TNAME`) values (#{uname},#{VerCode},#{pid},#{tid},#{tname})")
+    */
     int AddInviteCode(String uname,String VerCode,int pid,String tid,String tname);
     @Select("Select * from verification where UNAME = #{uname} and VERCODE = #{vercode}")
     Verification VerifyInvite(String uname,String vercode);
@@ -76,8 +75,12 @@ public interface ProjectMapper {
     int GetProjectLikeByID(int id);
     @Select("select project.ID,project.PNAME,project.OWNER,project.TIMESTAMP,sum(project_like.LIKEAMOUNT) as likeamount from project left join project_like on project_like.PID = project.ID group by project.ID order by sum(LIKEAMOUNT) desc limit #{start},#{end}")
     List<likeDTO> GetProjectByLike(int start,int end);
+
+/*
     @Insert("Insert into `team` (TID,OWNER,UID,PID,TNAME,UNAME) values (#{tid},#{ownership},#{uid},#{pid},#{tname},#{uname})")
     int GenerateTeam(String tid,boolean ownership,String uid,int pid,String tname,String uname);
+
+*/
 
 
     @Select("select * from `project_like` where PID = #{pid} and UID = #{uid} limit 1")
@@ -139,7 +142,26 @@ public interface ProjectMapper {
     List<String> getProjectSkills(int pid);
 
     @Select("Select * from project where ID = #{pid}")
-    Project getProjectPageByPid(int pid);
+    ProjectDTOFull getProjectPageByPid(int pid);
+
+    @Insert("INSERT INTO `team`(`UID`, `PID`) VALUES ((SELECT ID from User WHERE COOKIE = #{cookie}),(SELECT ID from project WHERE INVITECODE = '#{invitecode}'))")
+    int joinTeam(String invitecode, String cookie);
+
+    @Select("SELECT * FROM `team` t LEFT JOIN `User` u ON t.UID = u.ID WHERE t.pid = ${pid}")
+    List<UserDTO> getTeammateByPID(int pid);
+
+    @Delete("Delete from `team` where UID = #{uid} AND PID = ${pid}")
+    int removeTeammate(int pid, String uid);
+
+    @Update("Update project SET INVITECODE = #{tag} where ID = #{pid}")
+    int generateNewInviteCode(int pid, String invitecode);
+
+    @Select("Select ID from project where INVITECODE = #{invitecode}")
+    int getPidByCode(String invitecode);
+
+    @Select("Select * from project where ID = #{pid}")
+    Project getFullProjectByPid(int pid);
+/*
     @Select("select TID from team where PID = #{pid} and OWNER = true")
     String getTidbyPid(int pid);
 
@@ -148,4 +170,6 @@ public interface ProjectMapper {
 
     @Delete("Delete from team where TID = #{tid}")
     int deleteTeam(String tid);
+
+ */
 }

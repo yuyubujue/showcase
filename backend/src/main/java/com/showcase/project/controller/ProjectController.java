@@ -5,6 +5,7 @@ import com.showcase.project.alogrithm.TIDgenerator;
 import com.showcase.project.alogrithm.VerificationCodeGenerator;
 import com.showcase.project.domain.*;
 import com.showcase.project.dto.ProjectDTO;
+import com.showcase.project.dto.ProjectDTOFull;
 import com.showcase.project.service.ProjectService;
 import com.showcase.project.service.SendMailService;
 import com.showcase.project.service.UserService;
@@ -254,17 +255,78 @@ public class ProjectController {
         return "remove fail";
     }
 
-//    @GetMapping(value = "/getInviteLink")
-//    @ResponseBody
-//    public String getInviteLink(@RequestParam("pid") String pid) {
-//        return "http://xxxxx.com/project/invite/?id=88c348f2-c0af-3b77-d956-acc85591f6ca";
-//    }
+    @GetMapping(value = "/getInviteLink/{pid}")
+    @ResponseBody
+    public String getInviteLink(@PathVariable("pid") int pid, @CookieValue(name = "Auth") String cookie) {
+        User user = userService.authorityAndLoginJudge(cookie);
+        if (user == null) {
+            return "unauthorized";
+        }
+        Project project = projectService.getFullProjectByPid(pid);
+        if (user.getId().equals(project.getOwner())){
+            return project.getInvitecode();
+        }else {
+            return "unauthorized";
+        }
+    }
 
-//    @GetMapping(value = "/invite/{id}")
-//    @ResponseBody
-//    public String invite(@PathVariable("id") String id) {
-//        return "success";
-//    }
+    @PostMapping(value = "/invite")
+    @ResponseBody
+    public String invite(@RequestParam("invitecode") String invitecode, @CookieValue(name = "Auth") String cookie) {
+        User user = userService.authorityAndLoginJudge(cookie);
+        if (user == null) {
+            return "unauthorized";
+        }
+        if(projectService.joinTeam(invitecode,cookie) == 1){
+            return String.valueOf(projectService.getPidByCode(invitecode));
+        }else{
+            return "failed!";
+        }
+    }
+
+    @PostMapping(value = "/getTeammateByPID")
+    @ResponseBody
+    public String getTeammateByPID(@RequestParam("pid") int pid) {
+        return JSON.toJSONString(projectService.getTeammateByPID(pid));
+    }
+
+    @PostMapping(value = "/removeTeammate")
+    @ResponseBody
+    public String removeTeammate(@RequestParam("pid") int pid, @RequestParam("uid") String uid, @CookieValue(name = "Auth") String cookie) {
+        User user = userService.authorityAndLoginJudge(cookie);
+        if (user == null) {
+            return "unauthorized";
+        }
+        ProjectDTOFull project = projectService.getProjectPageByPid(pid);
+        if(project.getOwner().equals(user.getId())){
+            if(projectService.removeTeammate(pid,uid) == 1){
+                return "success";
+            }else {
+                return "failed!";
+            }
+        }else{
+            return "unauthorized";
+        }
+    }
+
+    @GetMapping(value = "/generateNewInviteCode")
+    @ResponseBody
+    public String generateNewInviteCode(@RequestParam("pid") int pid, @CookieValue(name = "Auth") String cookie) {
+        User user = userService.authorityAndLoginJudge(cookie);
+        if (user == null) {
+            return "unauthorized";
+        }
+        ProjectDTOFull project = projectService.getProjectPageByPid(pid);
+        if(project.getOwner().equals(user.getId())){
+            if(projectService.generateNewInviteCode(pid,TIDgenerator.getRandomTID()) == 1){
+                return "success";
+            }else {
+                return "failed!";
+            }
+        }else{
+            return "unauthorized";
+        }
+    }
 
 
 
@@ -344,6 +406,7 @@ public class ProjectController {
 
     //  team
 
+/*
     @PostMapping(value = "/GenerateTeam")
     @ResponseBody
     public String GenerateTeam(@RequestParam int pid,@RequestParam String tname,@CookieValue(name = "Auth") String cookie){
@@ -491,7 +554,7 @@ public class ProjectController {
             return "not you team!";
         }
     }
-
+*/
 
 
 //    @GetMapping(value = "/getTeammate/{pid}")

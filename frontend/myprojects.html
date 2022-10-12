@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Space</title>
+    <script src="./js/jquery-3.6.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div id="name"></div>
+                    <div id="myProjects">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    window.onload=function() {
+        let uid = getUrlParam("id");
+
+        if (uid != null) {
+            $.ajax({
+                url: './user/getuser/'+uid,
+                type: 'GET',
+                success: function (data, textStatus, xhr) {
+                    if (data != "Not found" && data != "unauthorized") {
+                        let obj = jQuery.parseJSON(data);
+                        $.ajax({
+                            url: './project/getProjectsByUser?id='+obj.id,
+                            type: 'GET',
+                            success: function (data, textStatus, xhr) {
+                                if (data != "[]") {
+                                    let projects = "";
+                                    let objs = jQuery.parseJSON(data);
+                                    for (let z = 0;z<objs.length;z++){
+                                        projects+= "           <div class=\"col-md-3\">" +
+                                            "                       <div class=\"panel panel-default\" style='margin: 5px'>\n" +
+                                            "                           <div class=\"panel-body\">\n" +
+                                            "                            <img class=\"media-object\" src=\"./project/getimg/" + objs[z].id+ "\" style=\" height: auto; width: 95%; margin: 2.5%\">\n" +
+                                            "                            <a href='./PJDetial.html?id=" + objs[z].id + "'>" + objs[z].pname + "</a>\n" +
+                                            "                           </div>\n" +
+                                            "                       </div>" +
+                                            "                   </div>";
+                                    }
+                                    document.getElementById("myProjects").innerHTML = projects;
+                                    document.getElementById("name").innerHTML = "<h3>" + obj.name + "'s Projects</h3>";
+                                } else {
+                                    document.getElementById("myProjects").innerHTML = "<p>The user doesn't have a project yet</p>";
+                                }
+                            }
+                        });
+                    } else {
+                        $(location).attr("href", "./home.html");
+                    }
+                }
+            });
+        } else {
+            $.ajax({
+                url: './user/getown',
+                type: 'GET',
+                success: function (data, textStatus, xhr) {
+                    if (data != "Not found" && data != "unauthorized") {
+                        let obj = jQuery.parseJSON(data);
+                        $.ajax({
+                            url: './project/getProjectsByUser?id='+obj.id,
+                            type: 'GET',
+                            success: function (data, textStatus, xhr) {
+                                if (data != "[]") {
+                                    let projects = "";
+                                    let objs = jQuery.parseJSON(data);
+                                    for (let z = 0;z<objs.length;z++){
+                                        projects+= "           <div class=\"col-md-3\">" +
+                                            "                       <div class=\"panel panel-default\" style='margin: 5px'>\n" +
+                                            "                           <div class=\"panel-body\">\n" +
+                                            "                            <img class=\"media-object\" src=\"./project/getimg/" + objs[z].id+ "\" style=\" height: auto; width: 95%; margin: 2.5%\">\n" +
+                                            "                            <a href='./PJDetial.html?id=" + objs[z].id + "'>" + objs[z].pname + "</a>\n" +
+                                            "                           </div>\n" +
+                                            "                       </div>" +
+                                            "                   </div>";
+                                    }
+                                    document.getElementById("myProjects").innerHTML = projects;
+                                    document.getElementById("name").innerHTML = "<h3>Your Projects</h3>";
+                                } else {
+                                    $(location).attr("href", "./home.html");
+                                }
+                            }
+                        });
+                    } else {
+                        $(location).attr("href", "./home.html");
+                    }
+                }
+            });
+        }
+    }
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
+</script>
+</html>

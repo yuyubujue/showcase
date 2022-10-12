@@ -1,10 +1,8 @@
 package com.showcase.project.service;
 
+import com.showcase.project.alogrithm.TIDgenerator;
 import com.showcase.project.domain.*;
-import com.showcase.project.dto.ProjectDTO;
-import com.showcase.project.dto.TeacherCommentDTO;
-import com.showcase.project.dto.awardDTO;
-import com.showcase.project.dto.likeDTO;
+import com.showcase.project.dto.*;
 import com.showcase.project.mapper.ProjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +55,7 @@ public class ProjectService{
 
 
     public int uploadProject(String pname, String tagline,  String introduction, String owner, byte[] img) {
-        return projectMapper.insertProject(pname, tagline,  introduction, owner, img);
+        return projectMapper.insertProject(pname, tagline,  introduction, owner, img, TIDgenerator.getRandomTID());
     }
     public List<Project> getAllProject(){return projectMapper.getAllProject();}
     public ProjectDTO getProject(int id) {
@@ -80,9 +78,11 @@ public class ProjectService{
 
     public Project getNewOne(){return projectMapper.getNewOne();}
 
+    public int setNewPname(int pid,String newName){return projectMapper.setNewPname(pid,newName);}
+
+/*
     public int GenerateTeam(String tid,boolean ownership,String uid,int pid,String tname,String uname) {return projectMapper.GenerateTeam(tid,ownership,uid,pid,tname,uname);}
 
-    public int setNewPname(int pid,String newName){return projectMapper.setNewPname(pid,newName);}
     public List<Team> getTeamByTID(String tid){return projectMapper.getTeamByTID(tid);}
     public Team getTeamOwnerByTID(String tid){return projectMapper.getTeamOwnerByTID(tid);}
 
@@ -92,6 +92,7 @@ public class ProjectService{
     public List<Team> getAllTeam(){return projectMapper.getAllTeam();}
 
     public int deleteTeam(String tid){return projectMapper.deleteTeam(tid);}
+    */
 
     public int setNewTagLine(int pid,String newTag){return projectMapper.setNewTagLine(pid,newTag);}
     public int LikeProject(int pid,String uid,String uname){return projectMapper.LikeProject(pid,uid,uname);}
@@ -140,7 +141,9 @@ public class ProjectService{
     public List<TeacherCommentDTO> GetAwardCommentByID(int pid){return projectMapper.GetAwardCommentByID(pid);}
     public int DeleteAward(int pid,String uid){return projectMapper.DeleteAward(pid,uid);}
 
-    public Project getProjectPageByPid(int pid){return projectMapper.getProjectPageByPid(pid);}
+    public ProjectDTOFull getProjectPageByPid(int pid){return projectMapper.getProjectPageByPid(pid);}
+
+    public Project getFullProjectByPid(int pid){return projectMapper.getFullProjectByPid(pid);}
 
     public int DeleteAwardAdmin(int pid){return projectMapper.DeleteAwardAdmin(pid);}
 
@@ -164,10 +167,33 @@ public class ProjectService{
 
     public List<Project_like> ShowMyLike(String uid){return projectMapper.ShowMyLike(uid);}
 
+    public int joinTeam(String invitecode, String cookie){
+        return projectMapper.joinTeam(invitecode, cookie);
+    }
+
+    public List<UserDTO> getTeammateByPID(int pid){
+        return projectMapper.getTeammateByPID(pid);
+    }
+
+    public int removeTeammate(int pid, String uid){
+        return projectMapper.removeTeammate(pid, uid);
+    }
+
+    public int generateNewInviteCode(int pid, String invitecode){
+        return projectMapper.generateNewInviteCode(pid, invitecode);
+    }
+
+    public int getPidByCode(String invitecode){
+        return projectMapper.getPidByCode(invitecode);
+    }
+/*
     public String getTidbyPid(int pid) {
         return projectMapper.getTidbyPid(pid);
     }
     public String getTnamebyPid(int pid) {
         return projectMapper.getTnamebyPid(pid);
     }
+ */
 }
+
+

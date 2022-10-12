@@ -62,7 +62,7 @@
     $("#login_sub").click(function(){
         let username = $("#login_username").val().trim();
         let password = $("#login_password").val().trim();
-
+        document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString();
         if( username != "" && password != "" ){
             $.ajax({
                 url:'./user/login',
@@ -70,7 +70,13 @@
                 data:{username:username,password:password},
                 success:function(data, textStatus, xhr){
                     if(data != "failed"){
-                        $(location).attr("href", "./space.html");
+                        let from = getUrlParam('from');
+                        if(getUrlParam('from') == null){
+                            $(location).attr("href", "./space.html");
+                        }else{
+                            $(location).attr("href", from);
+                        }
+
                     }else{
                         alert(data);
                     }
@@ -117,6 +123,12 @@
     }
     if (getCookie("Auth")!=""){
         $(location).attr("href", "./space.html");
+    }
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
     }
 </script>
 </body>

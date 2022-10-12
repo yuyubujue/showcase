@@ -1,47 +1,27 @@
-package com.showcase.project.domain;
+package com.showcase.project.dto;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.io.Serializable;
 
-@Entity
-@Table
-public class Project implements Serializable {
-
-
-    @Id
-    @Column(name = "ID")
+public class ProjectDTOFull {
     private int id;
 
-    @Column(name = "PNAME")
     private String pname;
 
-    @Column(name = "TAGLINE")
     private String tagline;
 
-    @Column(name = "INTRODUCTION")
     private String introduction;
 
-    @Column(name = "OWNER")
     private String owner;
 
-    @Column(name = "TIMESTAP")
     private String timestamp;
 
-    @Column(name = "COVERIMAGE")
     private byte[] coverImage;
 
-    @Column(name = "UPDATETIME")
     private String updatetime;
 
-    @Column(name = "INVITECODE")
-    private String invitecode;
+    public ProjectDTOFull(){}
 
-    public Project() {}
-
-    public Project(String pname, String tagline, String introduction,String owner,String timestamp,byte[] coverImage,String updatetime) {
+    public ProjectDTOFull(String pname, String tagline, String introduction,String owner,String timestamp,byte[] coverImage,String updatetime) {
         this.pname = pname;
         this.tagline = tagline;
         this.owner = owner;
@@ -79,9 +59,5 @@ public class Project implements Serializable {
 
     public String getTimestamp() {
         return timestamp;
-    }
-
-    public String getInvitecode() {
-        return invitecode;
     }
 }
