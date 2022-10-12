@@ -73,7 +73,7 @@ public interface ProjectMapper {
             "from project_like\n" +
             "where PID = #{id}")
     int GetProjectLikeByID(int id);
-    @Select("select project.ID,project.PNAME,project.OWNER,project.TIMESTAMP,sum(project_like.LIKEAMOUNT) as likeamount from project left join project_like on project_like.PID = project.ID group by project.ID order by sum(LIKEAMOUNT) desc order by project.UPDATETIME limit #{start},#{end}")
+    @Select("select project.ID,project.PNAME,project.OWNER,project.TIMESTAMP,ifnull(sum(project_like.LIKEAMOUNT),0) as likeamount from project left join project_like on project_like.PID = project.ID group by project.ID order by sum(LIKEAMOUNT) desc,project.UPDATETIME  limit #{start},#{end}")
     List<likeDTO> GetProjectByLike(int start,int end);
 
 /*
