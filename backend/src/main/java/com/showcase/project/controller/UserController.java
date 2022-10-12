@@ -2,6 +2,7 @@ package com.showcase.project.controller;
 import com.alibaba.fastjson2.JSON;
 import com.showcase.project.domain.User;
 import com.showcase.project.dto.UserDTO;
+import com.showcase.project.service.SendMailService;
 import com.showcase.project.service.UserService;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class UserController {
     @Autowired(required = false)
     private UserService UserService;
     ServletContext context;
+
+    @Autowired(required = false)
+    private SendMailService sendMailService;
 
     @CrossOrigin(origins = "*")
     @PostMapping("/register")
@@ -63,6 +67,7 @@ public class UserController {
                 e.printStackTrace();
             }
             if(UserService.register(UUID.randomUUID().toString(), username, UserService.md5Encode(password), email, "user",data) == 1) {
+                sendMailService.sendSimpleMail(email,"Register success","Username:"+ username);
                 return "succeed";
             }else{
                 return "failed";

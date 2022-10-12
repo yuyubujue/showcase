@@ -1,5 +1,5 @@
 package com.showcase.project.controller;
-
+import org.apache.commons.codec.binary.Base64;
 import com.alibaba.fastjson2.JSON;
 import com.showcase.project.alogrithm.TIDgenerator;
 import com.showcase.project.alogrithm.VerificationCodeGenerator;
@@ -36,7 +36,7 @@ public class ProjectController {
     //  Project
     @PostMapping(value = "/uploadProject")
     @ResponseBody
-    public String upload(@RequestParam String pname, @RequestParam String shortTagline,@RequestParam MultipartFile file, @RequestParam String introduction, @RequestParam String skills, @CookieValue(name = "Auth") String cookie) {
+    public String upload(@RequestParam String pname, @RequestParam String shortTagline,@RequestBody MultipartFile file, @RequestParam String introduction, @RequestParam String skills, @CookieValue(name = "Auth") String cookie) {
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
             return "unauthorized";
@@ -58,6 +58,7 @@ public class ProjectController {
 //            e.printStackTrace();
 //        }
         byte[] data;
+        String encoded;
         try {
             InputStream ins = file.getInputStream();
             byte[] buffer = new byte[1024];
@@ -68,15 +69,21 @@ public class ProjectController {
             }
             bos.flush();
             data = bos.toByteArray();
+            encoded = Base64.encodeBase64String(data);
+
         } catch (IOException e) {
             return "io fail";
         }
-        if (projectService.uploadProject(pname, shortTagline, introduction, user.getId(), data) == 1) {
+        if (projectService.uploadProject(pname, shortTagline, introduction, user.getId(), encoded) == 1) {
             int pid = projectService.getNewOne().getID();
-            skills = skills.trim();
-            String skill[] = skills.split(",");
-            for (int i = 0; i < skill.length; i++) {
-                projectService.UploadProjectSkill(pid, skill[i]);
+            if (skills.contains(",")==false){
+                projectService.UploadProjectSkill(pid,skills.trim());
+            }else {
+                skills = skills.trim();
+                String skill[] = skills.split(",");
+                for (int i = 0; i < skill.length; i++) {
+                    projectService.UploadProjectSkill(pid, skill[i]);
+                }
             }
             return String.valueOf(projectService.getNewOne().getID());
 
@@ -109,7 +116,8 @@ public class ProjectController {
             }
             bos.flush();
             data = bos.toByteArray();
-            projectService.updateProjectCover(pid, data);
+            String encoded = Base64.encodeBase64String(data);
+            projectService.updateProjectCover(pid, encoded);
             return "succeed";
         } catch (IOException e) {
             return "failed";
@@ -270,6 +278,23 @@ public class ProjectController {
         }
     }
 
+    @GetMapping(value = "/sendInvitation")
+    @ResponseBody
+    public String sendInvitation(@RequestParam String uname,@RequestParam("pid") int pid, @CookieValue(name = "Auth") String cookie) {
+        User user = userService.authorityAndLoginJudge(cookie);
+        if (user == null) {
+            return "unauthorized";
+        }
+        User invited = userService.findUserByName(uname);
+        String inv_email = invited.getEmail();
+        Project project = projectService.getFullProjectByPid(pid);
+        if (user.getId().equals(project.getOwner())){
+            sendMailService.sendSimpleMail(inv_email,"invitation from project "+project.getID(),project.getInvitecode());
+            return "sent success";
+        }else {
+            return "unauthorized";
+        }
+    }
     @PostMapping(value = "/invite")
     @ResponseBody
     public String invite(@RequestParam("invitecode") String invitecode, @CookieValue(name = "Auth") String cookie) {

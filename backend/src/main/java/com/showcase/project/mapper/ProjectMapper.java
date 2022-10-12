@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface ProjectMapper {
     @Insert("INSERT INTO `project` (`PNAME`, `TAGLINE`, `INTRODUCTION`, `OWNER`, `COVERIMAGE`, `INVITECODE`) VALUES (#{pname}, #{tagline}, #{introduction}, #{owner}, #{img}, #{code})")
-    int insertProject(String pname, String tagline, String introduction, String owner, byte[] img, String code);
+    int insertProject(String pname, String tagline, String introduction, String owner, String img, String code);
     @Select("select * from `project` order by TIMESTAMP desc limit ${start}, ${end}")
     List<ProjectDTO> getProjectsByCreateTime(int start, int end);
     @Select("select * from `project` order by TIMESTAMP limit ${start}, ${end}")
@@ -52,7 +52,7 @@ public interface ProjectMapper {
     @Delete("delete from verification where VERCODE = #{vercode}")
     int DeleteCode(String vercode);
     @Update("update project SET COVERIMAGE = #{file} WHERE ID = #{id}")
-    int updateProjectCover(int id, byte[] file);
+    int updateProjectCover(int id, String file);
     @Insert("Insert into `project_photo` (`PID`,`PHOTO`) values (#{pid},#{file})")
     int uploadProjectImg(int pid,byte[] file);
     @Select("Select * from `project_photo` where PID = #{pid}")
@@ -73,7 +73,7 @@ public interface ProjectMapper {
             "from project_like\n" +
             "where PID = #{id}")
     int GetProjectLikeByID(int id);
-    @Select("select project.ID,project.PNAME,project.OWNER,project.TIMESTAMP,sum(project_like.LIKEAMOUNT) as likeamount from project left join project_like on project_like.PID = project.ID group by project.ID order by sum(LIKEAMOUNT) desc limit #{start},#{end}")
+    @Select("select project.ID,project.PNAME,project.OWNER,project.TIMESTAMP,sum(project_like.LIKEAMOUNT) as likeamount from project left join project_like on project_like.PID = project.ID group by project.ID order by sum(LIKEAMOUNT) desc order by project.UPDATETIME limit #{start},#{end}")
     List<likeDTO> GetProjectByLike(int start,int end);
 
 /*

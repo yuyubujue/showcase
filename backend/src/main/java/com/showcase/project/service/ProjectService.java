@@ -1,6 +1,7 @@
 package com.showcase.project.service;
 
 import com.showcase.project.alogrithm.TIDgenerator;
+import com.showcase.project.alogrithm.VerificationCodeGenerator;
 import com.showcase.project.domain.*;
 import com.showcase.project.dto.*;
 import com.showcase.project.mapper.ProjectMapper;
@@ -54,8 +55,8 @@ public class ProjectService{
     }
 
 
-    public int uploadProject(String pname, String tagline,  String introduction, String owner, byte[] img) {
-        return projectMapper.insertProject(pname, tagline,  introduction, owner, img, TIDgenerator.getRandomTID());
+    public int uploadProject(String pname, String tagline,  String introduction, String owner, String img) {
+        return projectMapper.insertProject(pname, tagline,  introduction, owner, img, VerificationCodeGenerator.getRandomVCode());
     }
     public List<Project> getAllProject(){return projectMapper.getAllProject();}
     public ProjectDTO getProject(int id) {
@@ -64,7 +65,7 @@ public class ProjectService{
 
     public List<ProjectDTO> getProjectByUser(String UID){return projectMapper.getProjectByUser(UID);}
 
-    public int updateProjectCover(int id, byte[] file){return projectMapper.updateProjectCover(id, file);}
+    public int updateProjectCover(int id, String file){return projectMapper.updateProjectCover(id, file);}
     public int uploadProjectImg(int id, byte[] file){return projectMapper.uploadProjectImg(id, file);}
 
     public List<project_photo> getAllPhotoBypid(int pid){return projectMapper.getAllPhotoBypid(pid);}
