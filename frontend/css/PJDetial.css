@@ -145,6 +145,13 @@ a:focus{
     color: #999999;
 }
 
+#pjlangu{
+    font-weight: 400;
+    margin: 0 10px;
+    font-size: 13px;
+    color: #999999;
+}
+
 #pjname{
     min-height: 39px;
     font-size: 28px;

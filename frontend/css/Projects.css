@@ -16,6 +16,10 @@ a:hover{
     text-decoration: none;
 }
 
+a:focus{
+    text-decoration: none;
+}
+
 header{
     display: flex;
     flex-direction: column;
@@ -309,6 +313,50 @@ main .mainbody div{
 
 .mainleft li p{
     margin: 5px 15px;
+    height: 20px;
+    line-height: 20px;
+    text-align: start;
+    font-size: small;
+}
+
+
+.mainright li:first-child a{
+    line-height: 75px;
+
+}
+.mainright li:first-child p{
+    font-size: larger;
+}
+.number{
+    height: 22px;
+    width: 22px;
+    background-color: #00A1D6;
+    color: #fff;
+    text-align: center;
+    line-height: 22px;
+    margin-left: 20px;
+}
+
+.mainright li:first-child span{
+    height: 28px;
+    width: 28px;
+    line-height: 28px;
+}
+
+.mainright li{
+    width: 100%;
+    border: 1px solid #f5f5f5;
+}
+
+.mainright p{
+    text-align: start;
+    color: #000;
+    margin: 0;
+    text-overflow: ellipsis;
+}
+
+.mainright p:hover{
+    color: #00A1D6;
 }
 
 #backtop{
@@ -359,10 +407,6 @@ main .mainbody div{
     padding: 0;
 }
 
-.mainright h3{
-    height: 50px;
-    margin-left: 15px;
-}
 
 .mainright ul{
     margin: 0 auto;
@@ -370,11 +414,6 @@ main .mainbody div{
     border-radius: 5px;
 }
 
-.mainright li{
-    width: 100%;
-    margin: 0 auto;
-    border: 1px solid #f5f5f5;
-}
 
 .mainright li:nth-child(2n){
     background-color: #f5f5f5;
@@ -382,7 +421,9 @@ main .mainbody div{
 
 
 .mainright li a{
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: start;
     height: 50px;
     line-height: 50px;
     text-align: center;
@@ -390,4 +431,6 @@ main .mainbody div{
 }
 .mainright li:first-child a{
     height: 75px;
+    line-height: 75px;
+
 }
