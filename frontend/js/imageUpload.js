@@ -1,61 +1,78 @@
 
 //choose
 
-function showImages() {
-  const content = document.getElementById('images');
-  content.innerHTML = '';
-  document.getElementById('feedback').innerText = null;
-  const images = document.querySelector('#images');
-  const files = document.querySelector('#pj_images').files;
-  function readAndPreview(file) {
-    if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        const image = new Image();
-        image.height = 100;
-        image.title = file.name;
-        image.src = reader.result;
-        images.appendChild(image);
-      }, false);
+// function showImages() {
+//   const content = document.getElementById('images');
+//   content.innerHTML = '';
+//   document.getElementById('feedback').innerText = null;
+//   const images = document.querySelector('#images');
+//   const files = document.querySelector('#pj_images').files;
+//   function readAndPreview(file) {
+//     if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+//       const reader = new FileReader();
+//       reader.addEventListener("load", () => {
+//         const image = new Image();
+//         image.height = 100;
+//         image.title = file.name;
+//         image.src = reader.result;
+//         images.appendChild(image);
+//       }, false);
 
-      reader.readAsDataURL(file);
-    }
-  }
+//       reader.readAsDataURL(file);
+//     }
+//   }
 
-  if (files) {
-    Array.prototype.forEach.call(files, readAndPreview);
-    if(files.length != 0){
-      showbutton();
-    }
+//   if (files) {
+//     Array.prototype.forEach.call(files, readAndPreview);
+//     if(files.length != 0){
+//       showbutton();
+//     }
     
-  }
+//   }
+// }
+
+// const showbutton = () => {
+//   document.getElementById("upimg").style.display = "block";
+// }
+// const hidebutton = () => {
+//   document.getElementById("upimg").style.display = "none";
+// }
+
+// function Uploadimg(){
+//     var files = document.querySelector('#pj_images').files;
+//     document.getElementById('feedback').innerText = `${files.length} file(s) uploaded successfully!`;
+//     hidebutton();
+// }
+const show = () =>{
+  document.getElementById("size").style.display = "block";
 }
 
-const showbutton = () => {
-  document.getElementById("upimg").style.display = "block";
-}
-const hidebutton = () => {
-  document.getElementById("upimg").style.display = "none";
+const hiden = () =>{
+  document.getElementById("size").style.display = "none";
 }
 
-function Uploadimg(){
-    var files = document.querySelector('#pj_images').files;
-    document.getElementById('feedback').innerText = `${files.length} file(s) uploaded successfully!`;
-    hidebutton();
-}
+
 
 function previewFile() {
+  var maxsize = 2 * 1024 * 1024;
   var preview = document.querySelector('#pjCoverimg');
-  var file    = document.querySelector('#pj_cover').files[0];
-  var reader  = new FileReader();
+  var file = document.querySelector('#pj_cover').files[0];
+  if(file.size > maxsize){
+    show();
+    var obj = document.querySelector('#pj_cover');
+    obj.outerHTML=obj.outerHTML;
+  }else{
+    var reader  = new FileReader();
+    hiden();
+    reader.addEventListener("load", function () {
+      preview.src = reader.result;
+    }, false);
+    if (file) {
+      reader.readAsDataURL(file);
+    }
 
-  reader.addEventListener("load", function () {
-    preview.src = reader.result;
-  }, false);
-
-  if (file) {
-    reader.readAsDataURL(file);
   }
+  
 }
 
 
