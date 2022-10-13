@@ -45,7 +45,7 @@
         </section>
         <section id="pjpost">
             <div id="pjposttext">
-                <h1 class="col-md-10">Post a new Project</h1>
+                <h1 class="col-md-10">Edit a Project</h1>
             </div>
         </section>
     </header>
@@ -85,11 +85,11 @@
                 </label>
                 <input type="text" id="pj_Tech" v-model="pj_Tech" readonly> </input>
                 <span>
-                    <label><input type="checkbox" v-model="pj_Tech" value="C#"><span>C#</span></label>
-                    <label><input type="checkbox" v-model="pj_Tech" value="C++"><span>C++</span></label>
-                    <label><input type="checkbox" v-model="pj_Tech" value="Javascript"><span>Javascript</span></label>
-                    <label><input type="checkbox" v-model="pj_Tech" value="Java"><span>Java</span></label>
-                    <label><input type="checkbox" v-model="pj_Tech" value="Python"><span>Python</span></label>
+                    <label><input class="skill" type="checkbox" v-model="pj_Tech" value="C#"><span>C#</span></label>
+                    <label><input class="skill" type="checkbox" v-model="pj_Tech" value="C++"><span>C++</span></label>
+                    <label><input class="skill" type="checkbox" v-model="pj_Tech" value="Javascript"><span>Javascript</span></label>
+                    <label><input class="skill" type="checkbox" v-model="pj_Tech" value="Java"><span>Java</span></label>
+                    <label><input class="skill" type="checkbox" v-model="pj_Tech" value="Python"><span>Python</span></label>
                     <label>
                         <input type="checkbox" value="Other">
                         <span>Other</span>
@@ -132,8 +132,8 @@
             
 
             <div class="pjAction">
-                <input type="submit" value="Save" id="pjSave" class="btn btn-success" @click="postPj">
-                <input type="button" value="Cancel" class="btn btn-danger">
+                <input type="submit" value="Save" id="pjSave" class="btn btn-success" @click="updatePj">
+                <input type="button" value="Cancel" class="btn btn-danger" @click="backPj">
             </div>
  
         </section>
@@ -153,41 +153,150 @@
         <script>
             
 
-            Vue.createApp({
+            let pj = Vue.createApp({
                 data(){
                     return{
                         pj_name:"",
                         pj_Tagline:"",
                         pj_Tech:[],
-                        pj_TechO:[]       
+                        pj_TechO:[],
+                        pj_Cover:"",
+                        pj_intro:""       
                     }
                 },
                 methods:{
-                    postPj(){ 
+                    updatePj(){ 
+                        let pjId = this.getUrlParam("pid");
                         let intro = editor.getHtml();
                         let separate = '';
                         var coverbase = document.getElementById("pjCoverimg").src;
-                        // var covername = this.pj_name+"-cover";
-                        // let file = dataURLtoFile(coverbase, covername);
-                        let param = new FormData();
-                        param.append("pname",this.pj_name);
-                        param.append("shortTagline",this.pj_Tagline);
-                        param.append("file",coverbase);
-                        param.append("introduction",intro);
-                        if(this.pj_TechO.length != 0  && this.pj_Tech.length!=0){
+                        if(this.pj_TechO.length != 0 && this.pj_Tech.length!=0){
                             separate = ','
                         }
                         var skill =  this.pj_Tech+ separate + this.pj_TechO;
-                        param.append("skills",skill);           
-                        let config = {headers:{'Content-Type':'multipart/form-data'}};
-                        axios.post('project/uploadProject', param, config //+"?pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline + "&file=" + coverbase + "&introduction=" + intro + "&skills=" + this.pj_Tech+ separate + this.pj_TechO
+                        let param = new FormData(); 
+                        let config = {headers:{'Content-Type':'multipart/form-data'}};         
+                        // Cover
+                        param.append("pid",pjId);
+                        param.append("file",coverbase);
+                        axios.post('project/updateProjectCover', param, config//?Pid='+pjId+"&file="+coverbase
 	                        ).then(function (response) {
                             console.log(response);
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
+                        // Intro
+                        param = new FormData();
+                        param.append("NewPIntro",intro);
+                        param.append("Pid",pjId);
+                        axios.post('project/updateProjectIntro', param, config//?Pid='+pjId+"&NewPIntro="+pj.pj_intro
+	                        ).then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                        //pname
+                        param = new FormData();
+                        param.append("Pid",pjId);
+                        param.append("NewPname",pj.pj_name);
+                        axios.post('project/updateProjectName', param, config//?Pid='+pjId+"&NewPname="+pj.pj_name
+	                        ).then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                        //tagline
+                        param = new FormData();
+                        param.append("Pid",pjId);
+                        param.append("NewTagLine",pj.pj_Tagline);
+                        axios.post('project/updateProjectTagLine', param, config//?Pid='+pjId+"&NewTagLine="+pj.pj_Tagline
+	                        ).then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                        //skill
+                        param = new FormData();
+                        param.append("pid",pjId);
+                        param.append("skills",skill);
+                        axios.post('project/UpdateSkill', param, config//?Pid='+pjId+"&intro="+skill
+	                        ).then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                        alert("update Success!!");
+                        window.location.href = "./PJDetial.html?id="+pjId;
+                    },
+                    getUrlParam(name) {
+
+                        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+
+                        var r = window.location.search.substr(1).match(reg);
+
+                        if (r != null) return unescape(r[2]); return null;
+
+                    },
+                    getSkills(pid){
+                        axios.get('project/GetProjectSkills?pid='+pid)
+                        .then(function (response) {
+                            var skills= response.data.substr(1,response.data.length-2).split(",");
+                            var inputs = document.getElementsByClassName("skill");
+                            var skillo = new Array();
+                            var skillc = new Array();
+                            for(var i = 0; i<inputs.length; i++){
+                                for(var s = 0; s<skills.length; s++){
+                                    if(skills[s].trim()==inputs[i].value){
+                                        // inputs[i].checked = true;
+                                        skillc.push(inputs[i].value);
+                                    }
+                                }
+                            }
+                            pj.pj_Tech = skillc;
+                            if(skills.length > pj.pj_Tech.length){
+                                for(var i=0; i<skills.length; i++){
+                                    if(pj.pj_Tech.indexOf(skills[i].trim()) == -1){
+                                        skillo.push(skills[i].trim());
+                                    }
+                                }
+                            }
+                            pj.pj_TechO = skillo;
+                                                             
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    getProject(pid){
+                        axios.get('project/getProjectPageByPid?pid='+pid)
+                        .then(function (response) {
+                        let pjinfo = response.data;
+                        document.getElementById("pjCoverimg").src = pjinfo.coverImage;
+                        pj.pj_name= pjinfo.pname;
+                        pj.pj_Tagline= pjinfo.tagline;
+                        pj.getSkills(pid);
+                        pj.pj_intro = pjinfo.introduction;
+                        // vm.getName(pjinfo.owner);
+                        editor.setHtml(pj.pj_intro);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    backPj(){
+                        let pjId = this.getUrlParam("pid");
+                        window.location.href = "./PJDetial.html?id="+pjId;
                     }
+
+                },
+                mounted(){
+                    let pjId = this.getUrlParam("pid");
+                    this.getProject(pjId);
                 }
             }).mount('.content')
         </script>   
