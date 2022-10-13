@@ -138,6 +138,9 @@ public interface ProjectMapper {
     @Delete("Delete from `project_skill` where PID = #{pid} and SKILLS = #{skill}")
     int RemoveSkill(int pid,String skill);
 
+    @Delete("Delete from `project_skill` where PID = #{pid}")
+    int RemoveAllSkill(int pid);
+
     @Select("Select SKILLS from project_skill where PID =#{pid}")
     List<String> getProjectSkills(int pid);
 

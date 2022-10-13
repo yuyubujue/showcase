@@ -912,6 +912,40 @@ public class ProjectController {
             return "upload skill fail";
         }
     }
+
+    @PostMapping("/UpdateSkill")
+    @GetMapping
+    public String UpdateSkill(@RequestParam int pid,@RequestParam String skills,@CookieValue(name = "Auth") String cookie){
+        User user = userService.authorityAndLoginJudge(cookie);
+        if (user == null) {
+            return "unauthorized";
+        }
+        ProjectDTO checker2 = projectService.getProject(pid);
+        if (checker2 == null) {
+            return "no such project!";
+        }
+        String uid = user.getId();
+        Project checker1 = projectService.projectChecker(pid,uid);
+        if (checker1 == null){
+            return "not your project!";
+        }
+        try {
+            projectService.RemoveAllSkill(pid);
+            if (skills.contains(",") == false) {
+                projectService.UploadProjectSkill(pid, skills.trim());
+            } else {
+                skills = skills.trim();
+                String skill[] = skills.split(",");
+                for (int i = 0; i < skill.length; i++) {
+                    projectService.UploadProjectSkill(pid, skill[i]);
+                }
+
+            }
+            return "delete Success!";
+        }catch (Exception e){
+            return "delete fail!";
+        }
+    }
     @PostMapping("/RemoveSkill")
     @ResponseBody
     public String RemoveSkill(@RequestParam int pid, @RequestParam String skills, @CookieValue(name = "Auth") String cookie) {
