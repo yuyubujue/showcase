@@ -133,7 +133,7 @@
                 },
                 methods:{
                     getLike(pjId){
-                        var like = 0;
+                        let like = 0;
                         axios.get('project/getProjectLikeByID?pid='+pjId)
                         .then(function (response) {
                             like = response.data;
@@ -141,7 +141,7 @@
                         .catch(function (error) {
                             console.log(error);
                         });
-                        return(like);
+                        return like;
                     },
                     getpjBylike(){
                         axios.get('project/GetProjectByLike/1')
@@ -156,7 +156,7 @@
                                     like = 0;
                                 }
                                 var li = document.createElement("li");
-                                li.innerHTML = "<a href='./PJDetial.html?id=" + pjId +"'><span class='number'>"+(i+1)+"</span><p> &nbsp "+pname+"</p></a>";
+                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><span class='number'>"+(i+1)+"</span><p> &nbsp "+pname+"</p></a>";
                                 document.getElementById("javarank").appendChild(li);
                             }
                         })
@@ -178,7 +178,7 @@
                                 }
                                 var like = pj.getLike(pjId);
                                 var li = document.createElement("li");
-                                li.innerHTML = "<a href='./PJDetial.html?id=" + pjId +"'><img src="+cover+"><p><span>&#10084; "+like+" </span></p><p>"+pname+"</p></a>";
+                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src="+cover+"><p><span>&#10084; "+like+" </span></p><p>"+pname+"</p></a>";
                                 document.getElementById("javapj").appendChild(li);
                             }
                         })
@@ -191,7 +191,7 @@
                 mounted(){
                     this.getAllpj();
                     this.getpjBylike();
-                    
+
                 }
             }).mount('.main')
     </script>
@@ -208,7 +208,7 @@
             <nav class="col-md-6">
                 <ul>
                     <h4>Profile</h4>
-                    <li><a href="./PJDetial.html">My projects</a></li>
+                    <li><a href="./PJDetail.html">My projects</a></li>
                     <li><a href="./space.html">My homepage</a></li>
                     <li><a href="./setting.html">Settings</a></li>
                 </ul>
