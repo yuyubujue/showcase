@@ -66,6 +66,10 @@ public interface ProjectMapper {
     @Update("Update project SET PNAME = #{newname} where ID = #{id}")
     int setNewPname(int id,String newname);
 
+
+    @Delete("Delete from `project_skill` where PID = #{pid}")
+    int RemoveAllSkill(int pid);
+
     @Update("Update project SET TAGLINE = #{tag} where ID = #{id}")
     int setNewTagLine(int id,String tag);
 
@@ -138,9 +142,6 @@ public interface ProjectMapper {
     @Delete("Delete from `project_skill` where PID = #{pid} and SKILLS = #{skill}")
     int RemoveSkill(int pid,String skill);
 
-    @Delete("Delete from `project_skill` where PID = #{pid}")
-    int RemoveAllSkill(int pid);
-
     @Select("Select SKILLS from project_skill where PID =#{pid}")
     List<String> getProjectSkills(int pid);
 
@@ -156,7 +157,7 @@ public interface ProjectMapper {
     @Delete("Delete from `team` where UID = #{uid} AND PID = ${pid}")
     int removeTeammate(int pid, String uid);
 
-    @Update("Update project SET INVITECODE = #{tag} where ID = #{pid}")
+    @Update("Update project SET INVITECODE = #{invitecode} where ID = #{pid}")
     int generateNewInviteCode(int pid, String invitecode);
 
     @Select("Select ID from project where INVITECODE = #{invitecode}")

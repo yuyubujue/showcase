@@ -36,45 +36,12 @@ public class ProjectController {
     //  Project
     @PostMapping(value = "/uploadProject")
     @ResponseBody
-    public String upload(@RequestParam String pname, @RequestParam String shortTagline,@RequestBody MultipartFile file, @RequestParam String introduction, @RequestParam String skills, @CookieValue(name = "Auth") String cookie) {
+    public String upload(@RequestParam String pname, @RequestParam String shortTagline,@RequestParam String file, @RequestParam String introduction, @RequestParam String skills, @CookieValue(name = "Auth") String cookie) {
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
             return "unauthorized";
         }
-
-//        byte[] data = new byte[2];
-//        try {
-//            ClassPathResource classPathResource = new ClassPathResource("static/null.png");
-//            InputStream ins = classPathResource.getInputStream();
-//            byte[] buffer = new byte[2];
-//            int len = 0;
-//            org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//            while ((len = ins.read(buffer)) != -1) {
-//                bos.write(buffer, 0, len);
-//            }
-//            bos.flush();
-//            data = bos.toByteArray();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        byte[] data;
-        String encoded;
-        try {
-            InputStream ins = file.getInputStream();
-            byte[] buffer = new byte[1024];
-            int len = 0;
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            while ((len = ins.read(buffer)) != -1) {
-                bos.write(buffer, 0, len);
-            }
-            bos.flush();
-            data = bos.toByteArray();
-            encoded = Base64.encodeBase64String(data);
-
-        } catch (IOException e) {
-            return "io fail";
-        }
-        if (projectService.uploadProject(pname, shortTagline, introduction, user.getId(), encoded) == 1) {
+        if (projectService.uploadProject(pname, shortTagline, introduction, user.getId(), file) == 1) {
             int pid = projectService.getNewOne().getID();
             if (skills.contains(",")==false){
                 projectService.UploadProjectSkill(pid,skills.trim());
@@ -85,7 +52,7 @@ public class ProjectController {
                     projectService.UploadProjectSkill(pid, skill[i]);
                 }
             }
-            return String.valueOf(projectService.getNewOne().getID());
+            return String.valueOf(pid);
 
         } else {
             return "failed";
@@ -95,7 +62,7 @@ public class ProjectController {
 
     @PostMapping(value = "/updateProjectCover")
     @ResponseBody
-    public String uploadProjectCover(@RequestParam int pid, @RequestParam MultipartFile file, @CookieValue(name = "Auth") String cookie) {
+    public String uploadProjectCover(@RequestParam int pid, @RequestParam String file, @CookieValue(name = "Auth") String cookie) {
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
             return "unauthorized";
@@ -105,22 +72,10 @@ public class ProjectController {
         if (checker == null) {
             return "not your project!";
         }
-        byte[] data;
-        try {
-            InputStream ins = file.getInputStream();
-            byte[] buffer = new byte[1024];
-            int len = 0;
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            while ((len = ins.read(buffer)) != -1) {
-                bos.write(buffer, 0, len);
-            }
-            bos.flush();
-            data = bos.toByteArray();
-            String encoded = Base64.encodeBase64String(data);
-            projectService.updateProjectCover(pid, encoded);
-            return "succeed";
-        } catch (IOException e) {
-            return "failed";
+        if(projectService.updateProjectCover(pid, file) == 1){
+            return "success";
+        }else {
+            return "failed!";
         }
     }
     @PostMapping(value = "/updateProjectIntro")
@@ -295,6 +250,7 @@ public class ProjectController {
             return "unauthorized";
         }
     }
+
     @PostMapping(value = "/invite")
     @ResponseBody
     public String invite(@RequestParam("invitecode") String invitecode, @CookieValue(name = "Auth") String cookie) {
@@ -334,9 +290,9 @@ public class ProjectController {
         }
     }
 
-    @GetMapping(value = "/generateNewInviteCode")
+    @GetMapping(value = "/generateNewInviteCode/{pid}")
     @ResponseBody
-    public String generateNewInviteCode(@RequestParam("pid") int pid, @CookieValue(name = "Auth") String cookie) {
+    public String generateNewInviteCode(@PathVariable("pid") int pid, @CookieValue(name = "Auth") String cookie) {
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
             return "unauthorized";
@@ -687,7 +643,7 @@ public class ProjectController {
 
     @PostMapping(value = "/writeComment")
     @ResponseBody
-    public String writeComment(@RequestParam int pid, String comment, @CookieValue(name = "Auth") String cookie) {
+    public String writeComment(@RequestParam int pid, @RequestParam String comment, @CookieValue(name = "Auth") String cookie) {
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
             return "unauthorized";
@@ -946,6 +902,7 @@ public class ProjectController {
             return "delete fail!";
         }
     }
+
     @PostMapping("/RemoveSkill")
     @ResponseBody
     public String RemoveSkill(@RequestParam int pid, @RequestParam String skills, @CookieValue(name = "Auth") String cookie) {

@@ -164,8 +164,6 @@ public class ProjectService{
 
     public int RemoveSkill(int pid,String skill) {return projectMapper.RemoveSkill(pid,skill);}
 
-    public int RemoveAllSkill(int pid) {return projectMapper.RemoveAllSkill(pid);}
-
     public List<String> getProjectSkills(int pid){return projectMapper.getProjectSkills(pid);}
 
     public List<Project_like> ShowMyLike(String uid){return projectMapper.ShowMyLike(uid);}
@@ -189,6 +187,8 @@ public class ProjectService{
     public int getPidByCode(String invitecode){
         return projectMapper.getPidByCode(invitecode);
     }
+
+    public int RemoveAllSkill(int pid) {return projectMapper.RemoveAllSkill(pid);}
 /*
     public String getTidbyPid(int pid) {
         return projectMapper.getTidbyPid(pid);
