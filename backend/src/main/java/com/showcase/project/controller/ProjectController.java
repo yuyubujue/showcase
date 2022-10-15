@@ -222,6 +222,12 @@ public class ProjectController {
         return JSON.toJSONString(projectService.getProjectByUser(uid));
     }
 
+    @GetMapping(value = "/getProjectsByPname")
+    @ResponseBody
+    public String getProjectsByPname(@RequestParam("pname") String pname) {
+        return JSON.toJSONString(projectService.getProjectByPname(pname));
+    }
+
 
 //    @GetMapping(value = "/getProject")
 //    @ResponseBody

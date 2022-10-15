@@ -65,6 +65,8 @@ public class ProjectService{
 
     public List<ProjectDTO> getProjectByUser(String UID){return projectMapper.getProjectByUser(UID);}
 
+    public List<Project> getProjectByPname(String pname){return projectMapper.getProjectByPname(pname);}
+
     public int updateProjectCover(int id, String file){return projectMapper.updateProjectCover(id, file);}
     public int uploadProjectImg(int id, byte[] file){return projectMapper.uploadProjectImg(id, file);}
 

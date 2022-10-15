@@ -33,6 +33,8 @@ public interface ProjectMapper {
     ProjectDTO getProject(int ID);
     @Select("select * from `project` where OWNER = #{UID}")
     List<ProjectDTO> getProjectByUser(String UID);
+    @Select("select * from `project` where PNAME like CONCAT('%',#{pname},'%')")
+    List<Project> getProjectByPname(String pname);
     /*
     @Select("select * from team where TID = #{tid}")
     List<Team> getTeamByTID(String tid);
