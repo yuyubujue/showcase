@@ -1,4 +1,5 @@
 package com.showcase.project.controller;
+import com.showcase.project.dto.UserDTO;
 import org.apache.commons.codec.binary.Base64;
 import com.alibaba.fastjson2.JSON;
 import com.showcase.project.alogrithm.TIDgenerator;
@@ -11,6 +12,7 @@ import com.showcase.project.service.SendMailService;
 import com.showcase.project.service.UserService;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +34,9 @@ public class ProjectController {
 
     @Autowired(required = false)
     private SendMailService sendMailService;
+
+    @Value("${setting.websiteDomain}")
+    private String websiteDomain;
 
     //  Project
     @PostMapping(value = "/uploadProject")
@@ -221,13 +226,16 @@ public class ProjectController {
     @GetMapping(value = "/getInviteLink/{pid}")
     @ResponseBody
     public String getInviteLink(@PathVariable("pid") int pid, @CookieValue(name = "Auth") String cookie) {
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))){
+            return "Illegal input";
+        }
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
             return "unauthorized";
         }
         Project project = projectService.getFullProjectByPid(pid);
         if (user.getId().equals(project.getOwner())){
-            return project.getInvitecode();
+            return websiteDomain.substring(1,websiteDomain.length()-1) + "/invite.html?code=" + project.getInvitecode();
         }else {
             return "unauthorized";
         }
@@ -254,9 +262,22 @@ public class ProjectController {
     @PostMapping(value = "/invite")
     @ResponseBody
     public String invite(@RequestParam("invitecode") String invitecode, @CookieValue(name = "Auth") String cookie) {
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))||!invitecode.equals(UserService.strSpecialFilter(invitecode))){
+            return "Illegal input";
+        }
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
             return "unauthorized";
+        }
+        int pid = projectService.getPidByCode(invitecode);
+        Project pj = projectService.getFullProjectByPid(pid);
+        if (pj.getOwner().equals(user.getId())){
+            return "failed!";
+        }
+        for (UserDTO u : projectService.getTeammateByPID(pid)){
+            if (u.getId().equals(user.getId())){
+                return "failed!";
+            }
         }
         if(projectService.joinTeam(invitecode,cookie) == 1){
             return String.valueOf(projectService.getPidByCode(invitecode));
@@ -274,6 +295,9 @@ public class ProjectController {
     @PostMapping(value = "/removeTeammate")
     @ResponseBody
     public String removeTeammate(@RequestParam("pid") int pid, @RequestParam("uid") String uid, @CookieValue(name = "Auth") String cookie) {
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))||!uid.equals(UserService.strSpecialFilter(uid))){
+            return "Illegal input";
+        }
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
             return "unauthorized";
@@ -293,6 +317,9 @@ public class ProjectController {
     @GetMapping(value = "/generateNewInviteCode/{pid}")
     @ResponseBody
     public String generateNewInviteCode(@PathVariable("pid") int pid, @CookieValue(name = "Auth") String cookie) {
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))){
+            return "Illegal input";
+        }
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
             return "unauthorized";

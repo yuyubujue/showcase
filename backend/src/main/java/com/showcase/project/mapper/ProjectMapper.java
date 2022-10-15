@@ -148,7 +148,7 @@ public interface ProjectMapper {
     @Select("Select * from project where ID = #{pid}")
     ProjectDTOFull getProjectPageByPid(int pid);
 
-    @Insert("INSERT INTO `team`(`UID`, `PID`) VALUES ((SELECT ID from User WHERE COOKIE = #{cookie}),(SELECT ID from project WHERE INVITECODE = '#{invitecode}'))")
+    @Insert("INSERT INTO `team`(`UID`, `PID`) VALUES ((SELECT ID from User WHERE COOKIE = #{cookie}),(SELECT ID from project WHERE INVITECODE = #{invitecode}))")
     int joinTeam(String invitecode, String cookie);
 
     @Select("SELECT * FROM `team` t LEFT JOIN `User` u ON t.UID = u.ID WHERE t.pid = ${pid}")
