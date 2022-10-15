@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.cn/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.cn/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/PJDetial.css">
+    <!-- <script src="/vue/vue.js"></script> -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Project Detial Showcase</title>
+    <link rel="icon" href="./images/uoa-logo.jpg" id="icon">  </link>
+    <script src="./js/loginstate.js"></script>
+</head>
+<body>
+<div id="backtop">
+    <a href="#top"><img src="./images/rocket.svg" alt="backtop"></a>
+</div>
+<header>
+    <section id="top" class="top-nav">
+        <div class="left-menu col-md-8 ">
+            <img src="./images/uoa-logo.jpg" alt="logo">
+
+            <a href="./Home.html">Home</a>
+            <a href="javascript:;">About us</a>
+            <a href="./Projects.html"><button class="btn">Project</button></a>
+            <a href="./login.html" id="login">Log in</a>
+            <a href="./space.html" id="space">My Space</a>
+
+
+        </div>
+        <div class="search-wrap">
+            <div>
+                <input type="text" placeholder="Search Projects">
+                <img src="./images/Search.svg" alt="Search">
+            </div>
+            <a href="javascript:;" id="signout"><button class="btn" onclick="signout()">Sign Out</button></a>
+        </div>
+    </section>
+</header>
+<main>
+    <section class="pjinfo">
+        <div class="like" v-if="like">
+            <a href="javascript:;" @click="likePJ"><img src="./images/heart_remove.svg" alt="unlike_icon"><span><p>{{pj_likes}}</p></span></a>
+        </div>
+        <div class="like" v-if="unlike">
+            <a href="javascript:;" @click="unlikePJ"><img src="./images/red-heart-icon.svg" alt="like_icon"><span><p>{{pj_likes}}</p></span></a>
+        </div>
+        <div class="pjname-container">
+            <h1 id="pjname">{{pj_name}}</h1>
+            <div class="pjdetial-container">
+                <!-- <span id="pjlangu">{{pj_Tech}}</span> -->
+                <span id="pjupdate">{{pj_date}}</span>
+                <!-- <span id="pjviewnum">{{pj_views}} Views</span> -->
+                <span id="pjlikenum">{{pj_likes}} Likes</span>
+                <span id="pjcommentnum">{{pj_comnums}} Comments</span>
+            </div>
+            <span id="pjlangu">{{pj_Tech}}</span>
+        </div>
+        <div class="owneronly">
+            <div id="editPj">
+                <!-- <button>Edit Project</button> -->
+            </div>
+            <div id="invite">
+                <!-- <input type="button" value="Save" /> -->
+            </div>
+        </div>
+        
+        <div class="pjteam-container">
+            <div class="pjteaminfo">
+                <div class="teamicon">
+                    <div>
+                        <a v-bind:href="pj_ownerSpace">
+                            <img src="./images/uoa-logo.jpg" alt="">
+                        </a>
+                        <a v-bind:href="pj_ownerSpace" id="teamname">
+                            {{pj_tName}}
+                        </a>
+                    </div>
+                    
+                    <div id="tm">
+
+                    </div>
+                </div>
+                <!-- <div class="teamname-container">
+
+                </div> -->
+
+            </div>
+        </div>
+        <hr>
+        <div class="pjtext">
+            {{pj_Tagline}}
+        </div>
+        <hr>
+        <div class="pjtext" id="pjintro">
+
+        </div>
+
+        
+    </section>
+
+    <script>
+        function getUrlParam(name) {
+
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+
+            var r = window.location.search.substr(1).match(reg);
+
+            if (r != null) return unescape(r[2]); return null;
+
+        }
+
+        function cookie(cname){
+
+            var name = cname + "=";
+
+            var ca = document.cookie.split(';');
+
+            for(var i=0; i<ca.length; i++) {
+
+                var c = ca[i].trim();
+
+                if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+
+            }
+
+            return "";
+
+        }
+
+
+    </script>
+
+    <script>
+        var state = cookie("Auth");
+        let vm = Vue.createApp({
+            data(){
+                return{
+                    pj_name:"Project Nmae",
+                    pj_Tagline:"2022 University Surveys - it’s not too late to have your say (and be entered in the prize draw)! ",
+                    pj_Tech:"java",
+                    pj_date:"2022/10/06",
+                    pj_likes:50,
+                    pj_comnums:10,
+                    pj_tName:"Team Name",
+                    pj_intro:"The 2022 Learning and Teaching Survey and the 2022 Research on Academic Integrity in New Zealand (RAINZ) Survey will be closing in the next few days, so check your student email for an invitation message and survey link. Your feedback is very important – the survey results are used to make changes and improvements that benefit you, such as adding captions to lecture recordings. For further information view the Learning & Teaching SurveyLinks to an external site. or RAINZ SurveyLinks to an external site. webpages Participation in these surveys is completely voluntary and does not affect any of your grades – but if you complete your survey by 10 October, you will be in the prize draw to win 1 of 60 $100 Prezzy cards. ",
+                    pj_ownerSpace:"./space.html",
+                    like: true,
+                    unlike: false,
+                    pj_teammate:""
+                }
+            },
+            methods:{
+                getName(uuid){
+                    axios.get('user/getuser/'+uuid)
+                        .then(function (response) {
+                            vm.pj_tName = response.data.username;
+                            axios.post("./project/getTeammateByPID?pid=" + getUrlParam("id"))
+                              .then(function (res) {
+                                document.getElementById("tm").innerHTML = "";
+                                  try{
+                                      let teammateHTML = "";
+                                      let objs = res.data;
+                                      for (let z = 0;z<objs.length;z++){
+                                          teammateHTML+="<a href='./space.html?id="+ objs[z].id +"' title='"+objs[z].username+"'><img src='./user/getimg/" + objs[z].id + "' alt='"+objs[z].username+"'></a>";
+                                      }
+                                      document.getElementById("tm").innerHTML = teammateHTML;
+                                  }catch (err){
+                                      let obj = res.data;
+                                      document.getElementById("tm").innerHTML ="<a href='./space.html?id="+obj.id+"' title='"+obj.username+"'><img src='./user/getimg/" + obj.id + "' alt='"+obj.username+"'></a>";
+                                  }
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                likePJ(){
+                    if(state != "" && state != null){
+                        let pjId = getUrlParam("id");
+                        vm.like = !this.like;
+                        vm.unlike = !this.unlike;
+                        axios.post('project/like?pid='+pjId)
+                            .then(function (response) {
+                                // console.log(response);
+                                if(response.data != "repeated like"){
+                                    vm.pj_likes++;
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }else{
+                        alert("You need to be logged to like");
+                    }
+
+                },
+                unlikePJ(){
+                    vm.unlike = !this.unlike;
+                    vm.like = !this.like;
+                    let pjId = getUrlParam("id");
+                    axios.post('project/unlike?pid='+pjId)
+                        .then(function (response) {
+                            // console.log(response);
+                            vm.pj_likes--;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                getLike(){
+                    let pjId = getUrlParam("id");
+                    axios.get('project/getProjectLikeByID?pid='+pjId)
+                        .then(function (response) {
+                            vm.pj_likes= response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                likeState(){
+                    let pjId = getUrlParam("id");
+                    axios.get('project/getlikestatus?pid='+pjId)
+                        .then(function (response) {
+                            var state= response.data;
+                            if(state == "cannot like!"){
+                                vm.like = false;
+                                vm.unlike = true;
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                getSkills(){
+                    let pjId = getUrlParam("id");
+                    axios.get('project/GetProjectSkills?pid='+pjId)
+                        .then(function (response) {
+                            vm.pj_Tech= response.data.substr(1,response.data.length-2);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+
+            },
+            mounted(){
+                let pjId = getUrlParam("id");
+                if(pjId==null){
+
+                }else{
+                    axios.get('project/getProjectPageByPid?pid='+pjId)
+                        .then(function (response) {
+                            let pjinfo = response.data;
+                            vm.pj_name= pjinfo.pname;
+                            vm.pj_Tagline= pjinfo.tagline;
+                            // vm.pj_Tech= pjinfo.technologies;
+                            vm.pj_date= pjinfo.updatetime;
+                            document.getElementById('pjintro').innerHTML = pjinfo.introduction;
+                            vm.getName(pjinfo.owner);
+                            vm.pj_ownerSpace= "./space.html?id="+ pjinfo.owner;
+                            axios.get('user/getown')
+                                .then(function (response) {
+                                    user_id = response.data.id;
+                                    if(user_id == pjinfo.owner){
+                                        axios.get("./project/getInviteLink/" + getUrlParam("id"))
+                                            .then(function (res) {
+                                                document.getElementById("invite").innerHTML = "<p>Invite Link <input type='text' value='"+res.data+"' readonly> <button  href=\"javascript:void(0)\" onclick=\"generateNewInviteCode()\" class='glyphicon glyphicon-refresh'></button></p>";
+                                            })
+                                            .catch(function (error) {
+                                                console.log(error);
+                                            });
+                                        document.getElementById("editPj").innerHTML = '<a style="float:right" href="./PJEdit.html?pid='+ pjId +'">Edit Project</a>';
+                                    }
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+
+                }
+                this.getLike();
+                this.likeState();
+                this.getSkills();
+            }
+        }).mount('.pjinfo')
+
+    </script>
+<script>
+    function generateNewInviteCode() {
+        axios.get("./project/generateNewInviteCode/" + getUrlParam("id"))
+            .then(function (res) {
+                axios.get("./project/getInviteLink/" + getUrlParam("id"))
+                    .then(function (res) {
+                        document.getElementById("invite").innerHTML = "<p>Invite Link <input type='text' value='"+res.data+"' readonly> <button  href=\"javascript:void(0)\" onclick=\"generateNewInviteCode()\" class='glyphicon glyphicon-refresh'></button></p>";
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+</script>
+
+    <section class="pjcomments" >
+        <div class="commentnum" id="pjcommentnum">{{pj_comnums}} Comments</div>
+        <hr>
+        <div class="commentsend">
+            <div class="usericon"><img v-bind:src="uimg" alt=""></div>
+            <textarea type="text" placeholder="Say Hi to the World!" id="pj-comment-text" v-model="pj_comment"> </textarea>
+            <button type="submit" id="pj-comment-submit" @click="postComment">Post Comment</button>
+        </div>
+        <hr>
+        <div id="commentget">
+            <!--  -->
+            <div class="commentdiv">
+                <div class="usericon"><a href="#"><img src="./images/uoa-logo.jpg" alt=""></a></div>
+                <div class="commentarea">
+                    <a href="#" class="name"><h4>username</h4></a>
+                    <p>Chicken you are too beautiful</p>
+                    <span>
+                            <p class="commentTime">2022/02/20</p>
+                            <a href="#" id="del">Delete</a>
+                        </span>
+
+                </div>
+            </div>
+            <hr>
+            <!--  -->
+
+        </div>
+
+    </section>
+    <script>
+        var state = cookie("Auth");
+        let cm = Vue.createApp({
+            data(){
+                return{
+                    pj_comment:"",
+                    pj_Id:"",
+                    pj_comnums:0,
+                    uimg:"./images/uoa-logo.jpg"
+                }
+            },
+            methods:{
+                delComment(){
+                    var cid = event.target.id;
+                    let pjId = getUrlParam("id");
+                    axios.post('project/removeComment',
+                        "pid="+pjId+"&cid="+cid)
+                        .then(function (response) {
+                            cm.getComments();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                getComments(){
+                    let page = 1;
+                    let pjId = getUrlParam("id");
+                    let user_auth = "";
+                    let user_id = "";
+                    axios.get('user/getown')
+                        .then(function (response) {
+                            user_auth=response.data.authority;
+                            user_id = response.data.id;
+                            cm.uimg = "./user/getimg/"+user_id;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+
+                    axios.get('project/getComment/'+page+"?&pid="+pjId)
+                        .then(function (response) {
+                            vm.pj_comnums= response.data.length;
+                            cm.pj_comnums= response.data.length;
+                            var data = response.data;
+                            document.getElementById("commentget").innerHTML="";
+                            for(let i=0; i<response.data.length; i++){
+                                var comment = data[i].comment;
+                                var cTime = data[i].time;
+                                var cId = data[i].cid;
+                                var uuid = data[i].uid;
+                                var uname = data[i].uname;
+                                //
+                                var div_comment = document.createElement("div");
+                                div_comment.className="commentdiv";
+                                var div_usericon = document.createElement("div");
+                                div_usericon.className = "usericon";
+                                var a_user = document.createElement("a");
+                                a_user.href = "./space.html?id="+ uuid;
+                                //userIcon
+                                var img_icon = document.createElement("img");
+                                var imgsrc = "./images/uoa-logo.jpg";
+                                if(uuid != null && uuid != ""){
+                                    var imgsrc = "./user/getimg/"+uuid;
+                                }
+                                img_icon.src = imgsrc;
+                                a_user.appendChild(img_icon);
+                                //userIcon
+                                div_usericon.appendChild(a_user);
+                                var div_carea = document.createElement("div");
+                                div_carea.className = "commentarea";
+                                var a_username = document.createElement("a");
+                                a_username.href = "./space.html?id="+ uuid;
+                                a_username.className = "name";
+                                var hfour = document.createElement("h4");
+                                hfour.innerText = uname;
+                                a_username.appendChild(hfour);
+                                div_carea.appendChild(a_username);
+                                var p_comment = document.createElement("p");
+                                p_comment.innerText = comment;
+                                div_carea.appendChild(p_comment);
+                                var span = document.createElement("span");
+                                var p_time = document.createElement("p");
+                                p_time.innerText = cTime;
+                                p_time.className = "commentTime";
+                                span.appendChild(p_time);
+                                //Delete
+                                if(user_auth == "admin" || user_id == uuid){
+                                    var a_del = document.createElement("a");
+                                    a_del.href = "javascript:;";
+                                    a_del.className = "del";
+                                    a_del.innerText = "Delete";
+                                    a_del.id=cId;
+                                    a_del.onclick= cm.delComment;
+
+                                    // var del = '<a href="javascript:;" @click="delComment('+cId+')" id="del">Delete</a>';
+                                    // a_del.innerHTML =del;
+                                    span.appendChild(a_del);
+
+                                }
+                                //Delete
+                                div_carea.append(span);
+                                div_comment.append(div_usericon);
+                                div_comment.append(div_carea);
+                                document.getElementById("commentget").appendChild(div_comment);
+                                var hr = document.createElement("hr");
+                                document.getElementById("commentget").appendChild(hr);
+                            }
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                },
+                postComment(){
+                    let Id = getUrlParam("id");
+                    cm.pj_Id = Id;
+                    if(state != "" && state != null){
+                        axios.post('project/writeComment',
+                            "pid="+cm.pj_Id+"&comment="+cm.pj_comment)
+                            .then(function (response) {
+                                cm.pj_comment="";
+                                cm.getComments();
+
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+                    }else{
+                        alert("You need to be logged in to post a comment");
+                        // window.location.href = "./login.html";
+                    }
+                },
+                // getUserimg(uid){
+                //     // var uid = event.target.id;
+                //     var imgsrc = "./images/uoa-logo.jpg";
+                //     axios.get('user/getimg/'+uid)
+                //         .then(function (response) {
+                //             if(response.data != null && response.data != ""){
+                //                 imgsrc=response.data;
+                //             }
+
+                //         })
+                //         .catch(function (error) {
+                //             console.log(error);
+                //         });
+                //     console.log(imgsrc);
+                //     return imgsrc;
+                // }
+            },
+            mounted(){
+                this.getComments();
+
+            }
+        }).mount('.pjcomments')
+
+    </script>
+
+
+</main>
+<footer>
+    <section id="bottomBody" class=".container">
+        <nav class="col-md-6">
+            <ul>
+                <h4>Team19</h4>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+        </nav>
+        <nav class="col-md-6">
+            <ul>
+                <h4>Profile</h4>
+                <li><a href="./PJDetail.html">My projects</a></li>
+                <li><a href="./space.html">My homepage</a></li>
+                <li><a href="./setting.html">Settings</a></li>
+            </ul>
+        </nav>
+    </section>
+    <hr>
+    <section id="legalBar"><p>&copy; 2022 Team19.&nbspAll rights reserved. </p></section>
+</footer>
+</body>
+</html>
