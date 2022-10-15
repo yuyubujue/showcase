@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script src="./js/jquery-3.6.1.min.js"></script>
+</head>
 <script>
     window.onload=function() {
         let code = getUrlParam("code");
@@ -10,10 +18,10 @@
                 type: 'POST',
                 data: {invitecode: code},
                 success: function (data, textStatus, xhr) {
-                    if (data == "success") {
-                        $(location).attr("href", "./space.html");
+                    if (data != "failed!" && data != "unauthorized" && data != "Illegal input" ) {
+						$(location).attr("href", "./PJDetial.html?id=" + data);
                     } else {
-                        $(location).attr("href", "./PJDetial.html?id=" + data);
+                        $(location).attr("href", "./Home.html");
                     }
                 }
             });

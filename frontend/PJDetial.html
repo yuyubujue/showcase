@@ -26,7 +26,7 @@
             <div class="left-menu col-md-8 ">
                 <img src="./images/uoa-logo.jpg" alt="logo">
                 
-                <a href="javascript:;">Home</a>
+                <a href="./Home.html">Home</a>
                 <a href="javascript:;">About us</a>
                 <a href="./Projects.html"><button class="btn">Project</button></a>
                 <a href="./login.html" id="login">Log in</a>
@@ -62,6 +62,9 @@
                 </div>
                 <span id="pjlangu">{{pj_Tech}}</span>
             </div>
+            <div id="editPj">
+                <!-- <button>Edit Project</button> -->
+            </div>
             <div class="pjteam-container">
                 <div class="pjteaminfo">
                     <div class="teamicon">
@@ -84,7 +87,7 @@
             </div>
             <hr>
             <div class="pjtext" id="pjintro">
-                
+
             </div>
             
         </section>
@@ -216,15 +219,7 @@
                             console.log(error);
                         });
                     }
-                    // getOwn(){
-                    //     axios.get('user/getown')
-                    //     .then(function (response) {
-                    //         vm.pj_tName = response.data.id;
-                    //     })
-                    //     .catch(function (error) {
-                    //         console.log(error);
-                    //     });
-                    // }
+
                 },
                 mounted(){
                     let pjId = getUrlParam("id");
@@ -241,6 +236,17 @@
                         document.getElementById('pjintro').innerHTML = pjinfo.introduction;
                         vm.getName(pjinfo.owner);
                         vm.pj_ownerSpace= "https://api.crya.me/space.html?id="+ pjinfo.owner;
+                        axios.get('user/getown')
+                            .then(function (response) {
+                                user_id = response.data.id;
+                                if(user_id == pjinfo.owner){
+                                    
+                                    document.getElementById("editPj").innerHTML = '<a style="float:right" href="./PJEdit.html?pid='+ pjId +'">Edit Project</a>';
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -251,7 +257,6 @@
                     this.getLike();
                     this.likeState();
                     this.getSkills();
-                    
                 }
             }).mount('.pjinfo')
             
@@ -325,7 +330,8 @@
                             .catch(function (error) {
                                 console.log(error);
                             });
-                            
+                        
+
                         axios.get('project/getComment/'+page+"?&pid="+pjId)
                             .then(function (response) {
                                 vm.pj_comnums= response.data.length;

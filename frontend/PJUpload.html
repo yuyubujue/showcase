@@ -27,7 +27,7 @@
             <div class="left-menu col-md-8 ">
                 <img src="./images/uoa-logo.jpg" alt="logo">
                 
-                <a href="javascript:;">Home</a>
+                <a href="./Home.html">Home</a>
                 <a href="javascript:;">About us</a>
                 <a href="./Projects.html"><button class="btn">Project</button></a>
                 <a href="./login.html" id="login">Log in</a>
@@ -59,6 +59,7 @@
                 <div class="col-md-4" id="uploadcover">
                     <input type="file"  onchange="previewFile()" id="pj_cover" accept="image/jpeg,image/jpg,image/pjpeg,image/png,image/x-png,image/gif">
                     <img src="./images/uoa-logo.jpg" id="pjCoverimg"  alt="Image preview">
+                    <p id="size" style="color: red; display: none;">The size of project cover cannot larger than 2MB!</p>
                 </div>
     
             </div>
@@ -167,20 +168,20 @@
                         let intro = editor.getHtml();
                         let separate = '';
                         var coverbase = document.getElementById("pjCoverimg").src;
-                        var covername = this.pj_name+"-cover";
-                        let file = dataURLtoFile(coverbase, covername);
+                        // var covername = this.pj_name+"-cover";
+                        // let file = dataURLtoFile(coverbase, covername);
                         let param = new FormData();
                         param.append("pname",this.pj_name);
                         param.append("shortTagline",this.pj_Tagline);
-                        param.append("file",file);
+                        param.append("file",coverbase);
                         param.append("introduction",intro);
-                        if(this.pj_TechO.length != 0){
+                        if(this.pj_TechO.length != 0  && this.pj_Tech.length!=0){
                             separate = ','
                         }
                         var skill =  this.pj_Tech+ separate + this.pj_TechO;
                         param.append("skills",skill);           
                         let config = {headers:{'Content-Type':'multipart/form-data'}};
-                        axios.post('project/uploadProject',param,config//+"?pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline + "&file=" + file + "&introduction=" + intro + "&skills=" + this.pj_Tech+ separate + this.pj_TechO
+                        axios.post('project/uploadProject', param, config //+"?pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline + "&file=" + coverbase + "&introduction=" + intro + "&skills=" + this.pj_Tech+ separate + this.pj_TechO
 	                        ).then(function (response) {
                             console.log(response);
                         })
@@ -206,7 +207,7 @@
             <nav class="col-md-6">
                 <ul>
                     <h4>Profile</h4>
-                    <li><a href="./PJDetial.html">My projects</a></li>
+                    <li><a href="./PJDetail.html">My projects</a></li>
                     <li><a href="./space.html">My homepage</a></li>
                     <li><a href="./setting.html">Settings</a></li>
                 </ul>

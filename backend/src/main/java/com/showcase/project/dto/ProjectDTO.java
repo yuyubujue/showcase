@@ -6,13 +6,16 @@ public class ProjectDTO {
     private String owner;
     private String timestamp;
     private String updatetime;
+    private String coverImage;
+
     public ProjectDTO(){}
-    public ProjectDTO(int id,String pname,String owner,String timestamp,String updatetime){
+    public ProjectDTO(int id,String pname,String owner,String timestamp,String updatetime, String coverImage){
         this.id = id;
         this.pname = pname;
         this.owner = owner;
         this.timestamp = timestamp;
         this.updatetime = updatetime;
+        this.coverImage = coverImage;
     }
 
     public int getId() {
@@ -34,4 +37,6 @@ public class ProjectDTO {
     public String getUpdatetime() {
         return updatetime;
     }
+
+    public String getCoverImage(){return coverImage;}
 }

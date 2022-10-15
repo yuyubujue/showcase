@@ -15,13 +15,13 @@ public class ProjectDTOFull {
 
     private String timestamp;
 
-    private byte[] coverImage;
+    private String coverImage;
 
     private String updatetime;
 
     public ProjectDTOFull(){}
 
-    public ProjectDTOFull(String pname, String tagline, String introduction,String owner,String timestamp,byte[] coverImage,String updatetime) {
+    public ProjectDTOFull(String pname, String tagline, String introduction,String owner,String timestamp,String coverImage,String updatetime) {
         this.pname = pname;
         this.tagline = tagline;
         this.owner = owner;
@@ -55,7 +55,7 @@ public class ProjectDTOFull {
         return updatetime;
     }
 
-    public byte[] getCoverImage(){return coverImage;}
+    public String getCoverImage(){return coverImage;}
 
     public String getTimestamp() {
         return timestamp;

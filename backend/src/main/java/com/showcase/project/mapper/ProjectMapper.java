@@ -68,6 +68,10 @@ public interface ProjectMapper {
     @Update("Update project SET PNAME = #{newname} where ID = #{id}")
     int setNewPname(int id,String newname);
 
+
+    @Delete("Delete from `project_skill` where PID = #{pid}")
+    int RemoveAllSkill(int pid);
+
     @Update("Update project SET TAGLINE = #{tag} where ID = #{id}")
     int setNewTagLine(int id,String tag);
 
@@ -140,16 +144,13 @@ public interface ProjectMapper {
     @Delete("Delete from `project_skill` where PID = #{pid} and SKILLS = #{skill}")
     int RemoveSkill(int pid,String skill);
 
-    @Delete("Delete from `project_skill` where PID = #{pid}")
-    int RemoveAllSkill(int pid);
-
     @Select("Select SKILLS from project_skill where PID =#{pid}")
     List<String> getProjectSkills(int pid);
 
     @Select("Select * from project where ID = #{pid}")
     ProjectDTOFull getProjectPageByPid(int pid);
 
-    @Insert("INSERT INTO `team`(`UID`, `PID`) VALUES ((SELECT ID from User WHERE COOKIE = #{cookie}),(SELECT ID from project WHERE INVITECODE = '#{invitecode}'))")
+    @Insert("INSERT INTO `team`(`UID`, `PID`) VALUES ((SELECT ID from User WHERE COOKIE = #{cookie}),(SELECT ID from project WHERE INVITECODE = #{invitecode}))")
     int joinTeam(String invitecode, String cookie);
 
     @Select("SELECT * FROM `team` t LEFT JOIN `User` u ON t.UID = u.ID WHERE t.pid = ${pid}")
@@ -158,7 +159,7 @@ public interface ProjectMapper {
     @Delete("Delete from `team` where UID = #{uid} AND PID = ${pid}")
     int removeTeammate(int pid, String uid);
 
-    @Update("Update project SET INVITECODE = #{tag} where ID = #{pid}")
+    @Update("Update project SET INVITECODE = #{invitecode} where ID = #{pid}")
     int generateNewInviteCode(int pid, String invitecode);
 
     @Select("Select ID from project where INVITECODE = #{invitecode}")

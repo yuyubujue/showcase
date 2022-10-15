@@ -6,6 +6,7 @@ import com.showcase.project.service.SendMailService;
 import com.showcase.project.service.UserService;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,12 +33,17 @@ public class UserController {
     @Autowired(required = false)
     private SendMailService sendMailService;
 
+    @Value("${setting.websiteDomain}")
+    private String websiteDomain;
+
     @CrossOrigin(origins = "*")
     @PostMapping("/register")
     @ResponseBody
     public String register(@RequestParam("username") String username, @RequestParam("password") String password,@RequestParam("email") String email){
         if(username.equals("") || password.equals("")||email.equals("")){
             return "Username, password and email can't be empty";
+        }else if(!username.equals(UserService.strSpecialFilter(username))||!password.equals(UserService.strSpecialFilter(password))||!email.equals(UserService.strSpecialFilter(email))){
+            return "Illegal input";
         }
         User checkEmail = UserService.findUserByEmail(email);
         User checkUsername = UserService.findUserByName(username);
@@ -67,7 +73,7 @@ public class UserController {
                 e.printStackTrace();
             }
             if(UserService.register(UUID.randomUUID().toString(), username, UserService.md5Encode(password), email, "user",data) == 1) {
-                sendMailService.sendSimpleMail(email,"Register success","Username:"+ username);
+                sendMailService.sendSimpleMail(email,"Register success","Your username is: "+ username + ". Thanks for register our website. <a href='"+ websiteDomain.substring(1,websiteDomain.length()-1) +"'>" + websiteDomain.substring(1,websiteDomain.length()-1) + "</a>");
                 return "succeed";
             }else{
                 return "failed";
@@ -79,6 +85,9 @@ public class UserController {
     @PostMapping("/login")
     @ResponseBody
     public String login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response){
+        if(!username.equals(UserService.strSpecialFilter(username))||!password.equals(UserService.strSpecialFilter(password))){
+            return "Illegal input";
+        }
         User user = UserService.login(username, UserService.md5Encode(password));
         if(user == null){
             return "failed";
@@ -101,6 +110,9 @@ public class UserController {
     @GetMapping("/getusers")
     @ResponseBody
     public String getUsers(@CookieValue(name = "Auth") String cookie){
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))){
+            return "Illegal input";
+        }
         User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
@@ -117,6 +129,9 @@ public class UserController {
     @GetMapping("/getown")
     @ResponseBody
     public String getOwnUser(@CookieValue(name = "Auth") String cookie){
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))){
+            return "Illegal input";
+        }
         User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
@@ -134,6 +149,9 @@ public class UserController {
     @GetMapping("/getuser/{id}")
     @ResponseBody
     public String getUser(@PathVariable String id){
+        if(!id.equals(UserService.strSpecialFilter(id))){
+            return "Illegal input";
+        }
         UserDTO user = UserService.findUser(id);
         if(user != null){
             return JSON.toJSONString(user);
@@ -148,6 +166,8 @@ public class UserController {
     public String setAuthority(@CookieValue(name = "Auth") String cookie, @RequestParam("username") String username, @RequestParam("authority") String authority){
         if(!authority.equals("teacher") & !authority.equals("user") & !authority.equals("admin")){
             return "Illegal type";
+        }else if(!cookie.equals(UserService.strSpecialFilter(cookie))||!username.equals(UserService.strSpecialFilter(username))){
+            return "Illegal input";
         }
         User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
@@ -169,6 +189,9 @@ public class UserController {
     @PostMapping("/setPassword")
     @ResponseBody
     public String setPassword(@CookieValue(name = "Auth") String cookie, @RequestParam("password") String password){
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))||!password.equals(UserService.strSpecialFilter(password))){
+            return "Illegal input";
+        }
         User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
@@ -188,6 +211,9 @@ public class UserController {
     @PostMapping("/uploadPic")
     @ResponseBody
     public String uploadImage(@RequestParam MultipartFile file, @CookieValue(name = "Auth") String cookie) {
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))){
+            return "Illegal input";
+        }
         User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
@@ -214,6 +240,9 @@ public class UserController {
     @GetMapping("/getimg/{id}")
     @ResponseBody
     public ResponseEntity<byte[]> getImg(@PathVariable String id, HttpServletResponse response){
+        if(!id.equals(UserService.strSpecialFilter(id))){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
         byte[] imageContent = UserService.getImg(id).getImg();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
@@ -224,6 +253,9 @@ public class UserController {
     @PostMapping("/updateIntroduction")
     @ResponseBody
     public String updateIntroduction(@CookieValue(name = "Auth") String cookie, @RequestParam("introduction") String introduction) {
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))){
+            return "Illegal input";
+        }
         User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
@@ -240,6 +272,9 @@ public class UserController {
     @PostMapping("/updateSkill")
     @ResponseBody
     public String updateSkill(@CookieValue(name = "Auth") String cookie, @RequestParam("skill") String skill) {
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))||!skill.equals(UserService.strSpecialFilter(skill))){
+            return "Illegal input";
+        }
         User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
@@ -256,6 +291,9 @@ public class UserController {
     @PostMapping("/updateInterest")
     @ResponseBody
     public String updateInterest(@CookieValue(name = "Auth") String cookie, @RequestParam("interest") String interest) {
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))||!interest.equals(UserService.strSpecialFilter(interest))){
+            return "Illegal input";
+        }
         User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";
@@ -272,6 +310,9 @@ public class UserController {
     @PostMapping("/removeUser")
     @ResponseBody
     public String removeUser(@CookieValue(name = "Auth") String cookie, @RequestParam("id") String id){
+        if(!cookie.equals(UserService.strSpecialFilter(cookie))||!id.equals(UserService.strSpecialFilter(id))){
+            return "Illegal input";
+        }
         User user = UserService.authorityAndLoginJudge(cookie);
         if(user == null){
             return "unauthorized";

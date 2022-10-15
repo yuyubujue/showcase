@@ -6,6 +6,7 @@ import com.showcase.project.domain.*;
 import com.showcase.project.dto.*;
 import com.showcase.project.mapper.ProjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,7 +54,6 @@ public class ProjectService{
     public int getProjectLikeByID(int pid){
         return projectMapper.GetProjectLikeByID(pid);
     }
-
 
     public int uploadProject(String pname, String tagline,  String introduction, String owner, String img) {
         return projectMapper.insertProject(pname, tagline,  introduction, owner, img, VerificationCodeGenerator.getRandomVCode());
@@ -166,8 +166,6 @@ public class ProjectService{
 
     public int RemoveSkill(int pid,String skill) {return projectMapper.RemoveSkill(pid,skill);}
 
-    public int RemoveAllSkill(int pid) {return projectMapper.RemoveAllSkill(pid);}
-
     public List<String> getProjectSkills(int pid){return projectMapper.getProjectSkills(pid);}
 
     public List<Project_like> ShowMyLike(String uid){return projectMapper.ShowMyLike(uid);}
@@ -191,6 +189,8 @@ public class ProjectService{
     public int getPidByCode(String invitecode){
         return projectMapper.getPidByCode(invitecode);
     }
+
+    public int RemoveAllSkill(int pid) {return projectMapper.RemoveAllSkill(pid);}
 /*
     public String getTidbyPid(int pid) {
         return projectMapper.getTidbyPid(pid);
