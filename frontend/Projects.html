@@ -71,29 +71,28 @@
                     }
                 },
                 methods:{
-                    async searchpj(){
+                    searchpj(){
+                        document.getElementById("actiontext").innerText = "Default";
                         var key = document.getElementById("keywords").value;
-                        await axios.get("project/getProjectsByPname?pname="+key)
-                        .then(async function(response){
+                        axios.get("project/getProjectsByPname?pname="+key)
+                        .then(function(response){
                             document.getElementById("pjlist").innerHTML="";
                             var data = response.data;
                             for(let i=0; i<response.data.length; i++){
-                                var pjId = data[i].id;
+                                var pjId = data[i].ID;
                                 var pname = data[i].pname;
                                 var cover = data[i].coverImage;
                                 var uuid = data[i].owner;
+                                var like = data[i].likeamount;
+                                var uname = data[i].username;
+                                var comment = data[i].comment;
+                                var award = data[i].award;
                                 var li = document.createElement("li");
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                await axios.get('user/getuser/'+uuid)
-                                    .then(function (res) {
-                                        li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p><p>&#128100; "+res.data.username+"</p></a>";
-                                        document.getElementById("pjlist").appendChild(li);
-                                    })
-                                    .catch(function (err) {
-                                        console.log(err);
-                                    });
+                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                         })
@@ -113,7 +112,7 @@
     <main class="main">
         <nav id="selectbar">
             <ul>
-                <li id="lall"><a href="javascript:;" @click="getAllpj" id="all">ALL</a></li>
+                <li id="lall"><a href="javascript:;" @click="getNewpj" id="all">ALL</a></li>
                 <li id="ljava"><a href="javascript:;" @click="getSkillpj" id="java">Java</a></li>
                 <li id="lpython"><a href="javascript:;" @click="getSkillpj" id="python">Python</a></li>
                 <li id="lphp"><a href="javascript:;" @click="getSkillpj" id="php">PHP</a></li>
@@ -138,13 +137,12 @@
                             </a>
                         </div>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-info" id="actiontext">Default</button>
+                            <button type="button" class="btn btn-info" id="actiontext">Newest</button>
                             <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu">
-                            <li><a href="javascript:;" @click="getAllpj" id="default">Default</a></li>
                             <li><a href="javascript:;" @click="getNewpj" id="newest">Newest</a></li>
                             <li><a href="javascript:;" @click="getOldpj" id="oldest">Oldest</a></li>
                             <li><a href="javascript:;" @click="getPoppj" id="popular">Popular</a></li>
@@ -166,6 +164,9 @@
                         <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
                         <li><a href="#"><img src="./images/Java_logo.svg" alt=""><p><span class="glyphicon glyphicon-heart">500 </span></p><p>Project Name</p></a></li>
                     </ul>
+                    <div class="loadmore">
+                        <button type="button" class="btn btn-default" id="load" @click="loadmore"><p class="glyphicon glyphicon-repeat"> Load More </p></button>
+                    </div>
                 </section>
                 <section class="mainright col-md-2 hidden-sm hidden-xs">
                     <h3>Ranking</h3>
@@ -189,7 +190,8 @@
         let pj = Vue.createApp({
                 data(){
                     return{
-                        
+                        page:1,
+                        skill: ""
                     }
                 },
                 methods:{
@@ -225,68 +227,70 @@
                             console.log(error);
                         });
                     },
-                    async getAllpj(){
-                        document.getElementById("actiontext").innerText = "Default";
-                        await axios.get('project/getAllprojects')
-                        .then(async function (response) {
-                            document.getElementById("pjlist").innerHTML="";
-                            var data = response.data;
-                            for(let i=0; i<response.data.length; i++){
-                                var pjId = data[i].id;
-                                var pname = data[i].pname;
-                                var cover = data[i].coverImage;
-                                var uuid = data[i].owner;
-                                var li = document.createElement("li");
-                                if(cover == null || cover == "https://api.crya.me/undefined"){
-                                    cover = "./images/uoa-logo.jpg";
-                                }
-                                // let like = 0;//await pj.getLike(pjId);
-                                // await axios.get('project/getProjectLikeByID?pid='+pjId)
-                                // .then(function (res) {
-                                //     like = res.data;
-                                // })
-                                // .catch(function (err) {
-                                //     console.log(err);
-                                // });
-                                // <p><span>&#10084; "+like+" </span></p>
-                                await axios.get('user/getuser/'+uuid)
-                                    .then(function (res) {
-                                        li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p><p>&#128100; "+res.data.username+"</p></a>";
-                                        document.getElementById("pjlist").appendChild(li);
-                                    })
-                                    .catch(function (err) {
-                                        console.log(err);
-                                    });
+                    // async getAllpj(){
+                    //     document.getElementById("actiontext").innerText = "Default";
+                    //     await axios.get('project/getAllprojects')
+                    //     .then(async function (response) {
+                    //         document.getElementById("pjlist").innerHTML="";
+                    //         var data = response.data;
+                    //         console.log(data);
+                    //         for(let i=0; i<response.data.length; i++){
+                    //             var pjId = data[i].id;
+                    //             var pname = data[i].pname;
+                    //             var cover = data[i].coverImage;
+                    //             var uuid = data[i].owner;
+                    //             var li = document.createElement("li");
+                    //             if(cover == null || cover == "https://api.crya.me/undefined"){
+                    //                 cover = "./images/uoa-logo.jpg";
+                    //             }
+                    //             // let like = 0;//await pj.getLike(pjId);
+                    //             // await axios.get('project/getProjectLikeByID?pid='+pjId)
+                    //             // .then(function (res) {
+                    //             //     like = res.data;
+                    //             // })
+                    //             // .catch(function (err) {
+                    //             //     console.log(err);
+                    //             // });
+                    //             // <p><span>&#10084; "+like+" </span></p>
+                    //             await axios.get('user/getuser/'+uuid)
+                    //                 .then(function (res) {
+                    //                     li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p><p>&#128100; "+res.data.username+"</p></a>";
+                    //                     document.getElementById("pjlist").appendChild(li);
+                    //                 })
+                    //                 .catch(function (err) {
+                    //                     console.log(err);
+                    //                 });
                                 
-                            }
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                    },
-                    async getNewpj(){
+                    //         }
+                    //     })
+                    //     .catch(function (error) {
+                    //         console.log(error);
+                    //     });
+                    // },
+                    getNewpj(){
+                        this.page = 1;
+                        this.skill = "";
+                        document.getElementById("load").style.display = "block";
                         document.getElementById("actiontext").innerText = "Newest";
-                        await axios.get("project/getProjectsByUpdateTimeAsc/1")
-                        .then(async function(response){
-                            document.getElementById("pjlist").innerHTML="";
+                        document.getElementById("pjlist").innerHTML="";
+                        axios.get("project/getProjectsByUpdateTimeAsc/1")
+                        .then(function(response){
                             var data = response.data;
                             for(let i=0; i<response.data.length; i++){
-                                var pjId = data[i].id;
+                                var pjId = data[i].ID;
                                 var pname = data[i].pname;
                                 var cover = data[i].coverImage;
                                 var uuid = data[i].owner;
+                                var like = data[i].likeamount;
+                                var uname = data[i].username;
+                                var comment = data[i].comment;
+                                var award = data[i].award;
                                 var li = document.createElement("li");
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                await axios.get('user/getuser/'+uuid)
-                                    .then(function (res) {
-                                        li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p><p>&#128100; "+res.data.username+"</p></a>";
-                                        document.getElementById("pjlist").appendChild(li);
-                                    })
-                                    .catch(function (err) {
-                                        console.log(err);
-                                    });
+                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                         })
@@ -294,29 +298,61 @@
                             console.log(error);
                         });
                     },
-                    async getOldpj(){
+                    getmoreNewpj(){
+                        var that = this;
+                        axios.get("project/getProjectsByUpdateTimeAsc/"+this.page)
+                        .then(function(response){
+                            var data = response.data;
+                            for(let i=0; i<response.data.length; i++){
+                                var pjId = data[i].ID;
+                                var pname = data[i].pname;
+                                var cover = data[i].coverImage;
+                                var uuid = data[i].owner;
+                                var like = data[i].likeamount;
+                                var uname = data[i].username;
+                                var comment = data[i].comment;
+                                var award = data[i].award;
+                                var li = document.createElement("li");
+                                if(cover == null || cover == "https://api.crya.me/undefined"){
+                                    cover = "./images/uoa-logo.jpg";
+                                }
+                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                document.getElementById("pjlist").appendChild(li);
+                                
+                            }
+                            if(data.length == 0){
+                                that.page = 1;
+                                document.getElementById("load").style.display = "none";
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    getOldpj(){
+                        this.page = 1;
+                        this.skill = "";
+                        document.getElementById("load").style.display = "block";
                         document.getElementById("actiontext").innerText = "Oldest";
-                        await axios.get("project/getProjectsByUpdateTime/1")
-                        .then(async function(response){
+                        axios.get("project/getProjectsByUpdateTime/1")
+                        .then(function(response){
                             document.getElementById("pjlist").innerHTML="";
                             var data = response.data;
                             for(let i=0; i<response.data.length; i++){
-                                var pjId = data[i].id;
+                                var pjId = data[i].ID;
                                 var pname = data[i].pname;
                                 var cover = data[i].coverImage;
                                 var uuid = data[i].owner;
+                                var like = data[i].likeamount;
+                                var uname = data[i].username;
+                                var comment = data[i].comment;
+                                var award = data[i].award;
                                 var li = document.createElement("li");
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                await axios.get('user/getuser/'+uuid)
-                                    .then(function (res) {
-                                        li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p><p>&#128100; "+res.data.username+"</p></a>";
-                                        document.getElementById("pjlist").appendChild(li);
-                                    })
-                                    .catch(function (err) {
-                                        console.log(err);
-                                    });
+                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                         })
@@ -324,29 +360,61 @@
                             console.log(error);
                         });
                     },
-                    async getPoppj(){
+                    getmoreOldpj(){
+                        var that = this;
+                        axios.get("project/getProjectsByUpdateTime/"+this.page)
+                        .then(function(response){
+                            var data = response.data;
+                            for(let i=0; i<response.data.length; i++){
+                                var pjId = data[i].ID;
+                                var pname = data[i].pname;
+                                var cover = data[i].coverImage;
+                                var uuid = data[i].owner;
+                                var like = data[i].likeamount;
+                                var uname = data[i].username;
+                                var comment = data[i].comment;
+                                var award = data[i].award;
+                                var li = document.createElement("li");
+                                if(cover == null || cover == "https://api.crya.me/undefined"){
+                                    cover = "./images/uoa-logo.jpg";
+                                }
+                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                document.getElementById("pjlist").appendChild(li);
+                                
+                            }
+                            if(data.length == 0){
+                                that.page = 1;
+                                document.getElementById("load").style.display = "none";
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    getPoppj(){
+                        this.page = 1;
+                        this.skill = "";
+                        document.getElementById("load").style.display = "block";
                         document.getElementById("actiontext").innerText = "Popular";
-                        await axios.get("project/GetProjectByLike/1")
-                        .then(async function(response){
+                        axios.get("project/GetProjectByLike/1")
+                        .then(function(response){
                             document.getElementById("pjlist").innerHTML="";
                             var data = response.data;
                             for(let i=0; i<response.data.length; i++){
-                                var pjId = data[i].id;
+                                var pjId = data[i].ID;
                                 var pname = data[i].pname;
                                 var cover = data[i].coverImage;
                                 var uuid = data[i].owner;
+                                var like = data[i].likeamount;
+                                var uname = data[i].username;
+                                var comment = data[i].comment;
+                                var award = data[i].award;
                                 var li = document.createElement("li");
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                await axios.get('user/getuser/'+uuid)
-                                    .then(function (res) {
-                                        li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p><p>&#128100; "+res.data.username+"</p></a>";
-                                        document.getElementById("pjlist").appendChild(li);
-                                    })
-                                    .catch(function (err) {
-                                        console.log(err);
-                                    });
+                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                         })
@@ -354,40 +422,107 @@
                             console.log(error);
                         });
                     },
-                    async getSkillpj(){
-                        var skill = event.target.id;
+                    getmorePoppj(){
+                        var that = this;
+                        axios.get("project/GetProjectByLike/"+this.page)
+                        .then(function(response){
+                            var data = response.data;
+                            for(let i=0; i<response.data.length; i++){
+                                var pjId = data[i].ID;
+                                var pname = data[i].pname;
+                                var cover = data[i].coverImage;
+                                var uuid = data[i].owner;
+                                var like = data[i].likeamount;
+                                var uname = data[i].username;
+                                var comment = data[i].comment;
+                                var award = data[i].award;
+                                var li = document.createElement("li");
+                                if(cover == null || cover == "https://api.crya.me/undefined"){
+                                    cover = "./images/uoa-logo.jpg";
+                                }
+                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                document.getElementById("pjlist").appendChild(li);
+                                
+                            }
+                            if(data.length == 0){
+                                that.page = 1;
+                                document.getElementById("load").style.display = "none";
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    getSkillpj(){
+                        this.page = 1;
+                        this.skill = "";
+                        document.getElementById("load").style.display = "block";
+                        document.getElementById("actiontext").innerText = "Newest";
+                        var skills = event.target.id;
+                        this.skill = skills;
                         // document.getElementById("lall").style = "background-color: #fff;";
                         // document.getElementById("all").style = "color: #AAAAAA";
                         // document.getElementById("l"+skill).style = "padding: 10px 25px; background-color: #aaa; border-radius: 5px;";
                         // document.getElementById(skill).style = "color: #fff";
-                        await axios.get("project/GetProjectBySkills/1?skills="+skill)
-                        .then(async function(response){
+                        axios.get("project/GetProjectBySkills/1?skills="+skills)
+                        .then(function(response){
                             document.getElementById("pjlist").innerHTML="";
                             var data = response.data;
                             for(let i=0; i<response.data.length; i++){
-                                var pjId = data[i].id;
+                                var pjId = data[i].ID;
                                 var pname = data[i].pname;
                                 var cover = data[i].coverImage;
                                 var uuid = data[i].owner;
+                                var like = data[i].likeamount;
+                                var uname = data[i].username;
+                                var comment = data[i].comment;
+                                var award = data[i].award;
                                 var li = document.createElement("li");
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                await axios.get('user/getuser/'+uuid)
-                                    .then(function (res) {
-                                        li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p><p>&#128100; "+res.data.username+"</p></a>";
-                                        document.getElementById("pjlist").appendChild(li);
-                                    })
-                                    .catch(function (err) {
-                                        console.log(err);
-                                    });
+                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
-                    }//,
+                    },
+                    getmoreSkillpj(){
+                        var that = this;
+                        axios.get("project/GetProjectBySkills/"+this.page+"?skills="+this.skill)
+                        .then(function(response){
+                            var data = response.data;
+                            if(data == "no such page!"){
+                                that.page = 1;
+                                document.getElementById("load").style.display = "none";
+                            }else{
+                                for(let i=0; i<response.data.length; i++){
+                                    var pjId = data[i].ID;
+                                    var pname = data[i].pname;
+                                    var cover = data[i].coverImage;
+                                    var uuid = data[i].owner;
+                                    var like = data[i].likeamount;
+                                    var uname = data[i].username;
+                                    var comment = data[i].comment;
+                                    var award = data[i].award;
+                                    var li = document.createElement("li");
+                                    if(cover == null || cover == "https://api.crya.me/undefined"){
+                                        cover = "./images/uoa-logo.jpg";
+                                    }
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                    document.getElementById("pjlist").appendChild(li);
+                                
+                                }
+                            }
+                            
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
                     // async searchpj(){
                     //     var key = document.getElementById("keywords").innerText;
                         
@@ -419,11 +554,26 @@
                     //         console.log(error);
                     //     });
                     // }
-                    
+                    loadmore(){
+                        var sortby = document.getElementById("actiontext").innerText;
+                        this.page++;
+                        if(this.skill != ""){
+                            pj.getmoreSkillpj();
+                        }else if(sortby == "Newest"){
+                            pj.getmoreNewpj();
+                        }else if(sortby == "Oldest"){
+                            pj.getmoreOldpj();
+                        }else if(sortby == "Popular"){
+                            pj.getmorePoppj();
+                        }
+                    }
                 },
                 mounted(){
-                    this.getAllpj();
+                    this.page = 1;
+                    this.getNewpj();
+                    // this.getAllpj();
                     this.getpjBylike();
+                    
 
                 }
             }).mount('.main')
