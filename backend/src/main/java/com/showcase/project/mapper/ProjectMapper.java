@@ -36,7 +36,7 @@ public interface ProjectMapper {
             "        left join (select project_like.PID,sum(project_like.LIKEAMOUNT) AS LIKEAMOUNT from project_like group by project_like.PID) as pl on p.Id = pl.PID\n" +
             "            left join user on p.OWNER = user.ID\n" +
             "                left join (select teacher_award.PID,sum(teacher_award.AWARD) as AWARD from teacher_award group by teacher_award.PID) as ta on p.ID = ta.PID\n" +
-            "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID group by p.ID order by p.UPDATETIME limit ${start}, ${end}")
+            "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID group by p.ID order by p.UPDATETIME limit #{start}, #{end}")
     List<ProjectLikeCommentDTO> getProjectsByUpdateTimeAsc(int start, int end);
 
     @Select("Select * from `project_comment` where PID = #{pid} order by time limit ${start}, ${end}")

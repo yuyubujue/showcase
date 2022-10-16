@@ -834,7 +834,7 @@ public class ProjectController {
         skills = skills.trim();
         String skill[] = skills.split(",");
         List<Integer> result_set = new ArrayList<Integer>();
-        List<ProjectDTO> result_project = new ArrayList<ProjectDTO>();
+        List<ProjectLikeCommentDTO> result_project = new ArrayList<ProjectLikeCommentDTO>();
         for (int i = 0; i < skill.length; i++) {
             List<Integer> temp_set = projectService.GetProjectIdBySkills(skill[i]);
             for (Integer pid : temp_set) {
@@ -847,7 +847,7 @@ public class ProjectController {
             if (projectService.getProject(pid) == null) {
                 return result.toString() + "some projects not exist";
             }
-            result_project.add(projectService.getProject(pid));
+            result_project.add(projectService.getProjectPageByPid(pid));
         }
         int total_page = (result_project.size()/10) +1;
         int req_page=Integer.parseInt(page);
