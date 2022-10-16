@@ -16,7 +16,7 @@ public class ProjectService{
     @Autowired(required=false)
     private ProjectMapper projectMapper;
 
-    public List<ProjectDTO> getProjectsByCreateTime(String page) {
+    public List<ProjectLikeCommentDTO> getProjectsByCreateTime(String page) {
 
         if(page.equals("1")) {
             return projectMapper.getProjectsByCreateTime(0,10);
@@ -24,7 +24,7 @@ public class ProjectService{
             return projectMapper.getProjectsByCreateTime(Integer.parseInt(page) * 10, Integer.parseInt(page) * 10 + 10);
         }
     }
-    public List<ProjectDTO> getProjectsByCreateTimeAsc(String page) {
+    public List<ProjectLikeCommentDTO> getProjectsByCreateTimeAsc(String page) {
 
         if(page.equals("1")) {
             return projectMapper.getProjectsByCreateTimeAsc(0,10);
@@ -33,7 +33,7 @@ public class ProjectService{
         }
     }
 
-    public List<ProjectDTO> getProjectsByUpdateTime(String page) {
+    public List<ProjectLikeCommentDTO> getProjectsByUpdateTime(String page) {
 
         if(page.equals("1")) {
             return projectMapper.getProjectsByUpdateTime(0,10);
@@ -42,7 +42,7 @@ public class ProjectService{
         }
     }
 
-    public List<ProjectDTO> getProjectsByUpdateTimeAsc(String page) {
+    public List<ProjectLikeCommentDTO> getProjectsByUpdateTimeAsc(String page) {
 
         if(page.equals("1")) {
             return projectMapper.getProjectsByUpdateTimeAsc(0,10);
@@ -63,9 +63,9 @@ public class ProjectService{
         return projectMapper.getProject(id);
     }
 
-    public List<ProjectDTO> getProjectByUser(String UID){return projectMapper.getProjectByUser(UID);}
+    public List<ProjectLikeCommentDTO> getProjectByUser(String UID){return projectMapper.getProjectByUser(UID);}
 
-    public List<Project> getProjectByPname(String pname){return projectMapper.getProjectByPname(pname);}
+    public List<ProjectLikeCommentDTO> getProjectByPname(String pname){return projectMapper.getProjectByPname(pname);}
 
     public int updateProjectCover(int id, String file){return projectMapper.updateProjectCover(id, file);}
     public int uploadProjectImg(int id, byte[] file){return projectMapper.uploadProjectImg(id, file);}
@@ -124,7 +124,7 @@ public class ProjectService{
     public int DeleteCode(String vercode){
         return projectMapper.DeleteCode(vercode);
     }
-    public List<likeDTO> GetProjectByLike(String page){
+    public List<ProjectLikeCommentDTO> GetProjectByLike(String page){
         if(page.equals("1")) {
             return projectMapper.GetProjectByLike(0,10);
         }else{
@@ -144,7 +144,7 @@ public class ProjectService{
     public List<TeacherCommentDTO> GetAwardCommentByID(int pid){return projectMapper.GetAwardCommentByID(pid);}
     public int DeleteAward(int pid,String uid){return projectMapper.DeleteAward(pid,uid);}
 
-    public ProjectDTOFull getProjectPageByPid(int pid){return projectMapper.getProjectPageByPid(pid);}
+    public ProjectLikeCommentDTO getProjectPageByPid(int pid){return projectMapper.getProjectPageByPid(pid);}
 
     public Project getFullProjectByPid(int pid){return projectMapper.getFullProjectByPid(pid);}
 

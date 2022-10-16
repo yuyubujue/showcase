@@ -1,4 +1,5 @@
 package com.showcase.project.controller;
+import com.showcase.project.dto.ProjectLikeCommentDTO;
 import com.showcase.project.dto.UserDTO;
 import org.apache.commons.codec.binary.Base64;
 import com.alibaba.fastjson2.JSON;
@@ -308,7 +309,7 @@ public class ProjectController {
         if (user == null) {
             return "unauthorized";
         }
-        ProjectDTOFull project = projectService.getProjectPageByPid(pid);
+        ProjectLikeCommentDTO project = projectService.getProjectPageByPid(pid);
         if(project.getOwner().equals(user.getId())){
             if(projectService.removeTeammate(pid,uid) == 1){
                 return "success";
@@ -330,7 +331,7 @@ public class ProjectController {
         if (user == null) {
             return "unauthorized";
         }
-        ProjectDTOFull project = projectService.getProjectPageByPid(pid);
+        ProjectLikeCommentDTO project = projectService.getProjectPageByPid(pid);
         if(project.getOwner().equals(user.getId())){
             if(projectService.generateNewInviteCode(pid,TIDgenerator.getRandomTID()) == 1){
                 return "success";
