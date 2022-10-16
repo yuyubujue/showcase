@@ -72,33 +72,41 @@
                 },
                 methods:{
                     searchpj(){
-                        document.getElementById("actiontext").innerText = "Default";
+                        document.getElementById("actiontext").innerText = "Newest";
+                        pj.page = 1;
+                        document.getElementById("load").style.display = "none";
                         var key = document.getElementById("keywords").value;
-                        axios.get("project/getProjectsByPname?pname="+key)
-                        .then(function(response){
-                            document.getElementById("pjlist").innerHTML="";
-                            var data = response.data;
-                            for(let i=0; i<response.data.length; i++){
-                                var pjId = data[i].ID;
-                                var pname = data[i].pname;
-                                var cover = data[i].coverImage;
-                                var uuid = data[i].owner;
-                                var like = data[i].likeamount;
-                                var uname = data[i].username;
-                                var comment = data[i].comment;
-                                var award = data[i].award;
-                                var li = document.createElement("li");
-                                if(cover == null || cover == "https://api.crya.me/undefined"){
-                                    cover = "./images/uoa-logo.jpg";
-                                }
-                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
-                                document.getElementById("pjlist").appendChild(li);
-                                
-                            }
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                        if(key.length == ""){
+                            pj.getNewpj();
+                        }else{
+                            axios.get("project/getProjectsByPname?pname="+key)
+                            .then(function(response){
+                                document.getElementById("pjlist").innerHTML="";
+                                var data = response.data;
+                                for(let i=0; i<response.data.length; i++){
+                                    var pjId = data[i].ID;
+                                    var pname = data[i].pname;
+                                    var cover = data[i].coverImage;
+                                    var uuid = data[i].owner;
+                                    var like = data[i].likeamount;
+                                    var uname = data[i].username;
+                                    var comment = data[i].comment;
+                                    var award = data[i].award;
+                                    var li = document.createElement("li");
+                                    if(cover == null || cover == "https://api.crya.me/undefined"){
+                                        cover = "./images/uoa-logo.jpg";
+                                    }
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                    document.getElementById("pjlist").appendChild(li);
+                                    
+                                    }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+                        }
+                        
                     }
                     
                     
