@@ -269,19 +269,22 @@ footer hr{
     height: 80px;
 }
 
-#selectbar ul li:first-child{
-    padding: 10px 25px;
-    background-color: #aaa;
+#selectbar ul li{
     border-radius: 5px;
+    padding: 10px 25px;
 }
+
+/* #selectbar ul li:first-child{
+    background-color: #aaa;
+} */
 
 #selectbar ul li a{
     color: #aaa;
 }
 
-#selectbar ul li:first-child a{
+/* #selectbar ul li:first-child a{
     color: #FFF;
-}
+} */
 
 main .mainbody {
     display: flex;
@@ -290,9 +293,38 @@ main .mainbody {
     margin: 40px auto;
 }
 
-main .mainbody div{
+/* main .mainbody div{
     margin-bottom: 40px;
+} */
+
+.actionBar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 20px 20px 0;
 }
+
+.actionBar div{
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.Explore-container a{
+    display: flex;
+    width: 170px;
+    align-items: center;
+}
+
+
+.Explore-container img{
+    height: 50px;
+}
+.Explore-container h3{
+    color: #004681;
+    margin: 0;
+}
+
 
 .mainleft a img{
     height: 50px;
@@ -304,14 +336,14 @@ main .mainbody div{
     line-height: 50px;
 }
 
-.mainleft li{
+#pjlist li{
     height: 250px;
     display: inline-block;
     padding: 5px 5px; 
 
 }
 
-.mainleft li p{
+#pjlist li p{
     margin: 5px 15px;
     height: 20px;
     line-height: 20px;
@@ -327,6 +359,12 @@ main .mainbody div{
 .mainright li:first-child p{
     font-size: larger;
 }
+.mainright h3{
+    margin: 20px 0;
+    height: 50px;
+    line-height: 50px;
+}
+
 .number{
     height: 22px;
     width: 22px;
@@ -372,7 +410,7 @@ main .mainbody div{
 }
 
 @media screen and (min-width: 992px) {
-    .mainleft li{
+    #pjlist li{
         height: 250px;
         width: 19.7%;
         display: inline-block;
@@ -382,19 +420,19 @@ main .mainbody div{
 }
 
 
-.mainleft li a {
+#pjlist li a {
     width: 100%;
     height: 250px;  
 }
 
-.mainleft li a img {
+#pjlist li a img {
     width: 100%;
     height: 70%;
     border-radius: 10px; 
      
 }
 
-.mainleft li a p:first-child {    
+#pjlist li a p:first-child {    
     font-size: 14px;
     width: 100%;
     margin: 0;
