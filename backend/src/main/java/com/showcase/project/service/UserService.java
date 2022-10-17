@@ -128,7 +128,7 @@ public class UserService{
     }
 
     public static String strSpecialFilter(String str) {
-        String regEx = "[\\u00A0\\s\"`~!#$%^&*()+=|{}':;'\\[\\].<>/?~！@#￥%……&*（）+|{}【】‘；：”“’。、？]";
+        String regEx = "[\\u00A0\\s\"`~!#$%^&*()+=|{}':;'\\[\\]<>/?~！#￥%……&*（）+|{}【】‘；：”“’。、？]";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(str);
         return m.replaceAll("").trim();

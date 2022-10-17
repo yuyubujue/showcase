@@ -10,31 +10,31 @@ import java.util.List;
 public interface ProjectMapper {
     @Insert("INSERT INTO `project` (`PNAME`, `TAGLINE`, `INTRODUCTION`, `OWNER`, `COVERIMAGE`, `INVITECODE`) VALUES (#{pname}, #{tagline}, #{introduction}, #{owner}, #{img}, #{code})")
     int insertProject(String pname, String tagline, String introduction, String owner, String img, String code);
-    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(user.USERNAME,0) AS USERNAME  from project p\n" +
+    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(User.USERNAME,0) AS USERNAME  from project p\n" +
             "\n" +
             "        left join (select project_like.PID,sum(project_like.LIKEAMOUNT) AS LIKEAMOUNT from project_like group by project_like.PID) as pl on p.Id = pl.PID\n" +
-            "            left join user on p.OWNER = user.ID\n" +
+            "            left join User on p.OWNER = User.ID\n" +
             "                left join (select teacher_award.PID,sum(teacher_award.AWARD) as AWARD from teacher_award group by teacher_award.PID) as ta on p.ID = ta.PID\n" +
             "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID group by p.ID order by p.TIMESTAMP desc limit ${start}, ${end}")
     List<ProjectLikeCommentDTO> getProjectsByCreateTime(int start, int end);
-    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(user.USERNAME,0) AS USERNAME  from project p\n" +
+    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(User.USERNAME,0) AS USERNAME  from project p\n" +
             "\n" +
             "        left join (select project_like.PID,sum(project_like.LIKEAMOUNT) AS LIKEAMOUNT from project_like group by project_like.PID) as pl on p.Id = pl.PID\n" +
-            "            left join user on p.OWNER = user.ID\n" +
+            "            left join User on p.OWNER = User.ID\n" +
             "                left join (select teacher_award.PID,sum(teacher_award.AWARD) as AWARD from teacher_award group by teacher_award.PID) as ta on p.ID = ta.PID\n" +
             "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID group by p.ID order by p.TIMESTAMP limit ${start}, ${end}")
     List<ProjectLikeCommentDTO> getProjectsByCreateTimeAsc(int start, int end);
-    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(user.USERNAME,0) AS USERNAME  from project p\n" +
+    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(User.USERNAME,0) AS USERNAME  from project p\n" +
             "\n" +
             "        left join (select project_like.PID,sum(project_like.LIKEAMOUNT) AS LIKEAMOUNT from project_like group by project_like.PID) as pl on p.Id = pl.PID\n" +
-            "            left join user on p.OWNER = user.ID\n" +
+            "            left join User on p.OWNER = User.ID\n" +
             "                left join (select teacher_award.PID,sum(teacher_award.AWARD) as AWARD from teacher_award group by teacher_award.PID) as ta on p.ID = ta.PID\n" +
             "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID group by p.ID order by p.UPDATETIME desc limit ${start}, ${end}")
     List<ProjectLikeCommentDTO> getProjectsByUpdateTime(int start, int end);
-    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(user.USERNAME,0) AS USERNAME  from project p\n" +
+    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(User.USERNAME,0) AS USERNAME  from project p\n" +
             "\n" +
             "        left join (select project_like.PID,sum(project_like.LIKEAMOUNT) AS LIKEAMOUNT from project_like group by project_like.PID) as pl on p.Id = pl.PID\n" +
-            "            left join user on p.OWNER = user.ID\n" +
+            "            left join User on p.OWNER = User.ID\n" +
             "                left join (select teacher_award.PID,sum(teacher_award.AWARD) as AWARD from teacher_award group by teacher_award.PID) as ta on p.ID = ta.PID\n" +
             "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID group by p.ID order by p.UPDATETIME limit #{start}, #{end}")
     List<ProjectLikeCommentDTO> getProjectsByUpdateTimeAsc(int start, int end);
@@ -45,44 +45,26 @@ public interface ProjectMapper {
     List<Project_comment> checkComment(int pid,String uid,int cid);
     @Delete("Delete from `project_comment` where CID = #{cid}")
     int DeleteComment(int cid);
-//    @Select("select * from `Project` order by like limit ${start}, ${end}")
-//    List<ProjectDTO> getProjectsByLike(int start, int end);
+
     @Select("select * from `project` order by TIMESTAMP")
     List<Project> getAllProject();
     @Select("select * from `project` where ID = #{ID}")
     ProjectDTO getProject(int ID);
-    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(user.USERNAME,0) AS USERNAME  from project p\n" +
+    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(User.USERNAME,0) AS USERNAME  from project p\n" +
             "\n" +
             "        left join (select project_like.PID,sum(project_like.LIKEAMOUNT) AS LIKEAMOUNT from project_like group by project_like.PID) as pl on p.Id = pl.PID\n" +
-            "            left join user on p.OWNER = user.ID\n" +
+            "            left join User on p.OWNER = User.ID\n" +
             "                left join (select teacher_award.PID,sum(teacher_award.AWARD) as AWARD from teacher_award group by teacher_award.PID) as ta on p.ID = ta.PID\n" +
             "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID where p.OWNER = #{UID}")
     List<ProjectLikeCommentDTO> getProjectByUser(String UID);
-    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(user.USERNAME,0) AS USERNAME  from project p\n" +
+    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(User.USERNAME,0) AS USERNAME  from project p\n" +
             "\n" +
             "        left join (select project_like.PID,sum(project_like.LIKEAMOUNT) AS LIKEAMOUNT from project_like group by project_like.PID) as pl on p.Id = pl.PID\n" +
-            "            left join user on p.OWNER = user.ID\n" +
+            "            left join User on p.OWNER = User.ID\n" +
             "                left join (select teacher_award.PID,sum(teacher_award.AWARD) as AWARD from teacher_award group by teacher_award.PID) as ta on p.ID = ta.PID\n" +
             "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID where p.PNAME like CONCAT('%',#{pname},'%')")
     List<ProjectLikeCommentDTO> getProjectByPname(String pname);
-    /*
-    @Select("select * from team where TID = #{tid}")
-    List<Team> getTeamByTID(String tid);
-    @Select("select * from team where TID = #{tid} and OWNER = true")
-    Team getTeamOwnerByTID(String tid);
-    @Select("select * from team WHERE TID = #{tid} and UNAME = #{uname}")
-    Team CheckTeam(String tid,String uname);
-    @Select("select * from team where UID = #{uid}")
-    List<Team> getTeamByUID(String uid);
-    @Select("select * from team where OWNER = true")
-    List<Team> getAllTeam();
-    @Insert("insert into `verification` (`UNAME`,`VERCODE`,`PID`,`TID`,`TNAME`) values (#{uname},#{VerCode},#{pid},#{tid},#{tname})")
-    */
-    int AddInviteCode(String uname,String VerCode,int pid,String tid,String tname);
-    @Select("Select * from verification where UNAME = #{uname} and VERCODE = #{vercode}")
-    Verification VerifyInvite(String uname,String vercode);
-    @Delete("delete from verification where VERCODE = #{vercode}")
-    int DeleteCode(String vercode);
+
     @Update("update project SET COVERIMAGE = #{file} WHERE ID = #{id}")
     int updateProjectCover(int id, String file);
     @Insert("Insert into `project_photo` (`PID`,`PHOTO`) values (#{pid},#{file})")
@@ -112,19 +94,14 @@ public interface ProjectMapper {
 
 
 
-    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(user.USERNAME,0) AS USERNAME  from project p\n" +
+    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(User.USERNAME,0) AS USERNAME  from project p\n" +
             "\n" +
             "        left join (select project_like.PID,sum(project_like.LIKEAMOUNT) AS LIKEAMOUNT from project_like group by project_like.PID) as pl on p.Id = pl.PID\n" +
-            "            left join user on p.OWNER = user.ID\n" +
+            "            left join User on p.OWNER = User.ID\n" +
             "                left join (select teacher_award.PID,sum(teacher_award.AWARD) as AWARD from teacher_award group by teacher_award.PID) as ta on p.ID = ta.PID\n" +
             "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID group by p.ID order by LIKEAMOUNT desc,p.UPDATETIME limit #{start},#{end}")
     List<ProjectLikeCommentDTO> GetProjectByLike(int start,int end);
 
-/*
-    @Insert("Insert into `team` (TID,OWNER,UID,PID,TNAME,UNAME) values (#{tid},#{ownership},#{uid},#{pid},#{tname},#{uname})")
-    int GenerateTeam(String tid,boolean ownership,String uid,int pid,String tname,String uname);
-
-*/
 
 
     @Select("select * from `project_like` where PID = #{pid} and UID = #{uid} limit 1")
@@ -185,10 +162,10 @@ public interface ProjectMapper {
     @Select("Select SKILLS from project_skill where PID =#{pid}")
     List<String> getProjectSkills(int pid);
 
-    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(user.USERNAME,0) AS USERNAME  from project p\n" +
+    @Select("select p.*,ifnull(pl.LIKEAMOUNT,0) as LIKEAMOUNT,ifnull(ta.AWARD,0) AS AWARD,ifnull(pc.COMMENT,0) AS COMMENT,ifnull(User.USERNAME,0) AS USERNAME  from project p\n" +
             "\n" +
             "        left join (select project_like.PID,sum(project_like.LIKEAMOUNT) AS LIKEAMOUNT from project_like group by project_like.PID) as pl on p.Id = pl.PID\n" +
-            "            left join user on p.OWNER = user.ID\n" +
+            "            left join User on p.OWNER = User.ID\n" +
             "                left join (select teacher_award.PID,sum(teacher_award.AWARD) as AWARD from teacher_award group by teacher_award.PID) as ta on p.ID = ta.PID\n" +
             "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID where p.ID = #{pid}")
     ProjectLikeCommentDTO getProjectPageByPid(int pid);
@@ -210,15 +187,4 @@ public interface ProjectMapper {
 
     @Select("Select * from project where ID = #{pid}")
     Project getFullProjectByPid(int pid);
-/*
-    @Select("select TID from team where PID = #{pid} and OWNER = true")
-    String getTidbyPid(int pid);
-
-    @Select("select TNAME from team where PID = #{pid} and OWNER = true")
-    String getTnamebyPid(int pid);
-
-    @Delete("Delete from team where TID = #{tid}")
-    int deleteTeam(String tid);
-
- */
 }

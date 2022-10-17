@@ -8,6 +8,7 @@
     <title>Login&Register</title>
     <link rel="stylesheet" href="./css/LoginRegister.css">
     <script src="./js/jquery-3.6.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 </head>
 
 <body>
@@ -19,12 +20,14 @@
             <input type="password" id="register_password" placeholder="Password">
             <input type="text" id="register_email" placeholder="Email">
             <button id="register_sub">Register</button>
+            <button class="mob" id = "mobileLogin">Go Login</button>
         </div>
         <div class="login-box">
             <h1>login</h1>
             <input type="text" id="login_username" placeholder="Username">
             <input type="password" id="login_password" placeholder="Password">
             <button id="login_sub">Login</button>
+            <button class="mob" id = "mobileRegister">Go Register</button>
         </div>
     </div>
     <div class="moving-box left">
@@ -48,6 +51,8 @@
     let form_box=document.getElementsByClassName('form-box')[0];
     let register_box=document.getElementsByClassName('register-box')[0];
     let login_box=document.getElementsByClassName('login-box')[0];
+    let mobileLogin=document.getElementById('mobileLogin');
+    let mobileRegister=document.getElementById('mobileRegister');
     register.addEventListener('click',()=>{
         form_box.style.transform='translateX(80%)';
         login_box.classList.add('hidden');
@@ -55,6 +60,14 @@
     })
     login.addEventListener('click',()=>{
         form_box.style.transform='translateX(0%)';
+        register_box.classList.add('hidden');
+        login_box.classList.remove('hidden');
+    })
+    mobileRegister.addEventListener('click',()=>{
+        login_box.classList.add('hidden');
+        register_box.classList.remove('hidden');
+    })
+    mobileLogin.addEventListener('click',()=>{
         register_box.classList.add('hidden');
         login_box.classList.remove('hidden');
     })
@@ -78,12 +91,20 @@
                         }
 
                     }else{
-                        alert(data);
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: data,
+                        })
                     }
                 }
             });
         }else {
-            alert("Username and password can't be null");
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Username and password can\'t be null!',
+            })
         }
     });
     $("#register_sub").click(function(){
@@ -98,17 +119,34 @@
                 data:{username:username,password:password,email:email},
                 success:function(data, textStatus, xhr){
                     if(data == "succeed"){
-                        alert("succeed");
-                        form_box.style.transform='translateX(0%)';
-                        register_box.classList.add('hidden');
-                        login_box.classList.remove('hidden');
+                        Swal.fire(
+                            'Succeed!',
+                            'Your account is ready to use!',
+                            'success'
+                        )
+                        if(window.matchMedia("(max-width: 979px)").matches){
+                            register_box.classList.add('hidden');
+                            login_box.classList.remove('hidden');
+                        }else {
+                            form_box.style.transform='translateX(0%)';
+                            register_box.classList.add('hidden');
+                            login_box.classList.remove('hidden');
+                        }
                     }else{
-                        alert(data);
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: data,
+                        })
                     }
                 }
             });
         }else {
-            alert("Username and password can't be null");
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Username and password can\'t be null!',
+            })
         }
     });
 

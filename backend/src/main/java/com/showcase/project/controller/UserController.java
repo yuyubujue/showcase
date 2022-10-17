@@ -73,7 +73,6 @@ public class UserController {
                 e.printStackTrace();
             }
             if(UserService.register(UUID.randomUUID().toString(), username, UserService.md5Encode(password), email, "user",data) == 1) {
-                sendMailService.sendSimpleMail(email,"Register success","Your username is: "+ username + ". Thanks for register our website. <a href='"+ websiteDomain.substring(1,websiteDomain.length()-1) +"'>" + websiteDomain.substring(1,websiteDomain.length()-1) + "</a>");
                 return "succeed";
             }else{
                 return "failed";

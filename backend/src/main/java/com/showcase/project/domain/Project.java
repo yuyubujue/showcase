@@ -31,7 +31,7 @@ public class Project implements Serializable {
     private String timestamp;
 
     @Column(name = "COVERIMAGE")
-    private byte[] coverImage;
+    private String coverImage;
 
     @Column(name = "UPDATETIME")
     private String updatetime;
@@ -41,7 +41,7 @@ public class Project implements Serializable {
 
     public Project() {}
 
-    public Project(String pname, String tagline, String introduction,String owner,String timestamp,byte[] coverImage,String updatetime) {
+    public Project(String pname, String tagline, String introduction,String owner,String timestamp,String coverImage,String updatetime) {
         this.pname = pname;
         this.tagline = tagline;
         this.owner = owner;
@@ -75,7 +75,7 @@ public class Project implements Serializable {
         return updatetime;
     }
 
-    public byte[] getCoverImage(){return coverImage;}
+    public String getCoverImage(){return coverImage;}
 
     public String getTimestamp() {
         return timestamp;

@@ -21,7 +21,7 @@ public class ProjectService{
         if(page.equals("1")) {
             return projectMapper.getProjectsByCreateTime(0,10);
         }else{
-            return projectMapper.getProjectsByCreateTime(Integer.parseInt(page) * 10 -10, Integer.parseInt(page) * 10 );
+            return projectMapper.getProjectsByCreateTime(Integer.parseInt(page) * 10 - 10, Integer.parseInt(page) * 10);
         }
     }
     public List<ProjectLikeCommentDTO> getProjectsByCreateTimeAsc(String page) {
@@ -29,7 +29,7 @@ public class ProjectService{
         if(page.equals("1")) {
             return projectMapper.getProjectsByCreateTimeAsc(0,10);
         }else{
-            return projectMapper.getProjectsByCreateTimeAsc(Integer.parseInt(page) * 10 -10, Integer.parseInt(page) * 10 );
+            return projectMapper.getProjectsByCreateTimeAsc(Integer.parseInt(page) * 10 - 10, Integer.parseInt(page) * 10);
         }
     }
 
@@ -38,7 +38,7 @@ public class ProjectService{
         if(page.equals("1")) {
             return projectMapper.getProjectsByUpdateTime(0,10);
         }else{
-            return projectMapper.getProjectsByUpdateTime(Integer.parseInt(page) * 10 -10, Integer.parseInt(page) * 10);
+            return projectMapper.getProjectsByUpdateTime(Integer.parseInt(page) * 10 - 10, Integer.parseInt(page) * 10);
         }
     }
 
@@ -47,7 +47,7 @@ public class ProjectService{
         if(page.equals("1")) {
             return projectMapper.getProjectsByUpdateTimeAsc(0,10);
         }else{
-            return projectMapper.getProjectsByUpdateTimeAsc(Integer.parseInt(page) * 10-10, Integer.parseInt(page) * 10 );
+            return projectMapper.getProjectsByUpdateTimeAsc(Integer.parseInt(page) * 10 - 10, Integer.parseInt(page) * 10);
         }
     }
 
@@ -109,7 +109,7 @@ public class ProjectService{
         if(page.equals("1")) {
             return projectMapper.getComments(pid,0,10);
         }else{
-            return projectMapper.getComments(pid,Integer.parseInt(page) * 10 -10, Integer.parseInt(page) * 10 );
+            return projectMapper.getComments(pid,Integer.parseInt(page) * 10 - 10, Integer.parseInt(page) * 10);
         }
     }
 
@@ -128,7 +128,7 @@ public class ProjectService{
         if(page.equals("1")) {
             return projectMapper.GetProjectByLike(0,10);
         }else{
-            return projectMapper.GetProjectByLike(Integer.parseInt(page) * 10 -10, Integer.parseInt(page) * 10 );
+            return projectMapper.GetProjectByLike(Integer.parseInt(page) * 10 - 10, Integer.parseInt(page) * 10);
         }
     }
 
@@ -136,7 +136,7 @@ public class ProjectService{
         if(page.equals("1")) {
             return projectMapper.GetAwardedProject(0,10);
         }else{
-            return projectMapper.GetAwardedProject(Integer.parseInt(page) * 10 -10, Integer.parseInt(page) * 10);
+            return projectMapper.GetAwardedProject(Integer.parseInt(page) * 10 - 10, Integer.parseInt(page) * 10);
         }
     }
     public int addAward(int pid,String uid,String comment,String username){return projectMapper.addAward(pid,uid,comment,username);}

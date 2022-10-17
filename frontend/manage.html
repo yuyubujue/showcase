@@ -9,6 +9,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/bootstrap-table.min.css">
     <script src="./js/bootstrap-table.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 </head>
 <body>
 <div class="container">
@@ -64,18 +65,35 @@
                 data:{username:choose,authority:auth},
                 success: function (data) {
                     if(data == "succeed"){
-                        alert("success");
+                        Swal.fire({
+                            title:'Succeed!',
+                            type: 'success'
+                        }).then((result) => {
+                            window.location = 'setting.html';
+                        })
                         $table.bootstrapTable('refresh')
                     }else{
-                        alert(data);
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: data,
+                        })
                     }
                 },
                 error: function (data) {
-                    console.log(data);
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: data,
+                    })
                 }
             });
         }else {
-            alert("Please choose an user and the authority first");
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Please choose an user and the authority first!',
+            })
         }
     }
 
@@ -92,18 +110,35 @@
                 data:{id:choose},
                 success: function (data) {
                     if(data == "succeed"){
-                        alert("success");
+                        Swal.fire({
+                            title:'Succeed!',
+                            type: 'success'
+                        }).then((result) => {
+                            window.location = 'setting.html';
+                        })
                         $table.bootstrapTable('refresh')
                     }else{
-                        alert(data);
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: data,
+                        })
                     }
                 },
                 error: function (data) {
-                    console.log(data);
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: data,
+                    })
                 }
             });
         }else {
-            alert("Please choose an user and the authority first");
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Please choose an user and the authority first!',
+            })
         }
     }
 
@@ -112,7 +147,11 @@
         if(choose != ""){
             $(location).attr("href", "./space.html?id="+choose);
         }else {
-            alert("Please choose an user and the authority first");
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Please choose an user and the authority first!',
+            })
         }
     }
 
@@ -125,7 +164,7 @@
         type: 'GET',
         success: function (data, textStatus, xhr) {
             if (data == "unauthorized") {
-                window.location = 'home.html';
+                window.location = 'Home.html';
             }
         }
     });
