@@ -20,6 +20,7 @@
     <link href="./css/wangEditor.css" rel="stylesheet">
     <script src="./js/loginstate.js"></script>
     <script src="./js/imageUpload.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 </head>
 <body>
     <header>
@@ -133,8 +134,10 @@
             
 
             <div class="pjAction">
-                <input type="submit" value="Save" id="pjSave" class="btn btn-success" @click="postPj">
-                <input type="button" value="Cancel" class="btn btn-danger">
+                <div>
+                    <input type="submit" value="Save" id="pjSave" class="btn btn-success" @click="postPj">
+                    <input type="button" value="Cancel" class="btn btn-danger">
+                </div>
             </div>
  
         </section>
@@ -183,7 +186,16 @@
                         let config = {headers:{'Content-Type':'multipart/form-data'}};
                         axios.post('project/uploadProject', param, config //+"?pname=" + this.pj_name +"&shortTagline=" + this.pj_Tagline + "&file=" + coverbase + "&introduction=" + intro + "&skills=" + this.pj_Tech+ separate + this.pj_TechO
 	                        ).then(function (response) {
-                            console.log(response);
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: "Your project has been post!",
+                                    type: 'success',
+                                    showCancelButton: false,
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Go check it!'
+                                    }).then((result) => {
+                                        window.location.href = "./PJDetail.html?id="+response.data;
+                                    })                                             
                         })
                         .catch(function (error) {
                             console.log(error);

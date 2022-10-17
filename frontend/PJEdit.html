@@ -20,6 +20,7 @@
     <link href="./css/wangEditor.css" rel="stylesheet">
     <script src="./js/loginstate.js"></script>
     <script src="./js/imageUpload.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 </head>
 <body>
     <header>
@@ -133,8 +134,11 @@
             
 
             <div class="pjAction">
-                <input type="submit" value="Save" id="pjSave" class="btn btn-success" @click="updatePj">
-                <input type="button" value="Cancel" class="btn btn-danger" @click="backPj">
+                <div>
+                    <input type="submit" value="Save" id="pjSave" class="btn btn-success" @click="updatePj">
+                    <input type="button" value="Cancel" class="btn btn-warning" @click="backPj">
+                </div>
+                <input type="button" value="Delete" class="btn btn-danger" @click="delPj">
             </div>
  
         </section>
@@ -176,7 +180,8 @@
                         }
                         var skill =  this.pj_Tech+ separate + this.pj_TechO;
                         let param = new FormData(); 
-                        let config = {headers:{'Content-Type':'multipart/form-data'}};         
+                        let config = {headers:{'Content-Type':'multipart/form-data'}};
+                        let err = false;         
                         // Cover
                         param.append("pid",pjId);
                         param.append("file",coverbase);
@@ -186,6 +191,7 @@
                         })
                         .catch(function (error) {
                             console.log(error);
+                            err = true;
                         });
                         // Intro
                         param = new FormData();
@@ -197,6 +203,7 @@
                         })
                         .catch(function (error) {
                             console.log(error);
+                            err = true;
                         });
                         //pname
                         param = new FormData();
@@ -208,6 +215,7 @@
                         })
                         .catch(function (error) {
                             console.log(error);
+                            err = true;
                         });
                         //tagline
                         param = new FormData();
@@ -219,6 +227,7 @@
                         })
                         .catch(function (error) {
                             console.log(error);
+                            err = true;
                         });
                         //skill
                         param = new FormData();
@@ -230,9 +239,28 @@
                         })
                         .catch(function (error) {
                             console.log(error);
+                            err = true;
                         });
-                        alert("update Success!!");
-                        window.location.href = "./PJDetail.html?id="+pjId;
+                        if(!err){
+                            Swal.fire({
+                                title: 'Success!',
+                                text: "Your project has been updated!",
+                                type: 'success',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Okay!'
+                                }).then((result) => {
+                                    window.location.href = "./PJDetail.html?id="+pjId;
+                                })                                              
+                        }else{
+                            Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    footer: "Please try again later or contact the admin."
+                                })
+                        }
+                        
                     },
                     getUrlParam(name) {
 
@@ -292,6 +320,49 @@
                     backPj(){
                         let pjId = this.getUrlParam("pid");
                         window.location.href = "./PJDetail.html?id="+pjId;
+                    },
+                    delPj(){
+                        let pjId = this.getUrlParam("pid");
+                        Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                        }).then((result) => {
+                        if (result.value) {
+                            axios.post('project/removeProject?pid='+pjId)
+                            .then(function(response){
+                                console.log(response.data);
+                                if(response.data == "delete success by admin" || response.data == "delete success by teacher" || response.data == "success"){
+                                    Swal.fire({
+                                    title: 'Deleted!',
+                                    text: "Your project has been deleted!",
+                                    type: 'success',
+                                    showCancelButton: false,
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Okay!'
+                                    }).then((result) => {
+                                        window.location.href = "./Projects.html"
+                                    }) 
+                                }else{
+                                    Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    footer: response.data
+                                })
+                                }
+                                // windsow.location.href = "./Projects.html";
+                            })
+                            .catch(function(error){
+                                console.log(error);
+                            });
+                            
+                        }
+                        })                      
                     }
 
                 },
@@ -316,7 +387,7 @@
             <nav class="col-md-6">
                 <ul>
                     <h4>Profile</h4>
-                    <li><a href="./PJDetail.html">My projects</a></li>
+                    <li><a href="./PJDetaifl.html">My projects</a></li>
                     <li><a href="./space.html">My homepage</a></li>
                     <li><a href="./setting.html">Settings</a></li>
                 </ul>
