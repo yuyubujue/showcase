@@ -1,11 +1,8 @@
 package com.showcase.project.dto;
 
-
-
 public class awardDTO {
     private int id;
     private String pname;
-
     private String owner;
     private String timestamp;
     private String awardtimes;

@@ -9,7 +9,61 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 </head>
+<style>
+    .navbar {
+        min-height: 100px;
+        background-color: #004681;
+        border-color: #004681;
+    }
+    .navbar-brand,.navbar-nav li a{
+        line-height: 100px;
+        height: 100px;
+        margin-left: 30px;
+        font-size: 24px;
+        padding-top: 0;
+        color: white;
+    }
+
+    .navbar-nav li a:hover {
+        background-color: #00AEEC;
+    }
+
+    .navbar-toggle{
+        background-color: #00AEEC;
+        margin-top: 30px;
+    }
+
+    .icon-bar{
+        color: white;
+        background-color: white;
+    }
+</style>
 <body>
+<nav class="navbar navbar-dark bg-dark" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#example-navbar-collapse">
+                <span class="sr-only">Switch</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="./Home.html"><img src="./images/logo.jpg" alt="" style="height: 80px;width: 80px;margin-top: 10px;"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="example-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active navl"><a href="./Home.html">Home</a></li>
+                <li class="navl"><a href="./Projects.html">Projects</a></li>
+                <li class="navl"><a href="./space.html">My Space</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="login"><a href='login.html'>Login&Register</a></li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -115,6 +169,19 @@
             if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
         }
         return "";
+    }
+
+    if (getCookie("Auth")==""){
+        $(location).attr("href", "./login.html?from=./space.html");
+    }
+
+    if (getCookie("Auth")!=""){
+        document.getElementById("login").innerHTML = "<a><button type=\"button\" class=\"btn btn-danger\" style=\"border-radius:50px\" href=\"javascript:void(0)\" onclick=\"logout()\">Sign out</button></a>"
+    }
+
+    function logout(){
+        document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString();
+        window.location.reload();
     }
 </script>
 </html>

@@ -135,9 +135,6 @@ public interface ProjectMapper {
     @Delete("Delete from `teacher_award` where PID=#{pid} and UID=#{uid}")
     int DeleteAward(int pid,String uid);
 
-    @Delete("Delete from `teacher_award` where PID=#{pid}")
-    int DeleteAwardAdmin(int pid);
-
     @Select("Select * from `teacher_award` where PID=#{pid}")
     List<TeacherCommentDTO> GetAwardCommentByID(int pid);
     @Select("Select * from `teacher_award` where PID=#{pid} and UID=#{uid} limit 1")
@@ -158,7 +155,6 @@ public interface ProjectMapper {
 
     @Delete("Delete from `project_skill` where PID = #{pid} and SKILLS = #{skill}")
     int RemoveSkill(int pid,String skill);
-
 
     @Select("Select SKILLS from project_skill where PID =#{pid}")
     List<String> getProjectSkills(int pid);

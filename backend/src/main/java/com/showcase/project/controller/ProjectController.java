@@ -207,7 +207,6 @@ public class ProjectController {
         String auth = String.valueOf(user.getAuthority());
         if(auth.equals("admin")){
             int resp = projectService.RemoveProject(pid);
-
             if (resp == 1) {
                 projectService.RemoveAllSkill(pid);
                 return "delete success by admin";
@@ -220,7 +219,6 @@ public class ProjectController {
             return "not you projects!";
         }
         if (projectService.RemoveProject(pid) == 1) {
-            projectService.RemoveAllSkill(pid);
             return "success";
         }
         return "remove fail";
@@ -373,39 +371,37 @@ public class ProjectController {
 
     @PostMapping(value = "/DeleteAward")
     @ResponseBody
-    public String DeleteAward(@RequestParam int pid, @CookieValue(name = "Auth") String cookie) {
+    public String DeleteAward(@RequestParam int pid, @RequestParam String uid, @CookieValue(name = "Auth") String cookie) {
         User user = userService.authorityAndLoginJudge(cookie);
         if (user == null) {
-            return "unauthorized";
+            return "Unauthorized";
         }
         ProjectDTO checker2 = projectService.getProject(pid);
         if (checker2 == null) {
-            return "no such project!";
+            return "No such project!";
         }
-        User checker1 = userService.checkTeacher("teacher", cookie);
-        if (checker1 == null) {
-            return "only teacher can award";
+        if (!user.getAuthority().equals("admin") && !user.getAuthority().equals("teahcer")) {
+            return "Only teacher and administration can delete award";
         }
 
-        String uid = user.getId();
-        String auth = String.valueOf(user.getAuthority());
-        if(auth.equals("admin")){
-            int resp = projectService.DeleteAwardAdmin(pid);
+        String userid = user.getId();
+        if(user.getAuthority().equals("admin")){
+            int resp = projectService.DeleteAward(pid,uid);
             if (resp == 1) {
-                return "all award removed by admin of "+ pid;
+                return "Delete success";
             } else {
-                return "delete fail by admin";
+                return "Delete failed";
             }
         }else{
-            teacher_award checker = projectService.checkAward(pid, uid);
+            teacher_award checker = projectService.checkAward(pid, userid);
             if (checker == null) {
-                return "not your award";
+                return "Not your award";
             }
-            int resp = projectService.DeleteAward(pid, uid);
+            int resp = projectService.DeleteAward(pid, userid);
             if (resp == 1) {
-                return "delete success";
+                return "Delete success";
             } else {
-                return "delete fail";
+                return "Delete fail";
             }
         }
 

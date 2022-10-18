@@ -233,7 +233,8 @@ input:focus::placeholder{
 	.form-box{
 		position: absolute;
 		top: -10%;
-		left: 7%;
+		left: 10%;
+		right: 10%;
 		background-color: #58B2DC;
 		width: 320px;
 		height: 500px;
