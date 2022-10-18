@@ -335,7 +335,6 @@
                         if (result.value) {
                             axios.post('project/removeProject?pid='+pjId)
                             .then(function(response){
-                                console.log(response.data);
                                 if(response.data == "delete success by admin" || response.data == "delete success by teacher" || response.data == "success"){
                                     Swal.fire({
                                     title: 'Deleted!',
