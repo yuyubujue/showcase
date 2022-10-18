@@ -527,6 +527,7 @@
                         })
                 },
                 delAward(){
+                    var uid = event.target.id;
                     Swal.fire({
                         title: 'Are you sure?',
                         text: "You won't be able to revert this!",
@@ -537,9 +538,9 @@
                         confirmButtonText: 'Yes, delete it!'
                         }).then((result) => {
                         if (result.value) {
-                            axios.post("./project/DeleteAward?pid=" + getUrlParam("id"))
+                            axios.post("./project/DeleteAward?pid=" + getUrlParam("id")+"&uid="+uid)
                             .then(function(response){
-                                if(response.data == "delete success"){
+                                if(response.data == "delete success" || response.data == "Delete success"){
                                     Swal.fire({
                                     title: 'Deleted!',
                                     text: "Award has been deleted!",
@@ -719,13 +720,20 @@
                                 document.getElementById("awardget").innerHTML = "";
                                 for(var i =0; i<cm.pj_awardnums; i++){
                                     var adiv = document.createElement("div");
+                                    var acover = document.createElement("img");
+                                    acover.src = "./images/award.svg";
+                                    acover.className = "awardcover";
                                     adiv.className = "awarddiv";
+                                    var tspace = document.createElement("a");
+                                    tspace.href = "./space.html?id="+ data[i].uid;
+                                    var ticon = document.createElement("img");
+                                    ticon.src = "./user/getimg/"+ data[i].uid;
                                     var ah3 = document.createElement("h3");
                                     var ah4 = document.createElement("h4");
                                     var hr = document.createElement("hr");
                                     ah3.innerText = data[i].teachername + ":";
                                     ah4.innerText = data[i].teachercomment;
-                                    if(data[i].teachername == uname){
+                                    if(data[i].teachername == uname || user_auth == "admin"){
                                         document.getElementById("addaward").style.display = "none";
                                         document.getElementById("addawardhr").style.display = "none";
                                         var a_del = document.createElement("a");
@@ -733,13 +741,20 @@
                                         a_del.className = "del";
                                         a_del.innerText = "Delete";
                                         a_del.onclick= cm.delAward;
-                                        adiv.appendChild(ah3);
+                                        a_del.id = data[i].uid;
+                                        tspace.appendChild(ticon);
+                                        tspace.appendChild(ah3);
+                                        adiv.appendChild(acover);
+                                        adiv.appendChild(tspace);
                                         adiv.appendChild(hr);
                                         adiv.appendChild(ah4);
                                         adiv.appendChild(a_del);
                                         
                                     }else{
-                                        adiv.appendChild(ah3);
+                                        adiv.appendChild(acover);
+                                        tspace.appendChild(ticon);
+                                        tspace.appendChild(ah3);
+                                        adiv.appendChild(tspace);
                                         adiv.appendChild(hr);
                                         adiv.appendChild(ah4);
                                         

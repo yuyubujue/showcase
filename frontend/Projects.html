@@ -96,7 +96,13 @@
                                     if(cover == null || cover == "https://api.crya.me/undefined"){
                                         cover = "./images/uoa-logo.jpg";
                                     }
-                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                    if(award>0){
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img class='awardcover' src='./images/award.svg'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                    }else{
+                                        li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                    }                                    
                                     document.getElementById("pjlist").appendChild(li);
                                     
                                     }
@@ -505,6 +511,7 @@
                         // document.getElementById(skill).style = "color: #fff";
                         axios.get("project/GetProjectBySkills/1?skills="+skills)
                         .then(function(response){
+                            console.log(response.data);
                             document.getElementById("pjlist").innerHTML="";
                             var data = response.data;
                             for(let i=0; i<response.data.length; i++){
@@ -526,7 +533,8 @@
                                 }else{
                                     li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
 
-                                }                                document.getElementById("pjlist").appendChild(li);
+                                }                                
+                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                         })
