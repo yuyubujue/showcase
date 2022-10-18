@@ -220,7 +220,7 @@
                             document.getElementById("pjrank").innerHTML="";
                             var data = response.data;
                             for(let i=0; i<response.data.length; i++){
-                                var pjId = data[i].id;
+                                var pjId = data[i].ID;
                                 var pname = data[i].pname;
                                 var like = data[i].likeamount;
                                 if(like == null){
@@ -297,7 +297,13 @@
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                if(award>0){
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img class='awardcover' src='./images/award.svg'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }else{
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }
                                 document.getElementById("pjlist").appendChild(li);
                                 
                             }
@@ -324,8 +330,13 @@
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
-                                document.getElementById("pjlist").appendChild(li);
+                                if(award>0){
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img class='awardcover' src='./images/award.svg'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }else{
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                             if(data.length == 0){
@@ -359,8 +370,13 @@
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
-                                document.getElementById("pjlist").appendChild(li);
+                                if(award>0){
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img class='awardcover' src='./images/award.svg'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }else{
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                         })
@@ -386,8 +402,13 @@
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
-                                document.getElementById("pjlist").appendChild(li);
+                                if(award>0){
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img class='awardcover' src='./images/award.svg'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }else{
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                             if(data.length == 0){
@@ -421,8 +442,13 @@
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
-                                document.getElementById("pjlist").appendChild(li);
+                                if(award>0){
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img class='awardcover' src='./images/award.svg'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }else{
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                         })
@@ -448,8 +474,13 @@
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
-                                document.getElementById("pjlist").appendChild(li);
+                                if(award>0){
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img class='awardcover' src='./images/award.svg'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }else{
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                             if(data.length == 0){
@@ -489,8 +520,13 @@
                                 if(cover == null || cover == "https://api.crya.me/undefined"){
                                     cover = "./images/uoa-logo.jpg";
                                 }
-                                li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
-                                document.getElementById("pjlist").appendChild(li);
+                                if(award>0){
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img class='awardcover' src='./images/award.svg'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }else{
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                }                                document.getElementById("pjlist").appendChild(li);
                                 
                             }
                         })
@@ -520,7 +556,13 @@
                                     if(cover == null || cover == "https://api.crya.me/undefined"){
                                         cover = "./images/uoa-logo.jpg";
                                     }
-                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+                                    if(award>0){
+                                    li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img class='awardcover' src='./images/award.svg'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                    }else{
+                                        li.innerHTML = "<a href='./PJDetail.html?id=" + pjId +"'><img src='"+cover+"'><p>"+pname+"</p></a><span><a href='.space.html?id="+uuid+"'><p>&#128100; "+uname+"</p></a><p>&#10084; "+like+"</p><p>&#128172; "+comment+"</p><span>";
+
+                                    }                                    
                                     document.getElementById("pjlist").appendChild(li);
                                 
                                 }
