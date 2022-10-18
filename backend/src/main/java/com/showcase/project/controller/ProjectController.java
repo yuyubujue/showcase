@@ -207,7 +207,9 @@ public class ProjectController {
         String auth = String.valueOf(user.getAuthority());
         if(auth.equals("admin")){
             int resp = projectService.RemoveProject(pid);
+
             if (resp == 1) {
+                projectService.RemoveAllSkill(pid);
                 return "delete success by admin";
             } else {
                 return "delete fail by admin";
@@ -218,6 +220,7 @@ public class ProjectController {
             return "not you projects!";
         }
         if (projectService.RemoveProject(pid) == 1) {
+            projectService.RemoveAllSkill(pid);
             return "success";
         }
         return "remove fail";

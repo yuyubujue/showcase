@@ -113,17 +113,17 @@ public class ProjectService{
         }
     }
 
-    public int AddInviteCode(String uname,String VerCode,int pid,String tid,String tname){
-        return projectMapper.AddInviteCode(uname,VerCode,pid,tid,tname);
-    }
-
-    public Verification VerifyInvite(String uname,String vercode){
-        return projectMapper.VerifyInvite(uname,vercode);
-    }
-
-    public int DeleteCode(String vercode){
-        return projectMapper.DeleteCode(vercode);
-    }
+//    public int AddInviteCode(String uname,String VerCode,int pid,String tid,String tname){
+//        return projectMapper.AddInviteCode(uname,VerCode,pid,tid,tname);
+//    }
+//
+//    public Verification VerifyInvite(String uname,String vercode){
+//        return projectMapper.VerifyInvite(uname,vercode);
+//    }
+//
+//    public int DeleteCode(String vercode){
+//        return projectMapper.DeleteCode(vercode);
+//    }
     public List<ProjectLikeCommentDTO> GetProjectByLike(String page){
         if(page.equals("1")) {
             return projectMapper.GetProjectByLike(0,10);
@@ -165,6 +165,8 @@ public class ProjectService{
     public List<Integer> GetProjectIdBySkills(String skill){return projectMapper.GetProjectIdBySkills(skill);}
 
     public int RemoveSkill(int pid,String skill) {return projectMapper.RemoveSkill(pid,skill);}
+
+
 
     public List<String> getProjectSkills(int pid){return projectMapper.getProjectSkills(pid);}
 
