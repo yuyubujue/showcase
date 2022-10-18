@@ -339,11 +339,23 @@ input[type=text]:focus{
     width: 40%;
 }
 
+.pjAction{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .pjAction input[type=submit]{
     width: 100px;
     background-color: green;
     color: #FFF;
     margin: 0 24px 0 0;
+}
+
+.pjAction div input[type=button]{
+    width: 100px;
+    background-color: orange;
+    color: #FFF;
 }
 
 .pjAction input[type=button]{
