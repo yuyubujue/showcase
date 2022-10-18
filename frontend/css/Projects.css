@@ -454,12 +454,21 @@ main .mainbody {
     height: 30px;
 }
 
+.awardcover{
+    width: 40px !important;
+    height: auto !important;
+    position: absolute !important;
+    float: left !important;
+    margin: 0 !important;
+}
+
 #pjlist li a img {
     width: 100%;
     height: 70%;
     border-radius: 10px; 
-     
 }
+
+
 
 #pjlist li a p:first-child {    
     font-size: 14px;
