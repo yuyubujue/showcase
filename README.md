@@ -133,9 +133,13 @@ If you disconnect the SSH the backend may stop, you can use [Screen](https://lin
 [api.crya.me](https://api.crya.me "api.crya.me")
 ------------
 
+------
+
 ### Future Plan
 
-------------
+------
+
+There are lots of function that we can add to this project, such as the management page for Administrator and teacher respectively, the platform that can connect students and their intended employers and so on. So we may add some more useful functions in the future.
 
 
 ------------
