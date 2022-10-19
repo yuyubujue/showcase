@@ -4,14 +4,65 @@
     box-sizing: border-box;
 }
 
-html, body {
+@media screen and (max-width: 600px) {
+    .wrap .pos-text {
+        width: 240px !important;
+    }
+
+    footer .list {
+        width: 240px !important;
+    }
+
+    .wrap-box .text-box {
+        position: relative;
+        top: -80px;
+        float: right;
+        width: 23vw;
+        padding: 20px;
+        border-radius: 20px;
+        overflow: hidden;
+        background-color: rgb(215, 215, 215, .7);
+    }
+
+    .wrap-box {
+        width: 240px !important;
+    }
+
+    .pic-box {
+        width: 150px !important;
+    }
+
+    .text-box {
+        width: 138px !important;
+    }
+
+    .wrap-box .text-box .title {
+        margin-bottom: 10px;
+        font-size: 1.2vw;
+        color: #fff;
+    }
+
+    .wrap-box .text-box .tips {
+        font-size: 0.8vw;
+        font-weight: 550;
+        color: rgb(28, 69, 123);
+    }
+}
+
+html,
+body {
     margin: 0;
     padding: 0;
     font-size: 14px;
     color: #333;
 }
 
-ul, li {
+body {
+    min-width: 600px;
+}
+
+ul,
+li {
     margin: 0;
     padding: 0;
     list-style-type: none;
@@ -55,15 +106,15 @@ img {
     line-height: 80px;
     text-align: center;
     cursor: pointer;
-    text-decoration:none;
-    color:#FFFFFF;
+    text-decoration: none;
+    color: #FFFFFF;
 }
 
 .left-box .nav-box .nav-item:hover {
     background-color: rgb(176, 189, 211);
-    color:#004681;
+    color: #004681;
     transition: all 0.4s linear;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 .right-box {
@@ -84,15 +135,15 @@ img {
     line-height: 80px;
     text-align: center;
     cursor: pointer;
-    text-decoration:none;
-    color:#FFFFFF;
+    text-decoration: none;
+    color: #FFFFFF;
     float: right;
     background-color: #004681;
 }
 
 .right-box .nav-box .nav-item:hover {
-    background-color:rgb(176, 189, 211);
-    color:#004681;
+    background-color: rgb(176, 189, 211);
+    color: #004681;
     transition: all 0.4s linear;
     font-size: 25px;
     font-weight: bold;
@@ -104,7 +155,8 @@ img {
     margin-right: 20px;
     position: relative;
 }
-.right-box .input-box img{
+
+.right-box .input-box img {
     width: 20px;
     height: 20px;
     /* margin-left: -30px; */
@@ -112,6 +164,7 @@ img {
     right: 10px;
     top: 6px;
 }
+
 input {
     height: 32px;
     padding: 2px 10px;
@@ -140,7 +193,9 @@ input {
     background-color: #004681;
     border-color: #004681;
 }
-.navbar-brand,.navbar-nav li a{
+
+.navbar-brand,
+.navbar-nav li a {
     line-height: 100px;
     height: 100px;
     margin-left: 30px;
@@ -153,12 +208,12 @@ input {
     background-color: #00AEEC;
 }
 
-.navbar-toggle{
+.navbar-toggle {
     background-color: #00AEEC;
     margin-top: 30px;
 }
 
-.icon-bar{
+.icon-bar {
     color: white;
     background-color: white;
 }
@@ -169,29 +224,28 @@ input {
     height: 80px;
     background-color: rgb(27, 69, 123);
 }
- 
 
-.header-mobile  .nav-box {
+
+.header-mobile .nav-box {
     position: relative;
     width: 80px;
     height: 100%;
 }
 
-.header-mobile  .nav-box .icon {
-    width:  100px;
+.header-mobile .nav-box .icon {
+    width: 100px;
     height: 100%;
     background: url(../images/list.png) no-repeat center center;
     background-size: 40%;
     cursor: pointer;
 }
 
-.header-mobile  .nav-box:hover .nav-list {
+.header-mobile .nav-box:hover .nav-list {
     display: block;
 
 }
 
-.header-mobile  .nav-box .nav-list {
-    min-height: 100px;
+.header-mobile .nav-box .nav-list {
     display: none;
     position: absolute;
     bottom: -172px;
@@ -202,7 +256,7 @@ input {
 
 }
 
-.header-mobile  .nav-box .nav-list .nav-item {
+.header-mobile .nav-box .nav-list .nav-item {
     font-size: 18px;
     padding: 10px 10px;
     cursor: pointer;
@@ -210,9 +264,8 @@ input {
 }
 
 
-.header-mobile  .nav-box .nav-list .nav-item:hover {
+.header-mobile .nav-box .nav-list .nav-item:hover {
     background-color: #004681;
-    transition: 0.4s
 }
 
 .header-mobile .search-box .icon {
@@ -239,16 +292,19 @@ input {
     padding: 30px 150px;
     background-color: rgb(199, 211, 225);
 }
-.mobile-search .search-con{
+
+.mobile-search .search-con {
     position: relative;
 }
-.mobile-search .search-con img{
+
+.mobile-search .search-con img {
     width: 24px;
     height: 24px;
     position: absolute;
     right: 12px;
     top: 8px;
 }
+
 .mobile-search .search-con input {
     width: 100%;
     height: 40px;
@@ -256,78 +312,91 @@ input {
 
 .wrap .banner {
     height: 400px;
-
 }
 
 .wrap .pos-text {
     position: relative;
     top: -100px;
-    width: 800px;
+    width: 60vw;
     margin: auto;
     padding: 40px;
     color: #fff;
     text-align: right;
-    background-color: rgba(17,48,88,.8);
+    background-color: rgba(17, 48, 88, .8);
 }
 
 .wrap .pos-text .pos-title {
-    font-size: 30px;
+    font-size: 1.5vw;
     margin-bottom: 20px;
     text-align: left;
 }
 
 .wrap .pos-text .des {
-    font-size: 16px;
+    font-size: 0.8vw;
     margin-bottom: 40px;
     text-align: left;
+    word-break: break-all;
 }
 
 .wrap .pos-text button {
-    width: 260px;
-    height: 60px;
-    line-height: 60px;
+    width: 13vw;
+    height: 3vw;
+    line-height: 3vw;
     text-align: center;
-    border-radius: 50px;
+    border-radius: 2.5vw;
     border: none;
-    font-size: 16px;
+    font-size: 0.8vw;
     font-weight: 550;
 }
 
 .wrap-box {
-    width: 800px;
+    width: 40vw;
     margin: auto;
     overflow: hidden;
 }
 
 .wrap-box .pic-box {
-    width: 400px;
-    border-radius: 40px;
+    width: 30vw;
+    border-radius: 20px;
     overflow: hidden;
 }
 
+.icon a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
 
+.wrap-box .pic-box :hover {
+    transform: scale(1.1);
+    border-radius: 20px;
+
+    transition: 0.4s 0.3s;
+
+}
 
 .wrap-box .text-box {
     position: relative;
     top: -80px;
     float: right;
-    width: 470px;
-    padding: 20px;
-    border-radius: 20px;
+    width: 23vw;
+    padding: 1vw;
+    border-radius: 1vw;
     overflow: hidden;
     background-color: rgb(215, 215, 215, .7);
 }
 
 .wrap-box .text-box .title {
     margin-bottom: 10px;
-    font-size: 24px;
+    font-size: 1.2vw;
     color: #fff;
 }
 
 .wrap-box .text-box .tips {
-    font-size: 16px;
+    font-size: 0.8vw;
     font-weight: 550;
     color: rgb(28, 69, 123);
+    word-break: break-all;
 }
 
 footer {
@@ -338,7 +407,7 @@ footer {
 footer .list {
     display: flex;
     justify-content: space-between;
-    width: 800px;
+    width: 40vw;
     margin: auto;
 }
 
@@ -360,6 +429,10 @@ footer .list .links .link {
     color: #1795ff;
 }
 
+footer .list .links .link :hover{
+    color: #333333;
+}
+
 
 .copyright {
     padding: 10px;
@@ -376,20 +449,21 @@ footer .list .links .link {
 
 
 .data-container {
-    background: rgba(17,48,88,.0);
-    height: 100px;
+    background: rgba(17, 48, 88, .0);
+    height: 5vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-decoration:none;
+    text-decoration: none;
 
 }
+
 .btn {
     cursor: pointer;
     position: relative;
     padding: 10px 20px;
     background: white;
-    text-decoration:none;
+    text-decoration: none;
     color: rgb(28, 69, 123);
     font-size: 20px;
     font-weight: bold;
@@ -397,7 +471,9 @@ footer .list .links .link {
     border-bottom-left-radius: 10px;
     transition: all 1s;
 }
-.btn:after, .btn:before {
+
+.btn:after,
+.btn:before {
     content: " ";
     width: 20px;
     height: 10px;
@@ -405,36 +481,32 @@ footer .list .links .link {
     border: 0px solid #fff;
     transition: all 1s;
 }
+
 .btn:after {
     top: -2px;
     left: -2px;
     border-top: 5px solid rgb(28, 69, 123);
     border-left: 5px solid rgb(28, 69, 123);
 }
+
 .btn:before {
     bottom: -2px;
     right: -2px;
     border-bottom: 5px solid rgb(28, 69, 123);
     border-right: 5px solid rgb(28, 69, 123);
 }
+
 .btn:hover {
     border-top-right-radius: 0px;
     border-bottom-left-radius: 0px;
 }
-.btn:hover:before, .btn:hover:after {
+
+.btn:hover:before,
+.btn:hover:after {
     width: 100%;
     height: 100%;
 }
 
-
-footer{
-    display: flex;
-    background-color: #f5f5f5;
-    height: 200px;
-    justify-content: center;
-    flex-direction: column;
-
-}
 
 
 
@@ -447,10 +519,4 @@ footer{
         display: flex;
     }
 
-    .li{
-        height: 250px;
-        width: 19.7%;
-        display: inline-block;
-        padding: 5px 5px;
-    }
 }
