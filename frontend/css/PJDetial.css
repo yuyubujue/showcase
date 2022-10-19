@@ -220,6 +220,7 @@ img{
     justify-content: space-evenly;
     align-items: center;
     margin: 10px 0;
+    flex-wrap: wrap;
 }
 
 #tm img{
@@ -590,6 +591,7 @@ footer hr{
 @media screen and (max-width: 500px) {
     .pjinfo{
         padding: 15px;
+        width: 94%;
     }
     .pjcomments{
         padding: 10px 15px;
