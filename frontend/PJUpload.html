@@ -8,7 +8,12 @@
       <script src="https://cdn.jsdelivr.cn/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
       <script src="https://cdn.jsdelivr.cn/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous"> -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+    <!-- <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="./css/PJUpload.css">
     <!-- <script src="/vue/vue.js"></script> -->
     <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
@@ -24,26 +29,53 @@
 </head>
 <body>
     <header>
-        <section class="top-nav">
-            <div class="left-menu col-md-8 ">
-                <img src="./images/uoa-logo.jpg" alt="logo">
-                
-                <a href="./Home.html">Home</a>
-                <a href="javascript:;">About us</a>
-                <a href="./Projects.html"><button class="btn">Project</button></a>
-                <a href="./login.html" id="login">Log in</a>
-                <a href="./space.html" id="space">My Space</a>   
-                          
-                
-            </div>
-            <div class="search-wrap">
-                <div>
-                    <input type="text" placeholder="Search Projects">
-                    <img src="./images/Search.svg" alt="Search">
+        <section id="top" class="top-nav">
+            <nav class="navbar navbar-dark bg-dark" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                                data-target="#example-navbar-collapse">
+                            <span class="sr-only">Switch</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="./Home.html"><img src="./images/logo.jpg" alt="" style="height: 80px;width: 80px;margin-top: 10px;"></a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active navl"><a href="./Home.html">Home</a></li>
+                            <li class="navl"><a href="./Projects.html">Projects</a></li>
+                            <li class="navl"><a href="./space.html">My Space</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li id="login"><a href='login.html'>Login&Register</a></li>
+                        </ul>
+            
+                    </div>
                 </div>
-                <a href="javascript:;" id="signout"><button class="btn" onclick="signout()">Sign Out</button></a>
-            </div>
+            </nav>
         </section>
+        <script>
+            function getCookie(cname){
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+            }
+            return "";
+            }
+            
+            if (getCookie("Auth")!=""){
+            document.getElementById("login").innerHTML = "<a><button type=\"button\" class=\"btn btn-danger\" style=\"border-radius:50px\" href=\"javascript:void(0)\" onclick=\"logout()\">Sign out</button></a>"
+            }
+            
+            function logout(){
+            document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString();
+            window.location.reload();
+            }
+        </script>
         <section id="pjpost">
             <div id="pjposttext">
                 <h1 class="col-md-10">Post a new Project</h1>
