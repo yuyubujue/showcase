@@ -142,20 +142,42 @@ If you disconnect the SSH the backend may stop, you can use [Screen](https://lin
 
 
 
-### Dependencies(tech-stacks)
+### Dependencies and Tools (tech-stacks)
 
 ------------
-| Client-side  | Server-side  |
-| ------------ | ------------ |
-|  [jQuery: ^3.6.1](https://jquery.com/ "jQuery") |   |
-|  [Bootstrap: ^3.4.1](https://getbootstrap.com/ "Bootstrap") |   |
-|  [Vue.js: ^3.2.41](https://vuejs.org/ "Vue.js") |   |
-|  [wangEditor: ^V5](https://www.wangeditor.com/en/ "wangEditor") |   |
-| [Sweetalert2:^11.5.2](https://sweetalert2.github.io/ "Sweetalert2")  |   |
-| [Axios: ^1.13](https://github.com/axios/axios "Axios") |   |
-|  [Bootstrap-Table: ^1.21.1](https://github.com/wenzhixin/bootstrap-table "Bootstrap-Table") |   |
-| [html5shiv.js: ^3.7.3](https://github.com/aFarkas/html5shiv "html5shiv") |   |
-| [respond.js 1.4.2](https://github.com/scottjehl/Respond "respond.js 1.4.2") |   |
+| Client-side  |
+| ------------ |
+|  [jQuery: ^3.6.1](https://jquery.com/ "jQuery") |
+|  [Bootstrap: ^3.4.1](https://getbootstrap.com/ "Bootstrap") |
+|  [Vue.js: ^3.2.41](https://vuejs.org/ "Vue.js") |
+|  [wangEditor: ^V5](https://www.wangeditor.com/en/ "wangEditor") |
+| [Sweetalert2:^11.5.2](https://sweetalert2.github.io/ "Sweetalert2")  |
+| [Axios: ^1.13](https://github.com/axios/axios "Axios") |
+|  [Bootstrap-Table: ^1.21.1](https://github.com/wenzhixin/bootstrap-table "Bootstrap-Table") |
+| [html5shiv.js: ^3.7.3](https://github.com/aFarkas/html5shiv "html5shiv") |
+| [respond.js 1.4.2](https://github.com/scottjehl/Respond "respond.js 1.4.2") |
+
+
+
+Server-side:
+
+- Frameworks:
+
+​		[springboot 2.7.4](https://spring.io/projects/spring-boot)
+
+​		[mybatis 2.2.2](https://mybatis.org/mybatis-3/index.html)
+
+- Database:
+
+​		[Mysql 8.0.31](https://www.mysql.com/)
+
+- Build Tool: 
+
+  [Maven](https://maven.apache.org/) : [pom.xml](https://github.com/yuyubujue/showcase/blob/master/backend/pom.xml "pom.xml")
+
+
+
+
 
 
 
