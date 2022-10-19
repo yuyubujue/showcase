@@ -27,13 +27,38 @@ img{
 
 
 /* top-nav */
+.navbar {
+    min-height: 100px;
+    background-color: #004681;
+    border-color: #004681;
+}
+.navbar-brand,.navbar-nav li a{
+    line-height: 100px;
+    height: 100px;
+    margin-left: 30px;
+    font-size: 24px;
+    padding-top: 0;
+    color: white;
+}
+
+.navbar-nav li a:hover {
+    background-color: #00AEEC;
+}
+
+.navbar-toggle{
+    background-color: #00AEEC;
+    margin-top: 30px;
+}
+
+.icon-bar{
+    color: white;
+    background-color: white;
+}
+
 .top-nav{
     width: 100%;
-    height: 150px;
+    height: 100px;
     box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     background-color: #004681;
 }
 .top-nav .left-menu{
@@ -139,7 +164,7 @@ img{
 }
 
 #invite{
-    display: flex;
+    display: flex;   
 }
 #invite p{
     font-size: 12px;
@@ -162,6 +187,7 @@ img{
     resize: none;
 }
 
+
 #invite input:hover{
     background-color: #fff;
     border-color: #00a1d6;
@@ -179,6 +205,7 @@ img{
     border-bottom-left-radius: 0;
     background-color: #f4f5f7;
     border-color:  #e5e9ef;
+    position: unset;
 }
 
 
@@ -237,6 +264,10 @@ img{
 .pjdetial-container{
     display: flex;
     justify-content: space-evenly;
+    flex-wrap: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .pjteam-container{
@@ -307,7 +338,7 @@ img{
     line-height: normal;
     outline: none;
     resize: none;
-
+    margin-left: 20px;
 }
 
 #pj-award-text:hover{
@@ -350,7 +381,7 @@ img{
     line-height: normal;
     outline: none;
     resize: none;
-
+    margin-left: 20px;
 }
 
 #pj-comment-text:hover{
@@ -524,7 +555,8 @@ footer hr{
     height: 150px;
     padding: 20px 0;
     text-align: center;
-    
+    display: flex;
+    justify-content: space-evenly;
 }
 
 #bottomBody li{
@@ -543,51 +575,58 @@ footer hr{
     line-height: 50px;
 }
 
-
-footer {
-    padding: 30px 0 0;
-    background-color: rgb(245, 245, 245);
+@media screen and (max-width: 768px) {
+    .pjcomments{
+        width: 86%;
+    }
+    .commentsend{
+        width: 86%;
+    }
+    .usericon img{
+        margin: 0 55px 0 0;
+    }
 }
 
-footer .list {
-    display: flex;
-    justify-content: space-between;
-    width: 40vw;
-    margin: auto;
-}
+@media screen and (max-width: 500px) {
+    .pjinfo{
+        padding: 15px;
+    }
+    .pjcomments{
+        padding: 10px 15px;
+    }
+    .awardcover{
+        width: 40px;
+    }
+    .awarddiv a{
+        margin: 10px 15px 5px 15px;
+    }
+    #commentget{
+        width: 94%;
+    }
+    .pjcomments{
+        width: 94%;
+    }
+    .commentsend{
+        width: 94%;
+    }
+    #pj-award-submit{
+        margin: 0 14px;
+    }
+    #pj-comment-submit{
+        margin: 0 14px;
+    }
+    .awarddiv{
+        width: 100%;
+    }
+    #awardget{
+        width: 94%;
+    }
+    .pjname-container{
+        padding: 0 20px;
+    }
+    .like{
+        bottom: 12%;
+        right: -2%;
+    }
 
-footer .list .item {
-    width: 130px;
 }
-
-footer .list .title {
-    margin-bottom: 20px;
-    font-size: 18px;
-    text-align: center;
-}
-
-footer .list .links .link {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 10px;
-    text-align: center;
-    color: #1795ff;
-}
-
-footer .list .links .link :hover{
-    color: #333333;
-}
-
-.copyright {
-    padding: 10px;
-    text-align: center;
-    color: #666;
-}
-
-.divider {
-    width: 100vw;
-    height: 2px;
-    margin: 0;
-    background-color: #d1d1d1;
-}
-
