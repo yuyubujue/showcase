@@ -368,14 +368,27 @@
             .then(function (res) {
                 axios.get("./project/getInviteLink/" + getUrlParam("id"))
                     .then(function (res) {
+                        Swal.fire(
+                            'Succeed!',
+                            'New invite link is ready to use!',
+                            'success'
+                        )
                         document.getElementById("invite").innerHTML = "<p>Invite Link <input type='text' value='"+res.data+"' readonly> <button  href=\"javascript:void(0)\" onclick=\"generateNewInviteCode()\" class='glyphicon glyphicon-refresh'></button></p>";
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: error,
+                        })
                     });
             })
             .catch(function (error) {
-                console.log(error);
+                Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: error,
+                        })
             });
     }
     
