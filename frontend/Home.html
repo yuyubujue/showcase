@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./css/Home.css">
     <title>UoA 399 Projects</title>
     <link rel="icon" href="./images/uoa-logo.jpg" id="icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 </head>
 <body>
 <header>
@@ -23,7 +24,7 @@
         </div>
         <div class="right-box">
             <ul class="nav-box">
-                <a href="./login.html"  class="nav-item">Login&Register</a>
+                <a href="./login.html"  class="nav-item" id="logbut">Login&Register</a>
             </ul>
         </div>
     </div>
@@ -86,7 +87,7 @@
         <li class="item">
             <p class="title">Profile</p>
             <ul class="links">
-                <a href="./PJDetail.html" class="link" style="color: #337AB7;text-decoration: none;">My projects</a>
+                <a href="./myprojects.html" class="link" style="color: #337AB7;text-decoration: none;">My projects</a>
                 <a href="./space.html" class="link" style="color: #337AB7;text-decoration: none;">My homepage</a>
                 <a href="./setting.html" class="link" style="color: #337AB7;text-decoration: none;">Settings</a>
             </ul>
@@ -101,10 +102,31 @@
 </html>
 
 <script>
-    // window.onload = function() {
-    //     document.querySelector('.search-box').addEventListener('click', () => {
-    //       window.hre
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
 
-    //     })
-    // }
+    if (getCookie("Auth")!=""){
+        document.getElementById("logbut").innerHTML = "<a class=\"nav-item\" href=\"javascript:void(0)\" onclick=\"logout()\">Sign out</a>"
+    }
+
+    function logout(){
+        document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString();
+        Swal.fire(
+            'Succeed!',
+            'Successfully logged off',
+            'success'
+        ).then((result) => {
+            if (result.value) {
+                window.location.reload();
+            }
+        })
+
+    }
 </script>
