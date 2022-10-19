@@ -151,13 +151,18 @@
                                 if (data != "[]") {
                                     let projects = "";
                                     let objs = jQuery.parseJSON(data);
-                                    for (let z = 0;z<3;z++){
-                                        projects+= "            <div class=\"panel panel-default\" style='margin: 5px'>\n" +
+                                    if(objs.length>3){
+                                        var len = 3;
+                                    }else{
+                                        var len = objs.length;
+                                    }
+                                    for (let z = 0;z<len;z++){
+                                        projects+= "            <a href='./PJDetail.html?id=" + objs[z].ID + "'><div class=\"panel panel-default\" style='margin: 5px'>\n" +
                                             "                        <div class=\"panel-body\">\n" +
                                             "                            <img class=\"media-object\" src=\"" + objs[z].coverImage+ "\" style=\" height: 200px; width: 95%; margin: 2.5%\">\n" +
                                             "                            <a href='./PJDetail.html?id=" + objs[z].ID + "'>" + objs[z].pname + "</a>\n" +
                                             "                        </div>\n" +
-                                            "                    </div>";
+                                            "                    </div></a>";
                                     }
                                     projects+="<a href='./myprojects.html?id="+ obj.id +"' class='text-center'>Click to see more projects >>></a>"
                                     document.getElementById("projects_list").innerHTML = projects;
@@ -215,13 +220,18 @@
                                 if (data != "[]") {
                                     let projects = "";
                                     let objs = jQuery.parseJSON(data);
-                                    for (let z = 0;z<3;z++){
-                                        projects+= "            <div class=\"panel panel-default\" style='margin: 5px'>\n" +
+                                    if(objs.length>3){
+                                        var len = 3;
+                                    }else{
+                                        var len = objs.length;
+                                    }
+                                    for (let z = 0;z<len;z++){
+                                        projects+= "            <a href='./PJDetail.html?id=" + objs[z].ID + "'><div class=\"panel panel-default\" style='margin: 5px'>\n" +
                                             "                        <div class=\"panel-body\">\n" +
                                             "                            <img class=\"media-object\" src=\""  + objs[z].coverImage+  "\" style=\" height: 200px; width: 95%; margin: 2.5%\">\n" +
                                             "                            <a href='./PJDetail.html?id=" + objs[z].ID + "'>" + objs[z].pname + "</a>\n" +
                                             "                        </div>\n" +
-                                            "                    </div>";
+                                            "                    </div></a>";
                                     }
                                     projects+="<a href='./myprojects.html' class='text-center'>Click to see more projects >>></a>"
                                     document.getElementById("projects_list").innerHTML = projects;

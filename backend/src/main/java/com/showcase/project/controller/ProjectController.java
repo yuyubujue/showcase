@@ -182,13 +182,6 @@ public class ProjectController {
         return JSON.toJSONString(projectService.getProjectByPname(pname));
     }
 
-
-//    @GetMapping(value = "/getProject")
-//    @ResponseBody
-//    public String getProject(@PathVariable("pid") int pid) {
-//        return JSON.toJSONString(projectService.getProject(pid));
-//    }
-
     @GetMapping(value = "/getProjectPageByPid")
     @ResponseBody
     public String getProjectPageByPid(@RequestParam("pid") int pid) {
@@ -219,6 +212,7 @@ public class ProjectController {
             return "not you projects!";
         }
         if (projectService.RemoveProject(pid) == 1) {
+            projectService.RemoveAllSkill(pid);
             return "success";
         }
         return "remove fail";
@@ -651,7 +645,7 @@ public class ProjectController {
         if(projectService.UploadProjectSkill(pid,skill)==1){
             return "success";
         }else{
-            return "upload skill fail";
+            return "upload skill failed";
         }
     }
 
@@ -683,9 +677,9 @@ public class ProjectController {
                 }
 
             }
-            return "delete Success!";
+            return "update Success!";
         }catch (Exception e){
-            return "delete fail!";
+            return "update fail!";
         }
     }
 

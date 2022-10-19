@@ -171,40 +171,52 @@
 
     function setpassword() {
         let pass = $("#password").val().trim();
-        if(pass){
-            $.ajax({
-                url: "./user/setPassword",
-                type: 'POST',
-                data:{password:pass},
-                success: function (data) {
-                    if(data == "succeed"){
-                        Swal.fire({
-                            title:'Succeed!',
-                            type: 'success'
-                        }).then((result) => {
-                            if (result.value) {
-                                document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString();
-                                window.location = './login.html?from=setting.html';
-                            }
-                        })
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, change it!'
+        }).then((result) => {
+            if (result.value) {
+                if(pass){
+                    $.ajax({
+                        url: "./user/setPassword",
+                        type: 'POST',
+                        data:{password:pass},
+                        success: function (data) {
+                            if(data == "succeed"){
+                                Swal.fire({
+                                    title:'Succeed!',
+                                    type: 'success'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString();
+                                        window.location = './login.html?from=setting.html';
+                                    }
+                                })
 
-                    }else{
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Oops...',
-                            text: data,
-                        })
-                    }
-                },
-                error: function (data) {
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: data,
-                    })
+                            }else{
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: data,
+                                })
+                            }
+                        },
+                        error: function (data) {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: data,
+                            })
+                        }
+                    });
                 }
-            });
-        }
+            }
+        })
     }
 
     function setskill() {

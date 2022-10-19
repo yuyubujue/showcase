@@ -188,28 +188,10 @@ input:focus::placeholder{
 	text-align: center;
 }
 
-/* .top .leftnav li:nth-child(2){
-    background-color: #f5f7f7;
-} */
-
-/* .top .leftnav li:nth-child(2):hover div{
-    display: block;
-} */
-
-/* .top .leftnav li:nth-child(2) div {
-    z-index: 5000;
-    padding: 0 10px;
-    background-color: #FFF;
-    display: none;
-} */
-
-
-
 .top .login{
 	flex-grow: 1;
 	height: 100px;
 }
-
 
 .top .rightnav{
 	flex-grow: 4;
@@ -225,10 +207,25 @@ input:focus::placeholder{
 	padding-top: 15px;
 }
 
+#mobileRegister{
+	display: none;
+}
+
+#mobileLogin{
+	display: none;
+}
 
 @media (max-width: 979px) {
 	.moving-box{
 		visibility: hidden;
+	}
+
+	#mobileRegister{
+		display: inline-block;
+	}
+
+	#mobileLogin{
+		display: inline-block;
 	}
 	.form-box{
 		position: absolute;
