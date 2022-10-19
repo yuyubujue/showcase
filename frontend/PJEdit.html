@@ -219,7 +219,7 @@
                         param.append("file",coverbase);
                         axios.post('project/updateProjectCover', param, config//?Pid='+pjId+"&file="+coverbase
 	                        ).then(function (response) {
-                            console.log(response);
+                            // console.log(response);
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -231,7 +231,7 @@
                         param.append("Pid",pjId);
                         axios.post('project/updateProjectIntro', param, config//?Pid='+pjId+"&NewPIntro="+pj.pj_intro
 	                        ).then(function (response) {
-                            console.log(response);
+                            // console.log(response);
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -243,7 +243,7 @@
                         param.append("NewPname",pj.pj_name);
                         axios.post('project/updateProjectName', param, config//?Pid='+pjId+"&NewPname="+pj.pj_name
 	                        ).then(function (response) {
-                            console.log(response);
+                            // console.log(response);
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -255,7 +255,7 @@
                         param.append("NewTagLine",pj.pj_Tagline);
                         axios.post('project/updateProjectTagLine', param, config//?Pid='+pjId+"&NewTagLine="+pj.pj_Tagline
 	                        ).then(function (response) {
-                            console.log(response);
+                            // console.log(response);
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -267,7 +267,7 @@
                         param.append("skills",skill);
                         axios.post('project/UpdateSkill', param, config//?Pid='+pjId+"&intro="+skill
 	                        ).then(function (response) {
-                            console.log(response);
+                            // console.log(response);
                         })
                         .catch(function (error) {
                             console.log(error);
