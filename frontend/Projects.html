@@ -27,7 +27,7 @@
         <a href="#top"><img src="./images/rocket.svg" alt="backtop"></a>
     </div>
     <header class="header">
-        <section id="top" class="top-nav">
+        <!-- <section id="top" class="top-nav">
             <div class="left-menu col-md-8 ">
                 <img src="./images/uoa-logo.jpg" alt="logo">
                 
@@ -54,15 +54,73 @@
             </div>
             <div id="pjsearchbar">
                 <input type="text" class="form-control" placeholder="Search Projects With Key Words" aria-describedby="basic-addon1" id="keywords" @input="searchpj"> 
-                <!-- <ul>
+                <ul>
                     <li v-for="pj in pjs" >
                         {{ pj.text }}            
                     </li>
-                </ul> -->
+                </ul> 
+
+            </div>
+        </section> -->
+        <section id="top" class="top-nav">
+            <nav class="navbar navbar-dark bg-dark" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                                data-target="#example-navbar-collapse">
+                            <span class="sr-only">Switch</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="./Home.html"><img src="./images/logo.jpg" alt="" style="height: 80px;width: 80px;margin-top: 10px;"></a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active navl"><a href="./Home.html">Home</a></li>
+                            <li class="navl"><a href="./Projects.html">Projects</a></li>
+                            <li class="navl"><a href="./space.html">My Space</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li id="login"><a href='login.html'>Login&Register</a></li>
+                        </ul>
+            
+                    </div>
+                </div>
+            </nav>
+        </section>
+        <section id="pjsearch">
+            <div id="pjsearchtext">
+                <h1 class="col-md-10">Search Projects from Portfolio</h1>
+                <a type="button" class="btn btn-info col-md-2" href="./PJUpload.html">Upload Project</a>
+            </div>
+            <div id="pjsearchbar">
+                <input type="text" class="form-control" placeholder="Search Projects With Key Words" aria-describedby="basic-addon1" id="keywords" @input="searchpj"> 
 
             </div>
         </section>
     </header>
+    <script>
+        function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+        }
+        
+        if (getCookie("Auth")!=""){
+        document.getElementById("login").innerHTML = "<a><button type=\"button\" class=\"btn btn-danger\" style=\"border-radius:50px\" href=\"javascript:void(0)\" onclick=\"logout()\">Sign out</button></a>"
+        }
+        
+        function logout(){
+        document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString();
+        window.location.reload();
+        }
+    </script>    
+
     <script>
         let sc = Vue.createApp({
                 data(){
@@ -639,29 +697,27 @@
             
 
     </script>
-      <footer>
-        <ul class="list">
-            <li class="item">
-                <p class="title">Team19</p>
-                <ul class="links">
-                    <a href="#" class="link" style="color: #337AB7;text-decoration: none;">About</a>
-                    <a href="#" class="link" style="color: #337AB7;text-decoration: none;">Contact</a>
-                    <a href="#" class="link" style="color: #337AB7;text-decoration: none;">Help</a>
+    <footer>
+        <section id="bottomBody" class=".container">
+            <nav class="col-md-6">
+                <ul>
+                    <h4>Team19</h4>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Help</a></li>
                 </ul>
-            </li>
-            <li class="item">
-                <p class="title">Profile</p>
-                <ul class="links">
-                    <a href="./myprojects.html" class="link" style="color: #337AB7;text-decoration: none;">My projects</a>
-                    <a href="./space.html" class="link" style="color: #337AB7;text-decoration: none;">My homepage</a>
-                    <a href="./setting.html" class="link" style="color: #337AB7;text-decoration: none;">Settings</a>
+            </nav>
+            <nav class="col-md-6">
+                <ul>
+                    <h4>Profile</h4>
+                    <li><a href="./PJDetail.html">My projects</a></li>
+                    <li><a href="./space.html">My homepage</a></li>
+                    <li><a href="./setting.html">Settings</a></li>
                 </ul>
-            </li>
-        </ul>
-        <div class="divider"></div>
-        <div class="copyright">
-            &copy; 2022 Team19. All right reserved.
-        </div>
+            </nav>
+        </section>
+        <hr>
+        <section id="legalBar"><p>&copy; 2022 Team19.&nbspAll rights reserved. </p></section>    
     </footer>
 </body>
 </html>
