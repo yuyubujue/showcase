@@ -168,7 +168,7 @@
             <div class="pjAction">
                 <div>
                     <input type="submit" value="Save" id="pjSave" class="btn btn-success" @click="postPj">
-                    <input type="button" value="Cancel" class="btn btn-danger">
+                    <input type="button" value="Cancel" class="btn btn-danger" @click="backPj">
                 </div>
             </div>
  
@@ -232,6 +232,9 @@
                         .catch(function (error) {
                             console.log(error);
                         });
+                    },
+                    backPj(){
+                        window.location.href = "./Projects.html";
                     }
                 }
             }).mount('.content')
