@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
-public class test {
+public class ProjectApplicationTests {
     private static final String WEB_SERVICE_URI = "http://localhost:8080";
     private Client client;
 
@@ -671,5 +671,4 @@ public class test {
         }
         return item;
     }
-
 }
