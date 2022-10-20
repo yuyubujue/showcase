@@ -58,26 +58,6 @@
             </div>
         </nav>
     </section>
-    <script>
-        function getCookie(cname){
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for(var i=0; i<ca.length; i++) {
-        var c = ca[i].trim();
-        if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
-        }
-        return "";
-        }
-        
-        if (getCookie("Auth")!=""){
-        document.getElementById("login").innerHTML = "<a><button type=\"button\" class=\"btn btn-danger\" style=\"border-radius:50px\" href=\"javascript:void(0)\" onclick=\"logout()\">Sign out</button></a>"
-        }
-        
-        function logout(){
-        document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString();
-        window.location.reload();
-        }
-    </script>
 </header>
 <main>
     <section class="pjinfo">
@@ -168,6 +148,15 @@
 
             return "";
 
+        }
+
+        if (cookie("Auth")!=""){
+        document.getElementById("login").innerHTML = "<a><button type=\"button\" class=\"btn btn-danger\" style=\"border-radius:50px\" href=\"javascript:void(0)\" onclick=\"logout()\">Sign out</button></a>"
+        }
+        
+        function logout(){
+        document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString();
+        window.location.reload();
         }
 
 
@@ -743,6 +732,16 @@
                         document.getElementById("addaward").style.display = "none";
                         document.getElementById("addawardhr").style.display = "none";
                     }
+                    if(user_auth!="teacher"){
+                        document.getElementById("addaward").style.display = "none";
+                        document.getElementById("addawardhr").style.display = "none";
+                    }else{
+                        document.getElementById("addaward").style.display = "flex";
+                        document.getElementById("addawardhr").style.display = "block";
+                        document.getElementById("award").style.display = "block";
+                        document.getElementById("pjawardnum").style.display = "block";
+                        document.getElementById("pjawardnumhr").style.display = "block";
+                    }
                     await axios.get("./project/GetAwardCommentByID?pid=" + getUrlParam("id"))
                         .then(async function (res) {
                             var data = res.data;
@@ -806,16 +805,7 @@
                         .catch(function (error) {
                             console.log(error);
                         });
-                    if(user_auth!="teacher"){
-                        document.getElementById("addaward").style.display = "none";
-                        document.getElementById("addawardhr").style.display = "none";
-                    }else{
-                        document.getElementById("addaward").style.display = "flex";
-                        document.getElementById("addawardhr").style.display = "block";
-                        document.getElementById("award").style.display = "block";
-                        document.getElementById("pjawardnum").style.display = "block";
-                        document.getElementById("pjawardnumhr").style.display = "block";
-                    }
+                    
 
                     
                 },
@@ -872,7 +862,7 @@
         <nav class="col-md-6">
             <ul>
                 <h4>Profile</h4>
-                <li><a href="./PJDetail.html">My projects</a></li>
+                <li><a href="./myprojects.html">My projects</a></li>
                 <li><a href="./space.html">My homepage</a></li>
                 <li><a href="./setting.html">Settings</a></li>
             </ul>
