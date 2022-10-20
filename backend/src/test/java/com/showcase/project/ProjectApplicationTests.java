@@ -112,9 +112,20 @@ public class ProjectApplicationTests {
         String results = response.readEntity(String.class);
         System.out.println(results);
     }
-    
-    
-    
+       
+    //测试/user/removeUser接口(管理员登录)
+    @Test
+    public void removeUser(){
+        client = ClientBuilder.newClient();
+        NewCookie cookie = loginAdmin(client);
+        Form form=new Form();
+        form.param("id","44add6d0-4d07-4ee6-9de7-ca90cbc8c40a");
+        Response response = client.target(WEB_SERVICE_URI + "/user/removeUser")
+                .request().cookie(cookie).buildPost(Entity.form(form)).invoke();
+        String results = response.readEntity(String.class);
+        System.out.println(results);
+    }
+
     //管理员登录,并且返回cookie
     public static NewCookie loginAdmin(Client client){
         //设置表单提交
@@ -143,8 +154,25 @@ public class ProjectApplicationTests {
         NewCookie auth = cookies.get("Auth");
         return auth;
     }
+           //测试/user/uploadPic接口
+//    @Consumes(MediaType.MULTIPART_FORM_DATA)
+//    @Test
+//    public void uploadPic() {
+//        client = ClientBuilder.newClient();
+//        NewCookie cookie = loginUser(client);
+//        File imgFile=new File("File\\image\\1.jpg");
+//        FileItem fileItem = this.createFileItem(imgFile);
+//
+//        Form form=new Form();
+//        form.param("file","File\\image\\1.jpg");
+//        Response response = client.target(WEB_SERVICE_URI + "/user/uploadPic")
+//                .request().header("enctype","multipart/form-data").cookie(cookie).buildPost(Entity.form(form)).invoke();
+//        String results = response.readEntity(String.class);
+//        System.out.println(results);
+//    }
+  
     
-    
+       
     
     //测试/project/getAllTeam 接口
     @Test
@@ -179,25 +207,46 @@ public class ProjectApplicationTests {
     
     
     
-    //测试/user/uploadPic接口
-//    @Consumes(MediaType.MULTIPART_FORM_DATA)
-//    @Test
-//    public void uploadPic() {
-//        client = ClientBuilder.newClient();
-//        NewCookie cookie = loginUser(client);
-//        File imgFile=new File("File\\image\\1.jpg");
-//        FileItem fileItem = this.createFileItem(imgFile);
-//
-//        Form form=new Form();
-//        form.param("file","File\\image\\1.jpg");
-//        Response response = client.target(WEB_SERVICE_URI + "/user/uploadPic")
-//                .request().header("enctype","multipart/form-data").cookie(cookie).buildPost(Entity.form(form)).invoke();
-//        String results = response.readEntity(String.class);
-//        System.out.println(results);
-//    }
+  
     
-    
-    
+    //测试/project/writeComment 接口
+    @Test
+    public void writeComment(){
+        client = ClientBuilder.newClient();
+        NewCookie cookie = loginUser(client);
+        Form form=new Form();
+        form.param("pid","11");
+        form.param("comment","testComment");
+        Response response = client.target(WEB_SERVICE_URI + "/project/writeComment")
+                .request().cookie(cookie).buildPost(Entity.form(form)).invoke();
+        String results = response.readEntity(String.class);
+        System.out.println(results);
+    }
+
+    //测试/project/getComment 接口
+    @Test
+    public void getComment(){
+        client = ClientBuilder.newClient();
+        NewCookie cookie = loginUser(client);
+        Response response = client.target(WEB_SERVICE_URI + "/project/getComment/1?pid="+12)
+                .request().cookie(cookie).get();
+        String results = response.readEntity(String.class);
+        System.out.println(results);
+    }
+
+    //测试/project/removeComment 接口
+    @Test
+    public void removeComment(){
+        client = ClientBuilder.newClient();
+        NewCookie cookie = loginAdmin(client);
+        Form form=new Form();
+        form.param("pid","7");
+        form.param("cid","7");
+        Response response = client.target(WEB_SERVICE_URI + "/project/removeComment")
+                .request().cookie(cookie).buildPost(Entity.form(form)).invoke();
+        String results = response.readEntity(String.class);
+        System.out.println(results);
+    }    
 
 
     
