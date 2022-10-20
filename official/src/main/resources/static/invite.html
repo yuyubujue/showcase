@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script src="js/jquery-3.6.1.min.js"></script>
+</head>
+<script>
+    window.onload=function() {
+        let code = getUrlParam("code");
+        if(code == ""){
+            $(location).attr("href", "./home.html");
+        }
+        if(getCookie("Auth") != ""){
+            $.ajax({
+                url: './project/invite',
+                type: 'POST',
+                data: {invitecode: code},
+                success: function (data, textStatus, xhr) {
+                    if (data != "failed!" && data != "unauthorized" && data != "Illegal input" ) {
+						$(location).attr("href", "./PJDetial.html?id=" + data);
+                    } else {
+                        $(location).attr("href", "./Home.html");
+                    }
+                }
+            });
+        }else {
+            $(location).attr("href", "./login.html?from=./invite.html?code=" + code);
+        }
+    }
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
+</script>
