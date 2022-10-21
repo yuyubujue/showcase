@@ -523,8 +523,7 @@ main .mainbody {
         justify-content: space-around;
     }
     footer img{
-        width: 60px;
-        height: auto;
+        height: 60px !important;
     }
 }
 
@@ -547,8 +546,7 @@ main .mainbody {
         display: none;
     }
     footer img{
-        width: 30px;
-        height: auto;
+        height: 40px !important;
     }
 }
 

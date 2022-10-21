@@ -632,8 +632,7 @@ footer hr{
         right: -2%;
     }
     footer img{
-        width: 30px;
-        height: auto;
+        height: 60px !important;
     }
 
 }

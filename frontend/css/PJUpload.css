@@ -453,8 +453,7 @@ footer hr{
         font-size: 24px;
     }
     footer img{
-        width: 30px;
-        height: auto;
+        height: 60px !important;
     }
 
 }
