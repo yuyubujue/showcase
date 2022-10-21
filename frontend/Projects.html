@@ -40,7 +40,7 @@
 
     <script src="./css/Projects.css"></script>
 
-    <title>Project Showcase</title>
+    <title>Pilipili - Project list</title>
 
     <link rel="icon" href="./images/logo.ico" id="icon">  </link>
 
@@ -148,7 +148,7 @@
 
                     </button>
 
-                    <a class="navbar-brand" href="./Home.html"><img src="./images/logo.jpg" alt="" style="height: 80px;width: 80px;margin-top: 10px;"></a>
+                    <a class="navbar-brand" href="./Home.html"><img src="./images/logo.png" alt="" style="height: 80px;margin-top: 10px;"></a>
 
                 </div>
 
@@ -718,7 +718,7 @@
 
                 document.getElementById("pjlist").innerHTML="";
 
-                axios.get("project/getProjectsByUpdateTimeAsc/1")
+                axios.get("project/getProjectsByUpdateTime/1")
 
                     .then(function(response){
 
@@ -876,7 +876,7 @@
 
                 var that = this;
 
-                axios.get("project/getProjectsByUpdateTimeAsc/"+this.page)
+                axios.get("project/getProjectsByUpdateTime/"+this.page)
 
                     .then(function(response){
 
@@ -954,7 +954,7 @@
 
                 document.getElementById("actiontext").innerText = "Oldest";
 
-                axios.get("project/getProjectsByUpdateTime/1")
+                axios.get("project/getProjectsByUpdateTimeAsc/1")
 
                     .then(function(response){
 
@@ -1020,7 +1020,7 @@
 
                 var that = this;
 
-                axios.get("project/getProjectsByUpdateTime/"+this.page)
+                axios.get("project/getProjectsByUpdateTimeAsc/"+this.page)
 
                     .then(function(response){
 
@@ -1521,14 +1521,14 @@
         <nav class="col-md-6">
 
             <ul>
+                <h4>Profile</h4>
 
-                <h4>Team19</h4>
+                <li><a href="./myprojects.html">My projects</a></li>
 
-                <li><a href="#">About</a></li>
+                <li><a href="./space.html">My homepage</a></li>
 
-                <li><a href="#">Contact</a></li>
-
-                <li><a href="#">Help</a></li>
+                <li><a href="./setting.html">Settings</a></li>
+                
 
             </ul>
 
@@ -1537,14 +1537,15 @@
         <nav class="col-md-6">
 
             <ul>
+                <h4>Team19</h4>
 
-                <h4>Profile</h4>
+                <!-- <li><a href="#">About</a></li>
 
-                <li><a href="./myprojects.html">My projects</a></li>
+                <li><a href="#">Contact</a></li>
 
-                <li><a href="./space.html">My homepage</a></li>
-
-                <li><a href="./setting.html">Settings</a></li>
+                <li><a href="#">Help</a></li> -->
+                <img src="./images/FullLogo.png" alt="logo" style="height: 90px;">
+                
 
             </ul>
 
