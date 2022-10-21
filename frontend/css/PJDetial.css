@@ -631,5 +631,8 @@ footer hr{
         bottom: 12%;
         right: -2%;
     }
+    footer img{
+        width: 30px;
+    }
 
 }

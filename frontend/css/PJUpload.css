@@ -452,5 +452,8 @@ footer hr{
     h1{
         font-size: 24px;
     }
+    footer img{
+        width: 30px;
+    }
 
 }

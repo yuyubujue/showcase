@@ -522,6 +522,9 @@ main .mainbody {
     #pjlist li span{
         justify-content: space-around;
     }
+    footer img{
+        width: 60px;
+    }
 }
 
 @media screen and (max-width: 360px) {
@@ -541,6 +544,9 @@ main .mainbody {
     }
     .Explore-container a{
         display: none;
+    }
+    footer img{
+        width: 30px;
     }
 }
 
