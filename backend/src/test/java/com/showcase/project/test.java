@@ -37,6 +37,8 @@ public class test {
         client = null;
     }
 
+
+
     //测试/user/register接口
     @Test
     public void register(){
@@ -454,7 +456,34 @@ public class test {
         System.out.println(results);
     }
 
-   
+    //管理员登录,并且返回cookie
+    public static NewCookie loginAdmin(Client client) {
+        //设置表单提交
+        Form form = new Form();
+        //cxk Cxk111    testa www847343
+        form.param("username", "admin");
+        form.param("password", "test123");
+        Response response = client.target(WEB_SERVICE_URI + "/user/login")
+                .request().buildPost(Entity.form(form)).invoke();
+        //String results = response.readEntity(String.class);
+        Map<String, NewCookie> cookies = response.getCookies();
+        NewCookie auth = cookies.get("Auth");
+        return auth;
+    }
+
+    //用户登录,并且返回cookie
+    public static NewCookie loginUser(Client client) {
+        //设置表单提交
+        Form form = new Form();
+        //cxk Cxk111    testa www847343
+        form.param("username", "testa");
+        form.param("password", "www847343");
+        Response response = client.target(WEB_SERVICE_URI + "/user/login")
+                .request().buildPost(Entity.form(form)).invoke();
+        Map<String, NewCookie> cookies = response.getCookies();
+        NewCookie auth = cookies.get("Auth");
+        return auth;
+    }
 
 
     //转换File
