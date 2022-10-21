@@ -208,6 +208,9 @@ img{
     position: unset;
 }
 
+#pjintro iframe{
+    max-width: 100%;
+}
 
 .teamicon{
     display: flex;
