@@ -524,6 +524,7 @@ main .mainbody {
     }
     footer img{
         width: 60px;
+        height: auto;
     }
 }
 
@@ -547,6 +548,7 @@ main .mainbody {
     }
     footer img{
         width: 30px;
+        height: auto;
     }
 }
 

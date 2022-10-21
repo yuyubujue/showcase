@@ -633,6 +633,7 @@ footer hr{
     }
     footer img{
         width: 30px;
+        height: auto;
     }
 
 }
