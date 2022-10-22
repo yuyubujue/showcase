@@ -79,27 +79,6 @@ Restart or reload the Nginx. Copy the contents of the frontend folder to your we
 
 ------------
 Run sqlscript.sql in the backend folder in MySQL([Tutorial](https://sebhastian.com/mysql-running-sql-file/ "Tutorial"))
-Edit the application.properties in the project folder.
-```
-spring.datasource.url=jdbc:mysql://IP:Port/project?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
-spring.datasource.username=Username
-spring.datasource.password=Password
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
-mybatis.type-aliases-package=com.eureka.domain
-mybatis.configuration.map-underscore-to-camel-case=true
-
-spring.servlet.multipart.max-file-size=30MB
-spring.servlet.multipart.max-request-size=30MB
-spring.mvc.pathmatch.matching-strategy=ant_path_matcher
-
-setting.websiteDomain = "http://Your domain"
-```
-Change "IP", "Port", "Username" and "Password" as your MySQL server setting in the previous step. Change the "Your domain" to the domain you set in Nginx.
-
-------------
-
 
 Find your java 11 installed path.
 ```
@@ -116,17 +95,41 @@ There are 2 programs which provide 'java'.
 
 Enter to keep the current selection[+], or type selection number: 
 ```
-Replace the JAVAPATH with the path you got in the previous step and replace the WARFILE_PATH with the path where the project's code is stored.
+Replace the JAVAPATH with the path you got in the previous step and replace the WARFILE_PATH with the path where the project's code is stored. Change "IP", "Port", "http://Your domain",  "Username" and "Password" as your MySQL server setting in the previous step. Change the "Your domain" to the domain you set in Nginx.
 ```
-sudo -u root nohup JAVAPATH -jar WARFILE_PATH/project.war --server.port=8080>> /tmp/V73XES10G1.log 2>&1 &
-```
-It should shows like this
-```
-sudo -u root nohup /usr/lib/jvm/java-11-openjdk-11.0.16.1.1-1.el7_9.x86_64/bin/java -jar /www/wwwroot/Your Domain/project.war --server.port=8080>> /tmp/V73XES10G1.log 2>&1 &
+sudo -u root nohup /usr/lib/jvm/java-11-openjdk-11.0.16.1.1-1.el7_9.x86_64/bin/java -jar project.war --server.port=8080 --spring.datasource.url=jdbc:mysql://IP:Port/project?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8 --spring.datasource.username=Username --spring.datasource.password=Password --setting.websiteDomain = "http://Your domain">> /tmp/V73XES10G1.log 2>&1 &
 ```
 If you disconnect the SSH the backend may stop, you can use [Screen](https://linuxhint.com/screen-command-centos/ "Screen") to make it keep running.
 
 ------------
+If you want to compile it yourself edit the application.properties in the project folder.
+```
+./backend/src/main/resources
+```
+
+```
+spring.datasource.url=jdbc:mysql://IP:Port/project?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+spring.datasource.username=Username
+spring.datasource.password=Password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+mybatis.type-aliases-package=com.eureka.domain
+mybatis.configuration.map-underscore-to-camel-case=true
+
+spring.servlet.multipart.max-file-size=30MB
+spring.servlet.multipart.max-request-size=30MB
+spring.mvc.pathmatch.matching-strategy=ant_path_matcher
+
+setting.websiteDomain = "http://Your domain"
+```
+Change "IP", "Port", "http://Your domain",  "Username" and "Password" as your MySQL server setting in the previous step. Change the "Your domain" to the domain you set in Nginx.
+
+After that you are good to go, the default administrator account is admin and password is test123
+You can log in from http://YourDomain/login.html
+
+------------
+
 ### DEMO Website
 
 ------------
