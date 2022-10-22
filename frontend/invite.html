@@ -19,7 +19,7 @@
                 data: {invitecode: code},
                 success: function (data, textStatus, xhr) {
                     if (data != "failed!" && data != "unauthorized" && data != "Illegal input" ) {
-						$(location).attr("href", "./PJDetial.html?id=" + data);
+						$(location).attr("href", "./PJDetail.html?id=" + data);
                     } else {
                         $(location).attr("href", "./Home.html");
                     }

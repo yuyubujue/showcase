@@ -208,24 +208,24 @@ input:focus::placeholder{
 }
 
 #mobileRegister{
-	display: none;
+	visibility: hidden;
 }
 
 #mobileLogin{
-	display: none;
+	visibility: hidden;
 }
 
 @media (max-width: 979px) {
 	.moving-box{
 		visibility: hidden;
 	}
-
+	
 	#mobileRegister{
-		display: inline-block;
+		visibility: visible;
 	}
 
 	#mobileLogin{
-		display: inline-block;
+		visibility: visible;
 	}
 	.form-box{
 		position: absolute;

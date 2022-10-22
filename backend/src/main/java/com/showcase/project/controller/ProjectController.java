@@ -6,7 +6,6 @@ import com.showcase.project.alogrithm.TIDgenerator;
 import com.showcase.project.domain.*;
 import com.showcase.project.dto.ProjectDTO;
 import com.showcase.project.service.ProjectService;
-import com.showcase.project.service.SendMailService;
 import com.showcase.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,9 +24,6 @@ public class ProjectController {
 
     @Autowired(required = false)
     private UserService userService;
-
-    @Autowired(required = false)
-    private SendMailService sendMailService;
 
     @Value("${setting.websiteDomain}")
     private String websiteDomain;
@@ -231,24 +227,6 @@ public class ProjectController {
         Project project = projectService.getFullProjectByPid(pid);
         if (user.getId().equals(project.getOwner())){
             return websiteDomain.substring(1,websiteDomain.length()-1) + "/invite.html?code=" + project.getInvitecode();
-        }else {
-            return "unauthorized";
-        }
-    }
-
-    @GetMapping(value = "/sendInvitation")
-    @ResponseBody
-    public String sendInvitation(@RequestParam String uname,@RequestParam("pid") int pid, @CookieValue(name = "Auth") String cookie) {
-        User user = userService.authorityAndLoginJudge(cookie);
-        if (user == null) {
-            return "unauthorized";
-        }
-        User invited = userService.findUserByName(uname);
-        String inv_email = invited.getEmail();
-        Project project = projectService.getFullProjectByPid(pid);
-        if (user.getId().equals(project.getOwner())){
-            sendMailService.sendSimpleMail(inv_email,"invitation from project "+project.getID(),project.getInvitecode());
-            return "sent success";
         }else {
             return "unauthorized";
         }

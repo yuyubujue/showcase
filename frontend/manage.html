@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Space</title>
+    <title>Pilipili-Manage</title>
     <script src="./js/jquery-3.6.1.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./css/bootstrap-table.min.css">
     <script src="./js/bootstrap-table.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <link rel="icon" type="image/x-icon" href="/images/logo.ico">
 </head>
 <style>
     .navbar {
@@ -51,7 +52,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="./Home.html"><img src="./images/logo.jpg" alt="" style="height: 80px;width: 80px;margin-top: 10px;"></a>
+            <a class="navbar-brand" href="./Home.html"><img src="./images/logo.png" alt="" style="height: 80px;width: 80px;margin-top: 10px;"></a>
         </div>
         <div class="collapse navbar-collapse" id="example-navbar-collapse">
             <ul class="nav navbar-nav">
@@ -113,35 +114,47 @@
     function setAuthority() {
         let choose = $table.bootstrapTable('getSelections')[0]['username'];
         if(choose != ""&&auth != ""){
-            $.ajax({
-                url: "./user/setAuthority",
-                type: 'POST',
-                data:{username:choose,authority:auth},
-                success: function (data) {
-                    if(data == "succeed"){
-                        Swal.fire({
-                            title:'Succeed!',
-                            type: 'success'
-                        }).then((result) => {
-                            window.location = 'setting.html';
-                        })
-                        $table.bootstrapTable('refresh')
-                    }else{
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Oops...',
-                            text: data,
-                        })
-                    }
-                },
-                error: function (data) {
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: data,
-                    })
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, change it!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: "./user/setAuthority",
+                        type: 'POST',
+                        data: {username: choose, authority: auth},
+                        success: function (data) {
+                            if (data == "succeed") {
+                                Swal.fire({
+                                    title: 'Succeed!',
+                                    type: 'success'
+                                }).then((result) => {
+                                    $table.bootstrapTable('refresh')
+                                })
+
+                            } else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: data,
+                                })
+                            }
+                        },
+                        error: function (data) {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: data,
+                            })
+                        }
+                    });
                 }
-            });
+            })
         }else {
             Swal.fire({
                 type: 'error',
@@ -158,35 +171,47 @@
     function removeUser() {
         let choose = $table.bootstrapTable('getSelections')[0]['id'];
         if(choose != ""){
-            $.ajax({
-                url: "./user/removeUser",
-                type: 'POST',
-                data:{id:choose},
-                success: function (data) {
-                    if(data == "succeed"){
-                        Swal.fire({
-                            title:'Succeed!',
-                            type: 'success'
-                        }).then((result) => {
-                            window.location = 'manage.html';
-                        })
-                        $table.bootstrapTable('refresh')
-                    }else{
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Oops...',
-                            text: data,
-                        })
-                    }
-                },
-                error: function (data) {
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: data,
-                    })
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, change it!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: "./user/removeUser",
+                        type: 'POST',
+                        data: {id: choose},
+                        success: function (data) {
+                            if (data == "succeed") {
+                                Swal.fire({
+                                    title: 'Succeed!',
+                                    type: 'success'
+                                }).then((result) => {
+                                    window.location = 'setting.html';
+                                })
+                                $table.bootstrapTable('refresh')
+                            } else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: data,
+                                })
+                            }
+                        },
+                        error: function (data) {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: data,
+                            })
+                        }
+                    });
                 }
-            });
+            })
         }else {
             Swal.fire({
                 type: 'error',
@@ -194,6 +219,16 @@
                 text: 'Please choose an user and the authority first!',
             })
         }
+    }
+
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
     }
 
     function checkSpace() {
@@ -210,7 +245,7 @@
     }
 
     if (getCookie("Auth")==""){
-        $(location).attr("href", "./login.html?from=./manage.html");
+        $(location).attr("href", "./login.html");
     }
 
     $.ajax({
@@ -219,6 +254,10 @@
         success: function (data, textStatus, xhr) {
             if (data == "unauthorized") {
                 window.location = 'Home.html';
+            }
+            d = JSON.parse(data);
+            if(d.authority != "admin"){
+                $(location).attr("href", "./Home.html");
             }
         }
     });
