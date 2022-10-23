@@ -58,7 +58,7 @@ body {
 }
 
 body {
-    max-width: 1400px;
+    min-width: 600px;
 }
 
 ul,
@@ -412,7 +412,7 @@ footer .list {
 }
 
 footer .list .item {
-    width: 130px;
+    width: 300px;
 }
 
 footer .list .title {
