@@ -64,7 +64,14 @@ public class ProjectController {
         }
         String uid = user.getId();
         Project checker = projectService.projectChecker(pid, uid);
-        if (checker == null) {
+        List<UserDTO> ul = projectService.getTeammateByPID(pid);
+        Boolean tm = false;
+        for (int i = 0; i < ul.size(); i++) {
+            if(ul.get(i).getId().equals(uid)){
+                tm = true;
+            }
+        }
+        if (checker == null && !user.getAuthority().equals("admin") && tm == false) {
             return "not your project!";
         }
         if(projectService.updateProjectCover(pid, file) == 1){
@@ -83,7 +90,14 @@ public class ProjectController {
 
         String uid = user.getId();
         Project checker = projectService.projectChecker(Pid, uid);
-        if (checker == null) {
+        List<UserDTO> ul = projectService.getTeammateByPID(Pid);
+        Boolean tm = false;
+        for (int i = 0; i < ul.size(); i++) {
+            if(ul.get(i).getId().equals(uid)){
+                tm = true;
+            }
+        }
+        if (checker == null && !user.getAuthority().equals("admin") && tm == false) {
             return "not your project!";
         }
         int resp;
@@ -104,7 +118,14 @@ public class ProjectController {
 
         String uid = user.getId();
         Project checker = projectService.projectChecker(Pid, uid);
-        if (checker == null) {
+        List<UserDTO> ul = projectService.getTeammateByPID(Pid);
+        Boolean tm = false;
+        for (int i = 0; i < ul.size(); i++) {
+            if(ul.get(i).getId().equals(uid)){
+                tm = true;
+            }
+        }
+        if (checker == null && !user.getAuthority().equals("admin") && tm == false) {
             return "not your project!";
         }
         int resp;
@@ -124,7 +145,14 @@ public class ProjectController {
         }
         String uid = user.getId();
         Project checker = projectService.projectChecker(Pid, uid);
-        if (checker == null) {
+        List<UserDTO> ul = projectService.getTeammateByPID(Pid);
+        Boolean tm = false;
+        for (int i = 0; i < ul.size(); i++) {
+            if(ul.get(i).getId().equals(uid)){
+                tm = true;
+            }
+        }
+        if (checker == null && !user.getAuthority().equals("admin") && tm == false) {
             return "not your project!";
         }
         int resp;
@@ -639,8 +667,15 @@ public class ProjectController {
             return "no such project!";
         }
         String uid = user.getId();
-        Project checker1 = projectService.projectChecker(pid,uid);
-        if (checker1 == null){
+        Project checker = projectService.projectChecker(pid, uid);
+        List<UserDTO> ul = projectService.getTeammateByPID(pid);
+        Boolean tm = false;
+        for (int i = 0; i < ul.size(); i++) {
+            if(ul.get(i).getId().equals(uid)){
+                tm = true;
+            }
+        }
+        if (checker == null && !user.getAuthority().equals("admin") && tm == false) {
             return "not your project!";
         }
         try {
