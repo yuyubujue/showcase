@@ -43,6 +43,7 @@
     <title>Pilipili - Project list</title>
 
     <link rel="icon" href="./images/logo.ico" id="icon">  </link>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 </head>
 
@@ -186,7 +187,7 @@
 
             <h1 class="col-md-10">Search Projects from Portfolio</h1>
 
-            <a type="button" class="btn btn-info col-md-2" href="./PJUpload.html">Upload Project</a>
+            <a type="button" class="btn btn-info col-md-2" @click="goupload">Upload Project</a>
 
         </div>
 
@@ -259,6 +260,26 @@
         },
 
         methods:{
+            goupload(){
+                if(getCookie("Auth") == null || getCookie("Auth") == ""){
+                    Swal.fire({
+                        title: 'Wanna post project?',
+                        text: "You need to be logged in to post a project.",
+                        type: 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Okay, gogogo!'
+                        }).then((result) => {
+                        if (result.value) {
+                            window.location.href = "./login.html";
+                        }
+                        })
+                }
+                else{
+                    window.location.href = "./PJUpload.html";
+                }
+            },
 
             searchpj(){
 
