@@ -352,7 +352,7 @@ public class ProjectController {
         if (checker2 == null) {
             return "No such project!";
         }
-        if (!user.getAuthority().equals("admin") && !user.getAuthority().equals("teahcer")) {
+        if (!user.getAuthority().equals("admin") && !user.getAuthority().equals("teacher")) {
             return "Only teacher and administration can delete award";
         }
 
