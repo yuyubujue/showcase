@@ -2,7 +2,6 @@ package com.showcase.project.controller;
 import com.alibaba.fastjson2.JSON;
 import com.showcase.project.domain.User;
 import com.showcase.project.dto.UserDTO;
-import com.showcase.project.service.SendMailService;
 import com.showcase.project.service.UserService;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,6 @@ public class UserController {
     @Autowired(required = false)
     private UserService UserService;
     ServletContext context;
-
-    @Autowired(required = false)
-    private SendMailService sendMailService;
 
     @Value("${setting.websiteDomain}")
     private String websiteDomain;
