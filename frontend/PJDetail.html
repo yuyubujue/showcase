@@ -116,7 +116,7 @@
         <div class="pjtext" id="pjintro">
 
         </div>
-
+        <div id="updateTime" style="float: right; font-size: 12px; color: gainsboro;"></div>
         
     </section>
 
@@ -307,6 +307,7 @@
                             vm.getName(pjinfo.owner);
                             vm.pj_ownerSpace= "./space.html?id="+ pjinfo.owner;
                             document.getElementById("ownericon").src = "./user/getimg/"+pjinfo.owner;
+                            document.getElementById("updateTime").innerHTML = "Last Update Time: "+ response.data.updatetime;
                         if(state!= ""){                       
                             await axios.get('user/getown')
                                 .then(async function (response) {
