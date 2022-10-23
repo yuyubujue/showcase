@@ -71,7 +71,7 @@ public class ProjectController {
                 tm = true;
             }
         }
-        if (checker == null && !user.getAuthority().equals("admin") && tm == false) {
+        if (checker == null && !user.getAuthority().equals("admin") && tm == false && !user.getAuthority().equals("teacher")) {
             return "not your project!";
         }
         if(projectService.updateProjectCover(pid, file) == 1){
@@ -97,7 +97,7 @@ public class ProjectController {
                 tm = true;
             }
         }
-        if (checker == null && !user.getAuthority().equals("admin") && tm == false) {
+        if (checker == null && !user.getAuthority().equals("admin") && tm == false && !user.getAuthority().equals("teacher")) {
             return "not your project!";
         }
         int resp;
@@ -125,7 +125,7 @@ public class ProjectController {
                 tm = true;
             }
         }
-        if (checker == null && !user.getAuthority().equals("admin") && tm == false) {
+        if (checker == null && !user.getAuthority().equals("admin") && tm == false && !user.getAuthority().equals("teacher")) {
             return "not your project!";
         }
         int resp;
@@ -152,7 +152,7 @@ public class ProjectController {
                 tm = true;
             }
         }
-        if (checker == null && !user.getAuthority().equals("admin") && tm == false) {
+        if (checker == null && !user.getAuthority().equals("admin") && tm == false && !user.getAuthority().equals("teacher")) {
             return "not your project!";
         }
         int resp;
@@ -675,7 +675,7 @@ public class ProjectController {
                 tm = true;
             }
         }
-        if (checker == null && !user.getAuthority().equals("admin") && tm == false) {
+        if (checker == null && !user.getAuthority().equals("admin") && tm == false && !user.getAuthority().equals("teacher")) {
             return "not your project!";
         }
         try {
