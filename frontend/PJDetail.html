@@ -311,7 +311,7 @@
                             axios.get('user/getown')
                                 .then(function (response) {
                                     user_id = response.data.id;
-                                    if(user_id == pjinfo.owner || response.data.authority == "admin"){
+                                    if(user_id == pjinfo.owner || response.data.authority == "admin" || response.data.authority == "teacher"){
                                         document.getElementById("editPj").innerHTML = '<a style="float:right" href="./PJEdit.html?pid='+ pjId +'">Edit Project</a>';
                                     }
                                     if(user_id == pjinfo.owner){
@@ -348,6 +348,9 @@
                                                     let teammateHTML = "";
                                                     let objs = res.data;
                                                     for (let z = 0;z<objs.length;z++){
+                                                        if(user_id == objs[z].id){
+                                                            document.getElementById("editPj").innerHTML = '<a style="float:right" href="./PJEdit.html?pid='+ pjId +'">Edit Project</a>';
+                                                        }
                                                         teammateHTML+="<div style=\"position: relative\"><a href='./space.html?id="+ objs[z].id +"' title='"+objs[z].username+"'><img src='./user/getimg/" + objs[z].id + "' alt='"+objs[z].username+"'></a></div>";
                                                     }
                                                     document.getElementById("tm").innerHTML = teammateHTML;
