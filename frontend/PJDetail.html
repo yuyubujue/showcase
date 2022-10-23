@@ -290,13 +290,13 @@
                 }
 
             },
-            mounted(){
+            async mounted(){
                 let pjId = getUrlParam("id");
                 if(pjId==null){
 
                 }else{
-                    axios.get('project/getProjectPageByPid?pid='+pjId)
-                        .then(function (response) {
+                    await axios.get('project/getProjectPageByPid?pid='+pjId)
+                        .then(async function (response) {
                             let pjinfo = response.data;
                             vm.pj_award = pjinfo.award;
                             vm.pj_name= pjinfo.pname;
@@ -308,8 +308,8 @@
                             vm.pj_ownerSpace= "./space.html?id="+ pjinfo.owner;
                             document.getElementById("ownericon").src = "./user/getimg/"+pjinfo.owner;
                         if(state!= ""){                       
-                            axios.get('user/getown')
-                                .then(function (response) {
+                            await axios.get('user/getown')
+                                .then(async function (response) {
                                     user_id = response.data.id;
                                     if(user_id == pjinfo.owner || response.data.authority == "admin" || response.data.authority == "teacher"){
                                         document.getElementById("editPj").innerHTML = '<a style="float:right" href="./PJEdit.html?pid='+ pjId +'">Edit Project</a>';
@@ -322,7 +322,7 @@
                                             .catch(function (error) {
                                                 console.log(error);
                                         });
-                                        axios.post("./project/getTeammateByPID?pid=" + getUrlParam("id"))
+                                        await axios.post("./project/getTeammateByPID?pid=" + getUrlParam("id"))
                                             .then(function (res) {
                                                 document.getElementById("tm").innerHTML = "";
                                                 try{
