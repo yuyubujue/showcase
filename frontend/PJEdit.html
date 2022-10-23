@@ -201,7 +201,7 @@
                     }
                 },
                 methods:{
-                    updatePj(){ 
+                    async updatePj(){ 
                         let pjId = this.getUrlParam("pid");
                         let intro = editor.getHtml();
                         let separate = '';
@@ -216,61 +216,98 @@
                         // Cover
                         param.append("pid",pjId);
                         param.append("file",coverbase);
-                        axios.post('project/updateProjectCover', param, config//?Pid='+pjId+"&file="+coverbase
+                       await axios.post('project/updateProjectCover', param, config//?Pid='+pjId+"&file="+coverbase
 	                        ).then(function (response) {
-                            // console.log(response);
+                            if(response.data != "success"){
+                                err = true;
+                            }
                         })
                         .catch(function (error) {
                             console.log(error);
-                            err = true;
+                            Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    footer: "Please try again later or contact the admin."
+                                })
                         });
                         // Intro
                         param = new FormData();
                         param.append("NewPIntro",intro);
                         param.append("Pid",pjId);
-                        axios.post('project/updateProjectIntro', param, config//?Pid='+pjId+"&NewPIntro="+pj.pj_intro
+                        await axios.post('project/updateProjectIntro', param, config//?Pid='+pjId+"&NewPIntro="+pj.pj_intro
 	                        ).then(function (response) {
-                            // console.log(response);
+                            if(response.data != "success"){
+                                err = true;
+                            }
                         })
                         .catch(function (error) {
                             console.log(error);
-                            err = true;
+                            Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    footer: "Please try again later or contact the admin."
+                                })
                         });
                         //pname
                         param = new FormData();
                         param.append("Pid",pjId);
                         param.append("NewPname",pj.pj_name);
-                        axios.post('project/updateProjectName', param, config//?Pid='+pjId+"&NewPname="+pj.pj_name
+                        await axios.post('project/updateProjectName', param, config//?Pid='+pjId+"&NewPname="+pj.pj_name
 	                        ).then(function (response) {
-                            // console.log(response);
+                            if(response.data != "success"){
+                                err = true;
+                            }
                         })
                         .catch(function (error) {
                             console.log(error);
-                            err = true;
+                            Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    footer: "Please try again later or contact the admin."
+                                })
                         });
                         //tagline
                         param = new FormData();
                         param.append("Pid",pjId);
                         param.append("NewTagLine",pj.pj_Tagline);
-                        axios.post('project/updateProjectTagLine', param, config//?Pid='+pjId+"&NewTagLine="+pj.pj_Tagline
+                        await axios.post('project/updateProjectTagLine', param, config//?Pid='+pjId+"&NewTagLine="+pj.pj_Tagline
 	                        ).then(function (response) {
-                            // console.log(response);
+                            if(response.data != "success"){
+                                err = true;
+                            }
                         })
                         .catch(function (error) {
                             console.log(error);
-                            err = true;
+                            Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    footer: "Please try again later or contact the admin."
+                                })
                         });
                         //skill
                         param = new FormData();
                         param.append("pid",pjId);
                         param.append("skills",skill);
-                        axios.post('project/UpdateSkill', param, config//?Pid='+pjId+"&intro="+skill
+                        await axios.post('project/UpdateSkill', param, config//?Pid='+pjId+"&intro="+skill
 	                        ).then(function (response) {
-                            // console.log(response);
+                            console.log(response.data);
+                            if(response.data != "update Success!"){
+                                err = true;
+
+                            }
                         })
                         .catch(function (error) {
                             console.log(error);
-                            err = true;
+                            Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    footer: "Please try again later or contact the admin."
+                                })
                         });
                         if(!err){
                             Swal.fire({
@@ -285,11 +322,15 @@
                                 })                                              
                         }else{
                             Swal.fire({
-                                    type: 'error',
-                                    title: 'Oops...',
-                                    text: 'Something went wrong!',
-                                    footer: "Please try again later or contact the admin."
-                                })
+                                title: 'Error!',
+                                text: "You don't have permission to edit!",
+                                type: 'error',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Ok fine.'
+                                }).then((result) => {
+                                    window.location.href = "./PJDetail.html?id="+pjId;
+                                }) 
                         }
                         
                     },
