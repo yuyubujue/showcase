@@ -179,7 +179,6 @@
             });
         } else {
             if (getCookie("Auth")!=""){
-                document.getElementById("login").innerHTML = "<a><button type=\"button\" class=\"btn btn-danger\" style=\"border-radius:50px\" href=\"javascript:void(0)\" onclick=\"logout()\">Sign out</button></a>";
                 $.ajax({
                     url: './user/getown',
                     type: 'GET',
@@ -271,6 +270,10 @@
     function logout(){
         document.cookie = 'Auth' + '=0;expires=' + new Date(0).toUTCString();
         window.location.reload();
+    }
+    
+    if (getCookie("Auth")!=""){
+        document.getElementById("login").innerHTML = "<a><button type=\"button\" class=\"btn btn-danger\" style=\"border-radius:50px\" href=\"javascript:void(0)\" onclick=\"logout()\">Sign out</button></a>";
     }
 </script>
 </html>
