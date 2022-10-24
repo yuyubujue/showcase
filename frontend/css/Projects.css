@@ -10,7 +10,6 @@ ul{
 
 a{
     text-decoration: none;
-    overflow: hidden;
 }
 
 a:hover{
@@ -413,11 +412,20 @@ main .mainbody {
 
 .mainright li:first-child a{
     line-height: 75px;
+    overflow: hidden;
 
 }
+
+.mainright li a{
+    overflow: hidden;
+}
+
 .mainright li:first-child p{
     font-size: larger;
     max-height: 75px;
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .mainright h3{
     margin: 20px 0;
@@ -428,6 +436,7 @@ main .mainbody {
 .number{
     height: 22px;
     width: 22px;
+    min-width: 22px;
     background-color: #00A1D6;
     color: #fff;
     text-align: center;
@@ -453,6 +462,7 @@ main .mainbody {
     overflow: hidden;
     text-overflow: ellipsis;
     max-height: 50px;
+    white-space: nowrap;
 }
 
 .mainright p:hover{
