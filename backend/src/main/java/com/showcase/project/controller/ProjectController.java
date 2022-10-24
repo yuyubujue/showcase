@@ -448,14 +448,14 @@ public class ProjectController {
         }
     }
 
-    @GetMapping(value = "/getComment/{page}")
+    @GetMapping(value = "/getComment")
     @ResponseBody
-    public String getComment(@RequestParam int pid, @PathVariable("page") String page) {
+    public String getComment(@RequestParam int pid) {
         ProjectDTO checker2 = projectService.getProject(pid);
         if (checker2 == null) {
             return "no such project!";
         }
-        return JSON.toJSONString(projectService.GetComment(pid, page));
+        return JSON.toJSONString(projectService.GetComment(pid));
     }
 
     @PostMapping(value = "/removeComment")

@@ -40,7 +40,7 @@ public interface ProjectMapper {
     List<ProjectLikeCommentDTO> getProjectsByUpdateTimeAsc(int start, int end);
 
     @Select("Select * from `project_comment` where PID = #{pid} order by time limit ${start}, ${end}")
-    List<Project_comment> getComments(int pid,int start,int end);
+    List<Project_comment> getComments(int pid);
     @Select("Select * from `project_comment` where PID=#{pid} and UID = #{uid} and CID = #{cid}")
     List<Project_comment> checkComment(int pid,String uid,int cid);
     @Delete("Delete from `project_comment` where CID = #{cid}")

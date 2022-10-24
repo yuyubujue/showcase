@@ -105,12 +105,10 @@ public class ProjectService{
     public int WriteComment(int pid,String uid,String comment,String uname){return projectMapper.WriteComment(pid,uid,comment,uname);}
     public List<Project_comment> CheckComment(int pid,String uid,int cid){return projectMapper.checkComment(pid,uid,cid);}
     public int DeleteComment(int cid){return projectMapper.DeleteComment(cid);}
-    public List<Project_comment> GetComment(int pid,String page){
-        if(page.equals("1")) {
-            return projectMapper.getComments(pid,0,10);
-        }else{
-            return projectMapper.getComments(pid,Integer.parseInt(page) * 10 - 10, Integer.parseInt(page) * 10);
-        }
+    public List<Project_comment> GetComment(int pid){
+
+            return projectMapper.getComments(pid);
+
     }
 
     public List<ProjectLikeCommentDTO> GetProjectByLike(String page){
