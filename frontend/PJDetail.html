@@ -612,7 +612,7 @@
                     }
                     
 
-                    await axios.get('project/getComment/'+page+"?&pid="+pjId)
+                    await axios.get('project/getComment?pid='+pjId)//project/getComment/'+page+"?&pid="+pjId
                         .then(async function (response) {
                             vm.pj_comnums= response.data.length;
                             cm.pj_comnums= response.data.length;
