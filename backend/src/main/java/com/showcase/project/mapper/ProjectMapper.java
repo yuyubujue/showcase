@@ -39,7 +39,7 @@ public interface ProjectMapper {
             "                    left join (select project_comment.PID,count(project_comment.comment) AS COMMENT from project_comment group by project_comment.PID) as pc on p.ID = pc.PID group by p.ID order by p.UPDATETIME limit #{start}, #{end}")
     List<ProjectLikeCommentDTO> getProjectsByUpdateTimeAsc(int start, int end);
 
-    @Select("Select * from `project_comment` where PID = #{pid} order by time limit ${start}, ${end}")
+    @Select("Select * from `project_comment` where PID = #{pid} order by time")
     List<Project_comment> getComments(int pid);
     @Select("Select * from `project_comment` where PID=#{pid} and UID = #{uid} and CID = #{cid}")
     List<Project_comment> checkComment(int pid,String uid,int cid);

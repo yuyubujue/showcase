@@ -106,9 +106,7 @@ public class ProjectService{
     public List<Project_comment> CheckComment(int pid,String uid,int cid){return projectMapper.checkComment(pid,uid,cid);}
     public int DeleteComment(int cid){return projectMapper.DeleteComment(cid);}
     public List<Project_comment> GetComment(int pid){
-
             return projectMapper.getComments(pid);
-
     }
 
     public List<ProjectLikeCommentDTO> GetProjectByLike(String page){
